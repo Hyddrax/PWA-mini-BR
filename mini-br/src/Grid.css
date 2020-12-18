@@ -1,0 +1,24 @@
+.Grid {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  background-color: #95bdff;
+  justify-content: center;
+  align-items: center;
+  padding: 50px;
+}
+
+.Grid .row {
+  display: flex;
+  flex-direction: row;
+  background-color: red;
+}
+
+.Grid .cell {
+  width: 32px;
+  height: 32px;
+  justify-content: center;
+  align-items: center;
+  background-color: blueviolet;
+  border: solid;
+}
