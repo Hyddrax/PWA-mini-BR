@@ -1,0 +1,55 @@
+.Input {
+    height: 25px;
+    padding: 10px;
+    border: none;
+    width: 600px;
+    border-radius: 35px;
+    background-color: #f5f3f3;
+    margin-bottom: 20px;
+    align-items: center;
+    justify-content: center;
+    outline: none;
+  }
+
+.ButtonClick {
+    margin-left: 238px;
+    margin-right: 238px;
+    margin-top: 35px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 35px;
+    border: none;
+}
+
+.btn {
+    height: 50px;
+}
+
+.InputNBJRight {
+ /* margin-left: 238px; */
+ align-items: flex-end;
+}
+
+.InputNB {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 35px;
+    flex: 1;
+    justify-items: center;
+}
+
+.InputNBT {
+ width: 200px;
+ margin-right: 33ch;
+ font-size: 16px;
+}
+
+.InputNBJ {
+    height: 25px;
+    padding: 10px;
+    border: none;
+    width: 100px;
+    border-radius: 20px;
+    background-color: #f5f3f3;
+    outline: none;
+}
