@@ -2,23 +2,33 @@
   display: flex;
   flex: 1;
   flex-direction: column;
-  background-color: #95bdff;
-  justify-content: center;
-  align-items: center;
-  padding: 50px;
+  flex-wrap: wrap;
+  background-image: url("./map.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  margin-top: 2%;
+  margin: 2% 15%;
+}
+
+.Grid .row:first-child {
+  border-top: solid;
+}
+
+.Grid .row:last-child {
+  border-bottom: solid;
 }
 
 .Grid .row {
   display: flex;
   flex-direction: row;
-  background-color: red;
+  border-left: solid;
+  border-right: solid;
 }
 
 .Grid .cell {
-  width: 32px;
-  height: 32px;
+  width: 28px;
+  height: 28px;
   justify-content: center;
   align-items: center;
-  background-color: blueviolet;
-  border: solid;
+  border: 2px dotted #a0a0a0;
 }

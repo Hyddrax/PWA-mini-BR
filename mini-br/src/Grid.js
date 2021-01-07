@@ -1,5 +1,5 @@
 import './Grid.css';
-
+import Cell from "./Cell.js";
 
 function Grid() {
 
@@ -29,19 +29,15 @@ function Grid() {
 
 
     function buildGrid() {
-        let rowCount = 0;
-        let rows = grid.map(row => {
-            rowCount++;
-            return <div className={`row`}>
-                {row.map(cell => {
-                    return <div className="cell">{cell}</div>
-                })}
+        let rows = grid.map((row, rowIndex) => {
+            return <div key={rowIndex} className={`row`}>
+                {
+                    row.map((cell, cellIndex) => {
+                        return <Cell key={cellIndex} cellValue={(rowIndex * row.length) + cellIndex} cellClasses={["test"]} />;
+                    })}
             </div>
         })
-
-        console.log(rows);
         return rows;
-
     }
 
     return (
