@@ -4,10 +4,11 @@ import './Cell.css';
 function Cell(props) {
 
     function getClasses() {
-        let classes = "cell";
+        let classes = "";
         props.cellClasses.forEach(className => {
             classes += " " + className;
         });
+        classes+= " x" + props.cellValue.x + "y" + props.cellValue.y;
         return classes;
     }
 
@@ -16,7 +17,7 @@ function Cell(props) {
     }
 
     return (
-        <div className={getClasses()} onClick={clickHandler}>
+        <div id={"cell"} className={getClasses()} onClick={clickHandler}>
             {/* {props.cellValue} */}
         </div>
     );
