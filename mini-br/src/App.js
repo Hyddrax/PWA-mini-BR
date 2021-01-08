@@ -1,12 +1,17 @@
 import './App.css';
-import CreerPartie from './CreerPartie';
-import JoindrePartie from './JoindrePartie';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import Accueil from './Accueil'
 
 function App() {
   return (
     <div className="app">
-      <CreerPartie />
-      <JoindrePartie />
+      <div className="App__content">
+        < Router >
+          <Switch>
+            <Route exact path='/' component={Accueil} />
+          </Switch>
+        </Router>
+      </div>
     </div>
   );
 }

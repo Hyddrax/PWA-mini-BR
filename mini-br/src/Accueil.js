@@ -1,5 +1,7 @@
 import React from 'react';
 import './Accueil.css';
+import JoinGame from './Modal/JoinGame'
+import CreateGame from './Modal/CreateGame'
 
 function Accueil() {
     return (
@@ -8,8 +10,8 @@ function Accueil() {
             <div className="accueil__body">
                 <div className="accueil__left">
                     <ul>
-                        <li><a>Créer une partie</a></li>
-                        <li><a>Rejoindre une partie</a></li>
+                        <li><a><CreateGame /></a></li>
+                        <li><a><JoinGame /></a></li>
                     </ul>
                 </div>
                 <div className="accueil__right">
