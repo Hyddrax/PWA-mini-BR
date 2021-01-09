@@ -22,7 +22,6 @@ const useStyles = makeStyles((theme) => ({
         padding: theme.spacing(2, 4, 3),
         width: '75%',
         margin: '25%',
-        minWidth: '600px',
         alignItems: 'center',
     },
     formControl: {
@@ -119,7 +118,7 @@ export default function CreateGame() {
                             </div>
                         </form>
                         <div className={classes.formItem}>
-                            <Button className="btn" variant="outlined">Créer la partie</Button>
+                            <Button className="btn" variant="outlined" href="/Game">Créer la partie</Button>
                         </div>
                     </div>
                 </Fade>

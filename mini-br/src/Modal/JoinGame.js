@@ -69,7 +69,7 @@ export default function TransitionsModal() {
                         <form noValidate autoComplete="off" className={classes.form}>
                             <TextField id="game-name" label="Nom de la partie" onChange={(e) => setNom(e.target.value)} />
                             <TextField id="game-password" label="Password de la partie" onChange={(e) => setPassword(e.target.value)} />
-                            <Button className={classes.formItem} variant="outlined">Rejoindre la partie</Button>
+                            <Button className={classes.formItem} variant="outlined" href="/Game">Rejoindre la partie</Button>
                         </form>
                     </div>
                 </Fade>
