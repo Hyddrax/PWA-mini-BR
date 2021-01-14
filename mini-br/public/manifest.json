@@ -1,6 +1,7 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "PWA-mini-BR",
+  "name": "PWA-mini-BR",
+  "description": "A PWA battle royal made with React",
   "icons": [
     {
       "src": "favicon.ico",
@@ -19,7 +20,8 @@
     }
   ],
   "start_url": ".",
+  "lang": "en-US",
   "display": "standalone",
-  "theme_color": "#000000",
-  "background_color": "#ffffff"
+  "theme_color": "#EFF3F0",
+  "background_color": "##95BDFF"
 }
