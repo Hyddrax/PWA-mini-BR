@@ -1,3 +1,4 @@
+this project is the implementation of a Progressive Web App, a small turn-based game playable with friends.
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
