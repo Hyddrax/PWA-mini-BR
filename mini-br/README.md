@@ -1,6 +1,6 @@
 # PWD-mini-BR
 
-PWD-mini-BR is the implementation of a Progressive Web App, a small turn-based game playable with friends.
+PWD-mini-BR is a small turn-based game playable with friends implements in a Progressive Web App.
 
 ## Getting Started
 
