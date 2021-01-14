@@ -1,6 +1,8 @@
-this project is the implementation of a Progressive Web App, a small turn-based game playable with friends.
+# PWD-mini-BR
 
-# Getting Started
+PWD-mini-BR is the implementation of a Progressive Web App, a small turn-based game playable with friends.
+
+## Getting Started
 
 Step 1: close the project by using the commands below:
 ### `git clone https://github.com/Hyddrax/PWA-mini-BR.git`
