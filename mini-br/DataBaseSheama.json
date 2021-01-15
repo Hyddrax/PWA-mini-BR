@@ -1,0 +1,58 @@
+{
+  "Games": [
+    {
+      "gameId": "myGameIdASHash",
+      "turnPlayerId": 1,
+      "data": {
+        "mapLootStatus": [
+          {
+            "lootPosition": {
+              "x": 0,
+              "y": 0
+            },
+            "isLooted": false
+          },
+          {
+            "lootPosition": {
+              "x": 1,
+              "y": 0
+            },
+            "isLooted": false
+          }
+        ]
+      }
+    }
+  ],
+  "Players": [
+    {
+      "gameId": "myGameIdASHash",
+      "playerId": 1,
+      "data": {
+        "playerPosition": { "x": 0, "y": 0 },
+        "playerArmor": 0,
+        "playerWeapon": 0
+      },
+      "subscription": {}
+    },
+    {
+      "gameId": "myGameIdASHash",
+      "playerId": 2,
+      "data": {
+        "playerPosition": { "x": 1, "y": 0 },
+        "playerArmor": 0,
+        "playerWeapon": 0
+      },
+      "subscription": {}
+    },
+    {
+      "gameId": "myGameIdASHash",
+      "playerId": 3,
+      "data": {
+        "playerPosition": { "x": 2, "y": 0 },
+        "playerArmor": 0,
+        "playerWeapon": 0
+      },
+      "subscription": {}
+    }
+  ]
+}

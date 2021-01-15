@@ -36,6 +36,7 @@ const useStyles = makeStyles((theme) => ({
     formItem: {
         margin: '25px 10px',
         color: 'black',
+        textTransform: 'capitalize'
     }
 }));
 
