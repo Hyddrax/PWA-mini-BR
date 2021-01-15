@@ -1,12 +1,24 @@
 # Project Title
 
-PWD-mini-BR is a small turn-based game playable with friends implements in a Progressive Web App.
+PWA-mini-BR is a small turn-based game playable with friends implements in a Progressive Web App.
 
-#### Index page
-![screenshot1](screenshot1.png)
-#### Game page
-![screenshot2](screenshot2.png)
+## Project's Screenshots
+### Index page
+![screenshot1](./images/screenshot1.png)
+*(Screenshot of Figma's mockup)*
+### Modals 
+![screenshot1](./images/screenshot3.png)
+*(Screenshot of Figma's mockup)*
+![screenshot4](./images/screenshot4.png)
+*(Screenshot of Figma's mockup)*
+### Game page
+![screenshot2](./images/screenshot2.png)
+*(Screenshot of Figma's mockup)*
 
+## Navigation
+![navigation](./images/navigation.png)
+## Schedule
+![schedule](./images/schedule.png)
 ## Getting Started
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
 
@@ -15,20 +27,42 @@ You have to install node on your machine : https://nodejs.org/en/download/
 
 ## Installing
 A step by step series of examples that tell you how to get a development env running.
-Step 1: close the project by using the commands below:
-### `git clone https://github.com/Hyddrax/PWA-mini-BR.git`
-Step 2: go to mini-br :
-### `cd mini-br`
+
+Step 1: clone the project by using the commands below :
+```
+git clone https://github.com/Hyddrax/PWA-mini-BR.git
+```
+Step 2: go to mini-br's folder :
+```
+cd mini-br
+```
 Step 3: install the packages:
-### `npm install package.json`
+```
+npm install package.json
+```
 Step 4: start your local server:
-### `npm start`
+```
+npm start
+```
 
-## Built With:
-- Framework front-end : Reactjs --> https://fr.reactjs.org/
-- Framework back-end: Expo --> https://docs.expo.io/
-- Data base : MongoDB --> https://docs.mongodb.com/
+## Built With
+- Framework front-end : Reactjs → https://fr.reactjs.org/
+  - We all know the basics of React
+- Framework back-end: Express → https://expressjs.com/fr/
+  - Light and easy to implement
+- Data base : MongoDB → https://docs.mongodb.com/
+  - No need of relational database
 
+## Cache strategy
+Precaching :
+If the network is available, you don't go through the cache. If it is unavailable, we use the versions of the cache.
+* 👍 Always up to date with the server version,
+* 👎 Slower, waiting for server comeback
+
+## Technological locks
+Service Worker : learn more with help of teachers and follow the classes.
+
+Map : create and use a 2D map → use a 2D background image and add over the gameplay features
 ## Authors
 - [Hyddrax](https://github.com/Hyddrax)
 - [abdellahJR](https://github.com/abdellahJR)
