@@ -4,10 +4,12 @@ import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
 import { Button } from '@material-ui/core';
+import { Link } from "react-router-dom";
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
 import TextField from '@material-ui/core/TextField';
+import './modal.css';
 
 const useStyles = makeStyles((theme) => ({
     modal: {
@@ -20,9 +22,9 @@ const useStyles = makeStyles((theme) => ({
         border: '2px solid #000',
         boxShadow: theme.shadows[5],
         padding: theme.spacing(2, 4, 3),
-        width: '75%',
-        margin: '25%',
+        width: '30%',
         alignItems: 'center',
+        justifyContent: 'center'
     },
     formControl: {
         margin: theme.spacing(1),
@@ -65,7 +67,7 @@ export default function CreateGame() {
 
     return (
         <div>
-            <span type="button" onClick={handleOpen}>
+            <span style={{  cursor: 'pointer' }} type="button" onClick={handleOpen}>
                 Créer une partie
             </span>
             <Modal
@@ -83,8 +85,8 @@ export default function CreateGame() {
                 <Fade in={open}>
                     <div className={classes.paper}>
                         <form noValidate autoComplete="off" className={classes.form}>
-                            <TextField id="game-name" label="Nom de la partie" onChange={(e) => setNom(e.target.value)} />
-                            <TextField id="game-password" label="Password de la partie" onChange={(e) => setPassword(e.target.value)} />
+                           <input className="Input" type="text" onChange={(e) => setNom(e.target.value)} placeholder="Nom de la partie" />
+                           <input className="Input" type="text" onChange={(e) => setPassword(e.target.value)} placeholder="Password de la partie" />
                             <div className={classes.formItem}>
                                 <FormControl className={classes.formControl}>
                                     <InputLabel htmlFor="grouped-native-select">Nombres de jouers</InputLabel>
@@ -118,7 +120,9 @@ export default function CreateGame() {
                             </div>
                         </form>
                         <div className={classes.formItem}>
-                            <Button className="btn" variant="outlined" href="/Game">Créer la partie</Button>
+                            <Link to="/Game" style={{ textDecoration: 'none', color: 'black' }}>
+                              <div className="btn" variant="outlined">Créer la partie</div>
+                            </Link>
                         </div>
                     </div>
                 </Fade>
