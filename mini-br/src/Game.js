@@ -1,3 +1,4 @@
+import { Button } from '@material-ui/core';
 import './Game.css';
 import Grid from './Grid.js';
 
@@ -30,8 +31,8 @@ function Game() {
                     <div className="Name">Nom de la partie</div>
                 </div>
                 <div className="RightPanel">
-                    <button className="ShowPlayers">Joueurs</button>
-                    <button className="GoBack">Retour</button>
+                    <Button className="ShowPlayers">Joueurs</Button>
+                    <Button href="/" className="GoBack">Retour</Button>
                 </div>
             </div>
             <div className="Game-Playground">

@@ -41,6 +41,7 @@
   padding-right: 15%;
   background-color: white;
   border: solid black 2px;
+  text-transform: capitalize;
 }
 
 .Game-TopBar .GoBack {
@@ -50,6 +51,7 @@
   padding-right: 15%;
   background-color: white;
   border: solid black 2px;
+  text-transform: capitalize;
 }
 
 .Game-Playground {
