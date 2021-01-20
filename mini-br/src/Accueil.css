@@ -37,17 +37,18 @@
     padding: 15px 10px;
 }
 li:hover{
-    transition: transform 0.2s ease-in-out;
-    transform: scale(1.1) !important;
+    transition: transform 0.1s ease-in-out;
+    transform: scale(1.07) !important;
 }
 li {
     margin:10px;
     align-items: center;
 }
 
-.accueil__left li a{
+a{
     text-align: center;
     color: #000000;
+    text-decoration: none;
 }
 .accueil__right{
     flex: 2;

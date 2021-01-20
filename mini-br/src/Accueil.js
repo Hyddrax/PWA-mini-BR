@@ -10,19 +10,19 @@ function Accueil() {
             <div className="accueil__body">
                 <div className="accueil__left">
                     <ul>
-                        <li><a><CreateGame /></a></li>
-                        <li><a><JoinGame /></a></li>
+                        <a href='Game/'><li><CreateGame /></li></a>
+                        <a href='Game/'><li><JoinGame /></li></a>
                     </ul>
                 </div>
                 <div className="accueil__right">
                     <p>Liste des partie en cours :</p>
                     <ul>
-                        <li><a>Partie 1</a></li>
-                        <li><a>Partie 2</a></li>
-                        <li><a>Partie 3</a></li>
-                        <li><a>Partie 4</a></li>
-                        <li><a>Partie 5</a></li>
-                        <li><a>Partie 6</a></li>
+                        <a href='Game/'><li>Partie 1</li></a>
+                        <a href='Game/'><li>Partie 2</li></a>
+                        <a href='Game/'><li>Partie 3</li></a>
+                        <a href='Game/'><li>Partie 4</li></a>
+                        <a href='Game/'><li>Partie 5</li></a>
+                        <a href='Game/'><li>Partie 6</li></a>
                     </ul>
                 </div>
             </div>
