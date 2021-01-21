@@ -9,10 +9,8 @@ function Accueil() {
             <h1 className="accueil__title">My Mini BR</h1>
             <div className="accueil__body">
                 <div className="accueil__left">
-                    <ul>
-                        <li><a><CreateGame /></a></li>
-                        <li><a><JoinGame /></a></li>
-                    </ul>
+                        <CreateGame />
+                        <JoinGame />
                 </div>
                 <div className="accueil__right">
                     <p>Liste des partie en cours :</p>
