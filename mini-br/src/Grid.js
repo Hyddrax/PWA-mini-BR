@@ -28,7 +28,6 @@ class Grid extends React.Component {
         for (const dir of directions) {
             const target = { x: x + dir.x, y: y + dir.y };
             if (this.cellIsWalkable(target.x, target.y)) {
-
                 if (!this.state.dataGrid.data.cells[y][x].isWalkable) {
                     this.state.dataGrid.data.cells[y][x].isWalkable = true;
                 }
@@ -53,42 +52,33 @@ class Grid extends React.Component {
 
     movePlayer(newX, newY) {
         let tmpDataGrid = Object.assign({}, this.state.dataGrid);
-
         const cell = tmpDataGrid.data.cells[this.startingPoint.y][this.startingPoint.x];
         cell.isPlayer = false;
-
-        // tmpDataGrid.data.cells[newY][newX].isPlayer = true;
+        this.startingPoint.y = newY;
+        this.startingPoint.x = newX;
         this.setState({
             dataGrid: tmpDataGrid
-        }, () => { console.log("This.state", this.state.dataGrid.data.cells[this.startingPoint.y][this.startingPoint.x]); });
-    }
-
-    initPlayer(x, y) {
-        console.log("InitPlayer");
-        this.state.dataGrid.data.cells[y][x].isPlayer = true;
-    }
-
-    buildGrid() {
-        this.rows = this.state.dataGrid.data.cells.map((row, rowIndex) => {
-            return <div key={rowIndex} className={`row`}>
-                {
-                    row.map((cell, cellIndex) => {
-                        return <Cell key={cellIndex} cellPosition={{ "x": cellIndex, "y": rowIndex }} dataCell={cell} movePlayer={this.movePlayer.bind(this)} />;
-                    })}
-            </div>
-        })
-
-        this.initPlayer(this.startingPoint.x, this.startingPoint.y);
-        this.accessibleCellsAround(this.startingPoint.x, this.startingPoint.y, 9);
-        return this.rows;
+        });
     }
 
     render() {
-        return (
-            <div className="Grid">
-                {this.buildGrid()}
+        const copyObject = Object.assign({}, this.state.dataGrid);
+        copyObject.data.cells[this.startingPoint.y][this.startingPoint.x].isPlayer = true;
+        this.accessibleCellsAround(this.startingPoint.x, this.startingPoint.y, 9);
+        const Grid = () => copyObject.data.cells.map((row, rowIndex) => {
+            return <div key={rowIndex} className={`row`}>
+                {
+                    row.map((cell, cellIndex) => <Cell
+                        key={cellIndex}
+                        cellPosition={{ "x": cellIndex, "y": rowIndex }}
+                        dataCell={cell}
+                        movePlayer={this.movePlayer.bind(this)} />
+                    )}
             </div>
-        );
+        });
+        return <div className="Grid">
+            <Grid />
+        </div>;
     }
 }
 
