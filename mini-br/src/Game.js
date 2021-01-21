@@ -5,6 +5,7 @@ import Grid from './Grid.js';
 import DataGame from './DataObject/DataGame'
 import DataGrid from './DataObject/DataGrid'
 import DataCell from './DataObject/DataCell'
+import DataPlayer from './DataObject/DataPlayer'
 
 class Game extends React.Component {
 
@@ -41,9 +42,24 @@ class Game extends React.Component {
         this.state = {
             gameName: tmpGameName,
             gameId: tmpGameId,
-            dataGrid: new DataGrid(tmpGameId, { cells: this.CELLS }),
-            dataGame: new DataGame(tmpGameId, tmpGameName, { grid: this.dataGrid })
+            dataGrid: new DataGrid(tmpGameId, { cells: this.CELLS, players: [new DataPlayer(tmpGameId, 1, { name: "Can", weapon: { dmg: 25 }, position: { x: 20, y: 9 } }), new DataPlayer(tmpGameId, 1, { name: "Baptiste", position: { x: 3, y: 3 } })] }),
+            dataGame: new DataGame(tmpGameId, tmpGameName, { grid: this.dataGrid }),
+            test: 1
         }
+    }
+
+    nextPlayer() {
+        console.log("NextPlayer");
+        let tmpDataGame = Object.assign({}, this.state.dataGame);
+        if (tmpDataGame.turnPlayerId == this.state.dataGrid.data.players.length) {
+            tmpDataGame.turnPlayerId = 1;
+        } else {
+            tmpDataGame.turnPlayerId++;
+        }
+
+        this.setState({
+            dataGame: tmpDataGame
+        })
     }
 
     render() {
@@ -59,7 +75,7 @@ class Game extends React.Component {
                     </div>
                 </div>
                 <div className="Game-Playground">
-                    <Grid dataGrid={this.state.dataGrid}></Grid>
+                    <Grid dataGrid={this.state.dataGrid} turnPlayerId={this.state.dataGame.turnPlayerId} nextPlayer={this.nextPlayer.bind(this)}></Grid>
                 </div>
             </div>
         );

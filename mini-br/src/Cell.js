@@ -53,8 +53,12 @@ class Cell extends React.Component {
     }
 
     clickHandler(params) {
-        if (this.state.dataCell.isWalkable && !this.state.dataCell.isPlayer) {
-            this.props.movePlayer(this.props.cellPosition.x, this.props.cellPosition.y);
+        if (this.state.dataCell.isWalkable) {
+            if (!this.state.dataCell.isPlayer) {
+                this.props.movePlayer(this.props.cellPosition.x, this.props.cellPosition.y);
+            } else {
+                this.props.attackPlayer(this.props.cellPosition.x, this.props.cellPosition.y);
+            }
         }
         console.log("you click on cell number x: " + this.props.cellPosition.x + " y: " + this.props.cellPosition.y);
     }
