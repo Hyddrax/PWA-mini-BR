@@ -14,8 +14,8 @@
     display: flex;
     padding: 1% 15%;
     align-items: center;
-    width: 30%;
-    padding: 10px;
+    width: 40%;
+    padding: 15px 10px;
     border-radius: 100px;
     background-color: white;
     border: solid black 2px;
@@ -24,4 +24,33 @@
     align-content: center;
     text-decoration: none !important;
     font-weight: bold;
+    box-sizing: border-box;
   }
+
+.btn1 {
+  display: flex;
+  padding: 1% 15%;
+  align-items: center;
+  width: 60%;
+  margin: 10px;
+  padding: 15px 10px;
+  border-radius: 100px;
+  background-color: white;
+  border: solid black 2px;
+  cursor: pointer;
+  justify-content: center;
+  align-content: center;
+  text-decoration: none !important;
+  font-weight: bold;
+  box-sizing: border-box;
+}
+
+.btn:hover{
+    transition: transform 0.2s ease-in-out;
+    transform: scale(1.1) !important;
+}
+
+.btn1:hover{
+  transition: transform 0.2s ease-in-out;
+  transform: scale(1.1) !important;
+}

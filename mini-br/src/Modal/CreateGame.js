@@ -68,9 +68,9 @@ export default function CreateGame() {
 
     return (
         <div>
-            <span style={{  cursor: 'pointer' }} type="button" onClick={handleOpen}>
+            <div className="btn1" onClick={handleOpen}>
                 Créer une partie
-            </span>
+            </div>
             <Modal
                 aria-labelledby="transition-modal-title"
                 aria-describedby="transition-modal-description"

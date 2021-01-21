@@ -51,9 +51,9 @@ export default function TransitionsModal() {
 
     return (
         <div>
-            <span style={{  cursor: 'pointer' }} type="button" onClick={handleOpen}>
+            <div className="btn1" onClick={handleOpen}>
                 Joindre une partie
-            </span>
+            </div>
             <Modal
                 aria-labelledby="transition-modal-title"
                 aria-describedby="transition-modal-description"

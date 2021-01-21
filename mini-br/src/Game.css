@@ -1,57 +1,116 @@
 .Game {
-  min-height: 100%;
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
+}
+
+.Ctn {
   background-color: #95bdff;
 }
 
 .Game-TopBar {
   display: flex;
-  flex: 1;
-  justify-content: space-between;
-  margin-left: 2%;
-  margin-right: 2%;
   margin-top: 1%;
 }
 
 .Game-TopBar .GameName {
   display: flex;
-  flex: 8;
+  flex: 1;
 }
 
+@media screen and (min-width: 600px) {
+  .Game-TopBar .GameName .Name {
+    display: flex;
+    align-items: center;
+    border-radius: 100px;
+    background-color: white;
+    border: solid black 2px;
+    cursor: pointer;
+    font-weight: bold;
+    width: fit-content;
+    height: fit-content;
+    padding: 10px;
+    padding-left: 40px;
+    padding-right: 40px;
+  }
+}
+
+@media screen and (max-width: 600px) {
 .Game-TopBar .GameName .Name {
   display: flex;
-  padding: 1% 15%;
+  padding: 10px;
+  width: fit-content;
   align-items: center;
   border-radius: 100px;
   background-color: white;
   border: solid black 2px;
+  cursor: pointer;
+  font-weight: bold;
+ }
 }
 
-.Game-TopBar .RightPanel {
+.Btn_Partie {
   display: flex;
-  flex: 2;
-  justify-content: space-between;
+  padding: 15px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 100px;
+  background-color: white;
+  border: solid black 2px;
+  width: 170px;
+  margin-right: 30px;
+  margin: 35px;
+  cursor: pointer;
 }
+
+
+@media screen and (min-width: 100px) {
+  .Game-TopBar .RightPanel {
+    display: flex;
+    justify-content: space-between;
+  }
+}
+
 
 .Game-TopBar .ShowPlayers {
   align-items: center;
+  text-align: center;
   border-radius: 100px;
-  padding-left: 15%;
-  padding-right: 15%;
   background-color: white;
   border: solid black 2px;
+<<<<<<< HEAD
   text-transform: capitalize;
+=======
+  flex: 1;
+  font-weight: bold;
+  cursor: pointer;
+  width: fit-content;
+  height: fit-content;
+  padding: 10px;
+  padding-left: 40px;
+  padding-right: 40px;
+>>>>>>> style
 }
 
 .Game-TopBar .GoBack {
   align-items: center;
   border-radius: 100px;
-  padding-left: 15%;
-  padding-right: 15%;
+  margin-left: 20px;
+  text-align: center;
   background-color: white;
   border: solid black 2px;
+<<<<<<< HEAD
   text-transform: capitalize;
+=======
+  flex: 1;
+  font-weight: bold;
+  cursor: pointer;
+  width: fit-content;
+  height: fit-content;
+  padding: 10px;
+  padding-left: 40px;
+  padding-right: 40px;
+>>>>>>> style
 }
 
 .Game-Playground {

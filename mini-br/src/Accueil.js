@@ -9,10 +9,15 @@ function Accueil() {
             <h1 className="accueil__title">My Mini BR</h1>
             <div className="accueil__body">
                 <div className="accueil__left">
+<<<<<<< HEAD
                     <ul>
                         <a href='Game/'><li><CreateGame /></li></a>
                         <a href='Game/'><li><JoinGame /></li></a>
                     </ul>
+=======
+                        <CreateGame />
+                        <JoinGame />
+>>>>>>> style
                 </div>
                 <div className="accueil__right">
                     <p>Liste des partie en cours :</p>
