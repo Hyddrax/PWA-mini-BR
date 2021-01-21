@@ -50,34 +50,36 @@ export default function TransitionsModal() {
 
 
     return (
-        <div>
-            <span style={{  cursor: 'pointer' }} type="button" onClick={handleOpen}>
-                Joindre une partie
+        <a>
+            <div onClick={handleOpen}>
+                <span style={{ cursor: 'pointer' }} type="button" >
+                    Joindre une partie
             </span>
-            <Modal
-                aria-labelledby="transition-modal-title"
-                aria-describedby="transition-modal-description"
-                className={classes.modal}
-                open={open}
-                onClose={handleClose}
-                closeAfterTransition
-                BackdropComponent={Backdrop}
-                BackdropProps={{
-                    timeout: 500,
-                }}
-            >
-                <Fade in={open}>
-                    <div className={classes.paper}>
-                        <form noValidate autoComplete="off" className={classes.form}>
-                           <input className="Input" type="text" onChange={(e) => setNom(e.target.value)} placeholder="Nom de la partie" />
-                           <input className="Input" type="text" onChange={(e) => setPassword(e.target.value)} placeholder="Password de la partie" />
-                            <Link to="/Game" style={{ textDecoration: 'none', color: 'black' }}>
-                              <div className="btn" variant="outlined">Rejoindre la partie</div>
-                            </Link>
-                        </form>
-                    </div>
-                </Fade>
-            </Modal>
-        </div>
+                <Modal
+                    aria-labelledby="transition-modal-title"
+                    aria-describedby="transition-modal-description"
+                    className={classes.modal}
+                    open={open}
+                    onClose={handleClose}
+                    closeAfterTransition
+                    BackdropComponent={Backdrop}
+                    BackdropProps={{
+                        timeout: 500,
+                    }}
+                >
+                    <Fade in={open}>
+                        <div className={classes.paper}>
+                            <form noValidate autoComplete="off" className={classes.form}>
+                                <input className="Input" type="text" onChange={(e) => setNom(e.target.value)} placeholder="Nom de la partie" />
+                                <input className="Input" type="text" onChange={(e) => setPassword(e.target.value)} placeholder="Password de la partie" />
+                                <Link to="/Game" style={{ textDecoration: 'none', color: 'black' }}>
+                                    <div className="btn" variant="outlined">Rejoindre la partie</div>
+                                </Link>
+                            </form>
+                        </div>
+                    </Fade>
+                </Modal>
+            </div>
+        </a>
     );
 }

@@ -67,67 +67,70 @@ export default function CreateGame() {
     };
 
     return (
-        <div>
-            <span style={{  cursor: 'pointer' }} type="button" onClick={handleOpen}>
-                Créer une partie
+        <a>
+
+            <div onClick={handleOpen}>
+                <span style={{ cursor: 'pointer' }} type="button" >
+                    Créer une partie
             </span>
-            <Modal
-                aria-labelledby="transition-modal-title"
-                aria-describedby="transition-modal-description"
-                className={classes.modal}
-                open={open}
-                onClose={handleClose}
-                closeAfterTransition
-                BackdropComponent={Backdrop}
-                BackdropProps={{
-                    timeout: 500,
-                }}
-            >
-                <Fade in={open}>
-                    <div className={classes.paper}>
-                        <form noValidate autoComplete="off" className={classes.form}>
-                           <input className="Input" type="text" onChange={(e) => setNom(e.target.value)} placeholder="Nom de la partie" />
-                           <input className="Input" type="text" onChange={(e) => setPassword(e.target.value)} placeholder="Password de la partie" />
+                <Modal
+                    aria-labelledby="transition-modal-title"
+                    aria-describedby="transition-modal-description"
+                    className={classes.modal}
+                    open={open}
+                    onClose={handleClose}
+                    closeAfterTransition
+                    BackdropComponent={Backdrop}
+                    BackdropProps={{
+                        timeout: 500,
+                    }}
+                >
+                    <Fade in={open}>
+                        <div className={classes.paper}>
+                            <form noValidate autoComplete="off" className={classes.form}>
+                                <input className="Input" type="text" onChange={(e) => setNom(e.target.value)} placeholder="Nom de la partie" />
+                                <input className="Input" type="text" onChange={(e) => setPassword(e.target.value)} placeholder="Password de la partie" />
+                                <div className={classes.formItem}>
+                                    <FormControl className={classes.formControl}>
+                                        <InputLabel htmlFor="grouped-native-select">Nombres de jouers</InputLabel>
+                                        <Select native defaultValue=""
+                                            id="grouped-native-select"
+                                            value={nbj}
+                                            onChange={handleChangeNbj}
+                                        >
+                                            <option value={4}>4</option>
+                                            <option value={5}>5</option>
+                                            <option value={6}>6</option>
+                                            <option value={7}>7</option>
+                                            <option value={8}>8</option>
+                                            <option value={9}>9</option>
+                                            <option value={10}>10</option>
+                                        </Select>
+                                    </FormControl>
+                                    <FormControl className={classes.formControl}>
+                                        <InputLabel htmlFor="grouped-native-select">Temps par tour:</InputLabel>
+                                        <Select native defaultValue=""
+                                            id="grouped-native-select"
+                                            value={nbt}
+                                            onChange={handleChangeNbt}
+                                        >
+                                            <option value={1}>1h</option>
+                                            <option value={6}>6h</option>
+                                            <option value={12}>12h</option>
+                                            <option value={24}>24h</option>
+                                        </Select>
+                                    </FormControl>
+                                </div>
+                            </form>
                             <div className={classes.formItem}>
-                                <FormControl className={classes.formControl}>
-                                    <InputLabel htmlFor="grouped-native-select">Nombres de jouers</InputLabel>
-                                    <Select native defaultValue=""
-                                        id="grouped-native-select"
-                                        value={nbj}
-                                        onChange={handleChangeNbj}
-                                    >
-                                        <option value={4}>4</option>
-                                        <option value={5}>5</option>
-                                        <option value={6}>6</option>
-                                        <option value={7}>7</option>
-                                        <option value={8}>8</option>
-                                        <option value={9}>9</option>
-                                        <option value={10}>10</option>
-                                    </Select>
-                                </FormControl>
-                                <FormControl className={classes.formControl}>
-                                    <InputLabel htmlFor="grouped-native-select">Temps par tour:</InputLabel>
-                                    <Select native defaultValue=""
-                                        id="grouped-native-select"
-                                        value={nbt}
-                                        onChange={handleChangeNbt}
-                                    >
-                                        <option value={1}>1h</option>
-                                        <option value={6}>6h</option>
-                                        <option value={12}>12h</option>
-                                        <option value={24}>24h</option>
-                                    </Select>
-                                </FormControl>
+                                <Link to={`/Game/${nom + password}/${nom}`} style={{ textDecoration: 'none', color: 'black' }}>
+                                    <div className="btn" variant="outlined">Créer la partie</div>
+                                </Link>
                             </div>
-                        </form>
-                        <div className={classes.formItem}>
-                            <Link to="/Game" style={{ textDecoration: 'none', color: 'black' }}>
-                              <div className="btn" variant="outlined">Créer la partie</div>
-                            </Link>
                         </div>
-                    </div>
-                </Fade>
-            </Modal>
-        </div >
+                    </Fade>
+                </Modal>
+            </div >
+        </a>
     );
 }

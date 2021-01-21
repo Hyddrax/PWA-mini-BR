@@ -1,36 +1,23 @@
+import React from "react";
 import './Grid.css';
 import Cell from "./Cell.js";
 
-function Grid() {
+class Grid extends React.Component {
 
-    const grid = [
-        [{ "classes": ["obstacle"] }, { "classes": ["obstacle"] }, { "classes": ["obstacle"] }, { "classes": ["obstacle"] }, { "classes": ["obstacle"] }, { "classes": ["obstacle"] }, { "classes": ["obstacle"] }, { "classes": ["obstacle"] }, { "classes": ["obstacle"] }, { "classes": ["obstacle"] }, { "classes": ["obstacle"] }, { "classes": ["obstacle"] }, { "classes": ["obstacle"] }, { "classes": ["obstacle"] }, { "classes": ["obstacle"] }, { "classes": ["obstacle"] }, { "classes": ["obstacle"] }, { "classes": ["obstacle"] }, { "classes": ["obstacle"] }, { "classes": ["obstacle"] }, { "classes": ["obstacle"] }, { "classes": ["obstacle"] }, { "classes": ["obstacle"] }, { "classes": ["obstacle"] }, { "classes": ["obstacle"] }, { "classes": ["obstacle"] }, { "classes": ["obstacle"] }, { "classes": ["obstacle"] }, { "classes": ["obstacle"] }, { "classes": ["obstacle"] }, { "classes": ["obstacle"] }, { "classes": ["obstacle"] }, { "classes": ["obstacle"] }, { "classes": ["obstacle"] }, { "classes": ["obstacle"] }, { "classes": ["obstacle"] }, { "classes": ["obstacle"] }, { "classes": ["obstacle"] }, { "classes": ["obstacle"] }, { "classes": ["obstacle"] }, { "classes": ["obstacle"] }, { "classes": ["obstacle"] }],
-        [{ "classes": ["obstacle"] }, { "classes": ["obstacle"] }, { "classes": ["obstacle"] }, { "classes": ["obstacle"] }, { "classes": ["obstacle"] }, { "classes": ["obstacle"] }, { "classes": ["obstacle"] }, { "classes": ["lootWeapon"] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": ["lootWeapon"] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": ["loot"] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": ["lootWeapon"] }, { "classes": ["obstacle"] }, { "classes": ["obstacle"] }, { "classes": ["obstacle"] }, { "classes": ["obstacle"] }, { "classes": ["obstacle"] }, { "classes": ["obstacle"] }, { "classes": ["obstacle"] }],
-        [{ "classes": ["obstacle"] }, { "classes": ["obstacle"] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": ["obstacle"] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": ["obstacle"] }, { "classes": [""] }, { "classes": [""] }, { "classes": ["obstacle"] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": ["obstacle"] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": ["obstacle"] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": ["obstacle"] }, { "classes": ["obstacle"] }],
-        [{ "classes": ["obstacle"] }, { "classes": ["obstacle"] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": ["obstacle"] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": ["obstacle"] }, { "classes": ["lootArmor"] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": ["obstacle"] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": ["obstacle"] }, { "classes": ["obstacle"] }],
-        [{ "classes": ["obstacle"] }, { "classes": ["obstacle"] }, { "classes": ["obstacle"] }, { "classes": [""] }, { "classes": [""] }, { "classes": ["obstacle"] }, { "classes": ["obstacle"] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": ["obstacle"] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": ["obstacle"] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": ["obstacle"] }, { "classes": ["obstacle"] }, { "classes": [""] }, { "classes": [""] }, { "classes": ["obstacle"] }, { "classes": ["obstacle"] }, { "classes": ["obstacle"] }],
-        [{ "classes": ["obstacle"] }, { "classes": ["lootWeapon"] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": ["loot"] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": ["obstacle"] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": ["lootWeapon"] }, { "classes": ["obstacle"] }],
-        [{ "classes": ["obstacle"] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": ["lootArmor"] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": ["lootArmor"] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": ["obstacle"] }],
-        [{ "classes": ["obstacle"] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": ["obstacle"] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": ["obstacle"] }],
-        [{ "classes": ["obstacle"] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": ["obstacle"] }, { "classes": ["obstacle"] }, { "classes": ["obstacle"] }, { "classes": ["obstacle"] }, { "classes": ["obstacle"] }, { "classes": ["obstacle"] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": ["obstacle"] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": ["loot"] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": ["obstacle"] }],
-        [{ "classes": ["obstacle"] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": ["obstacle"] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": ["lootWeapon"] }, { "classes": ["obstacle"] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": ["obstacle"] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": ["lootArmor"] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": ["obstacle"] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": ["obstacle"] }],
-        [{ "classes": ["obstacle"] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": ["obstacle"] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": ["obstacle"] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": ["obstacle"] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": ["lootArmor"] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": ["obstacle"] }],
-        [{ "classes": ["obstacle"] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": ["obstacle"] }, { "classes": ["obstacle"] }, { "classes": [""] }, { "classes": [""] }, { "classes": ["obstacle"] }, { "classes": ["obstacle"] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": ["obstacle"] }],
-        [{ "classes": ["obstacle"] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": ["obstacle"] }, { "classes": ["lootArmor"] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": ["lootWeapon"] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": ["obstacle"] }],
-        [{ "classes": ["obstacle"] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": ["obstacle"] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": ["obstacle"] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": ["obstacle"] }],
-        [{ "classes": ["obstacle"] }, { "classes": ["lootWeapon"] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": ["loot"] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": ["obstacle"] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": ["loot"] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": ["lootWeapon"] }, { "classes": ["obstacle"] }],
-        [{ "classes": ["obstacle"] }, { "classes": ["obstacle"] }, { "classes": ["obstacle"] }, { "classes": [""] }, { "classes": [""] }, { "classes": ["obstacle"] }, { "classes": ["obstacle"] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": ["obstacle"] }, { "classes": ["obstacle"] }, { "classes": [""] }, { "classes": [""] }, { "classes": ["obstacle"] }, { "classes": ["obstacle"] }, { "classes": ["obstacle"] }],
-        [{ "classes": ["obstacle"] }, { "classes": ["obstacle"] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": ["obstacle"] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": ["obstacle"] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": ["obstacle"] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": ["obstacle"] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": ["obstacle"] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": ["obstacle"] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": ["obstacle"] }, { "classes": ["obstacle"] }],
-        [{ "classes": ["obstacle"] }, { "classes": ["obstacle"] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": ["obstacle"] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": ["lootArmor"] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": ["loot"] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": ["lootArmor"] }, { "classes": ["obstacle"] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": ["obstacle"] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": ["obstacle"] }, { "classes": ["obstacle"] }],
-        [{ "classes": ["obstacle"] }, { "classes": ["obstacle"] }, { "classes": ["obstacle"] }, { "classes": ["obstacle"] }, { "classes": ["obstacle"] }, { "classes": ["obstacle"] }, { "classes": ["obstacle"] }, { "classes": ["lootWeapon"] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": ["lootWeapon"] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": [""] }, { "classes": ["lootWeapon"] }, { "classes": ["obstacle"] }, { "classes": ["obstacle"] }, { "classes": ["obstacle"] }, { "classes": ["obstacle"] }, { "classes": ["obstacle"] }, { "classes": ["obstacle"] }, { "classes": ["obstacle"] }],
-        [{ "classes": ["obstacle"] }, { "classes": ["obstacle"] }, { "classes": ["obstacle"] }, { "classes": ["obstacle"] }, { "classes": ["obstacle"] }, { "classes": ["obstacle"] }, { "classes": ["obstacle"] }, { "classes": ["obstacle"] }, { "classes": ["obstacle"] }, { "classes": ["obstacle"] }, { "classes": ["obstacle"] }, { "classes": ["obstacle"] }, { "classes": ["obstacle"] }, { "classes": ["obstacle"] }, { "classes": ["obstacle"] }, { "classes": ["obstacle"] }, { "classes": ["obstacle"] }, { "classes": ["obstacle"] }, { "classes": ["obstacle"] }, { "classes": ["obstacle"] }, { "classes": ["obstacle"] }, { "classes": ["obstacle"] }, { "classes": ["obstacle"] }, { "classes": ["obstacle"] }, { "classes": ["obstacle"] }, { "classes": ["obstacle"] }, { "classes": ["obstacle"] }, { "classes": ["obstacle"] }, { "classes": ["obstacle"] }, { "classes": ["obstacle"] }, { "classes": ["obstacle"] }, { "classes": ["obstacle"] }, { "classes": ["obstacle"] }, { "classes": ["obstacle"] }, { "classes": ["obstacle"] }, { "classes": ["obstacle"] }, { "classes": ["obstacle"] }, { "classes": ["obstacle"] }, { "classes": ["obstacle"] }, { "classes": ["obstacle"] }, { "classes": ["obstacle"] }, { "classes": ["obstacle"] }],
-    ]; // la cellules 23 sera la cellule ligne (2+1) et column (3+1)
+    constructor(props) {
+        super(props);
+        this.state = {
+            dataGrid: this.props.dataGrid
+        }
+    }
 
-    var rows = [];
+    componentDidUpdate() {
+        console.log("Update");
+    }
 
-    var startingPoint = { x: 20, y: 9 };
+    startingPoint = { x: 20, y: 9 };
 
-    function accessibleCellsAround(x, y, distance, existingSet) {
+    accessibleCellsAround(x, y, distance, existingSet) {
         if (distance == 0) {
             return existingSet;
         }
@@ -40,56 +27,69 @@ function Grid() {
         }
         for (const dir of directions) {
             const target = { x: x + dir.x, y: y + dir.y };
-            if (cellIsWalkable(target.x, target.y)) {
+            if (this.cellIsWalkable(target.x, target.y)) {
 
-                if (!rows[y].props.children[x].props.cellClasses.includes("walkable")) {
-                    rows[y].props.children[x].props.cellClasses.push("walkable");
+                if (!this.state.dataGrid.data.cells[y][x].isWalkable) {
+                    this.state.dataGrid.data.cells[y][x].isWalkable = true;
                 }
-                existingSet.add(rows[y].props.children[x]);
-                accessibleCellsAround(target.x, target.y, distance - 1, existingSet);
+                existingSet.add(this.state.dataGrid.data.cells[y][x]);
+                this.accessibleCellsAround(target.x, target.y, distance - 1, existingSet);
             }
         }
         return existingSet;
     }
 
-    function cellIsWalkable(x, y) {
-        if (x < 0 || x >= grid[0].length || y < 0 || y >= grid.length) {
+    cellIsWalkable(x, y) {
+        if (x < 0 || x >= this.state.dataGrid.data.cells[0].length || y < 0 || y >= this.state.dataGrid.data.cells.length) {
             return false;
         }
-        var cell = rows[y].props.children[x];
-        if (cell.props.cellClasses.includes("obstacle") || cell.props.cellClasses.includes("player")) {
+        var cell = this.state.dataGrid.data.cells[y][x];
+        if (cell.isObstacle || cell.isPlayer) {
             return false;
         } else {
             return true;
         }
     }
 
+    movePlayer(newX, newY) {
+        let tmpDataGrid = Object.assign({}, this.state.dataGrid);
 
-    function initPlayer(x, y) {
-        rows[y].props.children[x].props.cellClasses.push("player")
+        const cell = tmpDataGrid.data.cells[this.startingPoint.y][this.startingPoint.x];
+        cell.isPlayer = false;
+
+        // tmpDataGrid.data.cells[newY][newX].isPlayer = true;
+        this.setState({
+            dataGrid: tmpDataGrid
+        }, () => { console.log("This.state", this.state.dataGrid.data.cells[this.startingPoint.y][this.startingPoint.x]); });
     }
 
+    initPlayer(x, y) {
+        console.log("InitPlayer");
+        this.state.dataGrid.data.cells[y][x].isPlayer = true;
+    }
 
-    function buildGrid() {
-        rows = grid.map((row, rowIndex) => {
+    buildGrid() {
+        this.rows = this.state.dataGrid.data.cells.map((row, rowIndex) => {
             return <div key={rowIndex} className={`row`}>
                 {
                     row.map((cell, cellIndex) => {
-                        return <Cell key={cellIndex} cellValue={{ "x": cellIndex, "y": rowIndex }} cellClasses={cell.classes} />;
+                        return <Cell key={cellIndex} cellPosition={{ "x": cellIndex, "y": rowIndex }} dataCell={cell} movePlayer={this.movePlayer.bind(this)} />;
                     })}
             </div>
         })
 
-        initPlayer(startingPoint.x, startingPoint.y);
-        console.log(accessibleCellsAround(startingPoint.x, startingPoint.y, 9));
-        return rows;
+        this.initPlayer(this.startingPoint.x, this.startingPoint.y);
+        this.accessibleCellsAround(this.startingPoint.x, this.startingPoint.y, 9);
+        return this.rows;
     }
 
-    return (
-        <div className="Grid">
-            {buildGrid()}
-        </div>
-    );
+    render() {
+        return (
+            <div className="Grid">
+                {this.buildGrid()}
+            </div>
+        );
+    }
 }
 
 export default Grid;

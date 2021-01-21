@@ -3,34 +3,69 @@ import React from 'react';
 import './Cell.css';
 
 
-function Cell(props) {
+class Cell extends React.Component {
 
-    const [cellClasses, setCellClasses] = React.useState(props.cellClasses);
+    constructor(props) {
+        super(props);
+        this.state = {
+            dataCell: props.dataCell,
+            cellClasses: this.initClasses(props.dataCell)
+        };
+    }
 
-    function getClasses() {
-        let classes = "";
-        cellClasses.forEach(className => {
-            classes += " " + className;
-        });
-        classes += " x" + props.cellValue.x + "y" + props.cellValue.y;
+    initClasses(dataCell) {
+        let classes = [];
+
+        if (dataCell.isWalkable) {
+            classes.push("walkable");
+        }
+
+        if (dataCell.isObstacle) {
+            classes.push("obstacle");
+        }
+
+        if (dataCell.isLoot) {
+            classes.push("loot");
+        }
+
+        if (dataCell.isLootWeapon) {
+            classes.push("lootWeapon");
+        }
+
+        if (dataCell.isLootArmor) {
+            classes.push("lootArmor");
+        }
+
+        if (dataCell.isPlayer) {
+            classes.push("player");
+        }
+
         return classes;
     }
 
-    function clickHandler(params) {
-        if (cellClasses.includes("walkable") && !cellClasses.includes("player")) {
-            // Call parent to remove player
-            // props.removePreviousPlayerPosition(props.cellValue.x, props.cellValue.y);
-            //setCellClasses([...cellClasses, "player"]);
-            console.log("You can walk to this cell")
-        }
-        console.log("you click on cell number x: " + props.cellValue.x + " y: " + props.cellValue.y);
+    getClasses() {
+        let classes = "";
+        this.state.cellClasses.forEach(className => {
+            classes += " " + className;
+        });
+
+        return classes;
     }
 
-    return (
-        <div id={"cell"} className={getClasses()} onClick={clickHandler} >
-            {/* {props.cellValue} */}
-        </div>
-    );
+    clickHandler(params) {
+        if (this.state.dataCell.isWalkable && !this.state.dataCell.isPlayer) {
+            this.props.movePlayer(this.props.cellPosition.x, this.props.cellPosition.y);
+        }
+        console.log("you click on cell number x: " + this.props.cellPosition.x + " y: " + this.props.cellPosition.y);
+    }
+
+    render() {
+        return (
+            <div id={"cell"} className={this.getClasses()} onClick={() => { this.clickHandler() }} >
+                {/* {props.cellValue} */}
+            </div>
+        );
+    }
 }
 
 export default Cell;

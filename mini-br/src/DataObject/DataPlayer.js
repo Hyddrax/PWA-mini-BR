@@ -1,0 +1,34 @@
+class DataPlayer {
+
+  playerId = null;
+  gameId = null;
+  data = null;
+
+  name = null;
+  armor = null;
+  weapon = null;
+  health = null;
+  position = null;
+
+  constructor(gameId, playerId, data) {
+    this.gameId = gameId;
+    this.playerId = playerId;
+    this.data = data;
+
+    this.name = data.name != null ? data.name : "Joueur" + this.playerId;
+    this.armor = data.armor;
+    this.weapon = data.weapon;
+    this.health = data.health != null ? data.health : 100;
+    this.position = data.position;
+
+    this.initData();
+  }
+
+  initData() {
+    this.data = { name: this.name, armor: this.armor, weapon: this.weapon, health: this.health, position: this.position };
+  }
+
+
+}
+
+export default DataPlayer;
