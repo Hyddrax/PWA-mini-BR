@@ -30,7 +30,6 @@
   border-right: solid;
 }
 
-<<<<<<< HEAD
 .Grid #cell {
   width: 28px;
   height: 28px;
@@ -59,7 +58,7 @@
 .player {
   background-color: rgba(214, 25, 173, 0.5);
 }
-=======
+
 @media screen and (max-width: 500px) {
   .Grid .cell {
     min-width: auto;
@@ -562,4 +561,3 @@
     size: A4 landscape;
   }
 }
->>>>>>> style
