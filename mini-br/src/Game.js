@@ -42,7 +42,7 @@ class Game extends React.Component {
         this.state = {
             gameName: tmpGameName,
             gameId: tmpGameId,
-            dataGrid: new DataGrid(tmpGameId, { cells: this.CELLS, players: [new DataPlayer(tmpGameId, 1, { name: "Can", weapon: { dmg: 25 }, position: { x: 20, y: 9 } }), new DataPlayer(tmpGameId, 1, { name: "Baptiste", position: { x: 3, y: 3 } })] }),
+            dataGrid: new DataGrid(tmpGameId, { cells: this.CELLS, players: [new DataPlayer(tmpGameId, 1, { name: "Can", weapon: { dmg: 25 }, position: { x: 20, y: 9 } }), new DataPlayer(tmpGameId, 2, { name: "Baptiste", position: { x: 3, y: 3 } })] }),
             dataGame: new DataGame(tmpGameId, tmpGameName, { grid: this.dataGrid }),
             test: 1
         }
@@ -59,7 +59,7 @@ class Game extends React.Component {
 
         this.setState({
             dataGame: tmpDataGame
-        })
+        });
     }
 
     render() {

@@ -7,6 +7,7 @@ class DataCell {
   isLootWeapon = false;
   isLootArmor = false;
   isPlayer = false;
+  isActifPlayer = false;
 
   constructor(data) {
     this.data = data;
@@ -20,6 +21,7 @@ class DataCell {
     this.isLootWeapon = this.data.isLootWeapon != null ? this.data.isLootWeapon : false;
     this.isLootArmor = this.data.isLootArmor != null ? this.data.isLootArmor : false;
     this.isPlayer = this.data.isPlayer != null ? this.data.isPlayer : false;
+    this.isActifPlayer = this.data.isActifPlayer != null ? this.data.isActifPlayer : false;
   }
 
   updateData() {
@@ -29,7 +31,7 @@ class DataCell {
       isLoot: this.isLoot,
       isLootWeapon: this.isLootWeapon,
       isLootArmor: this.isLootArmor,
-      isPlayer: this.isPlayer
+      isActifPlayer: this.isActifPlayer
     }
   }
 

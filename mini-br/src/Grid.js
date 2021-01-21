@@ -7,7 +7,6 @@ class Grid extends React.Component {
 
     constructor(props) {
         super(props);
-        console.log("constructor");
         this.state = {
             dataGrid: this.props.dataGrid,
             turnPlayerId: this.props.turnPlayerId,
@@ -115,16 +114,12 @@ class Grid extends React.Component {
             }
 
             this.setState({
-                dataGrid: tmpDataGrid,
-                nbMoveAvailable: 1
+                dataGrid: tmpDataGrid
             }, () => {
-                console.log(this.state.dataGrid.data.players);
-                if (this.state.nbMoveAvailable == 1) {
-                    this.props.nextPlayer();
-                }
+                this.nextPlayer();
             });
 
-        } else {
+        } else if (distance != 0) {
             console.log("The player is out of range !");
         }
     }
@@ -135,29 +130,50 @@ class Grid extends React.Component {
 
         const cell = tmpDataGrid.data.cells[this.state.turnPlayer.position.y][this.state.turnPlayer.position.x];
         cell.isPlayer = false;
+        cell.playerId = null;
+        cell.isActifPlayer = false;
 
         this.resetCellsAround(this.state.turnPlayer.position.x, this.state.turnPlayer.position.y, this.state.nbMoveAvailable);
         let newNbMoveAvailable = this.state.nbMoveAvailable - this.calcTravelDistance(tmpPlayer.position.x, tmpPlayer.position.y, newX, newY);
 
         tmpPlayer.position.x = newX;
         tmpPlayer.position.y = newY;
+        tmpDataGrid.data.cells[this.state.turnPlayer.position.y][this.state.turnPlayer.position.x].isActifPlayer = true;
 
         this.setState({
             dataGrid: tmpDataGrid,
             turnPlayer: tmpPlayer,
             nbMoveAvailable: newNbMoveAvailable
         });
-        console.log(newNbMoveAvailable == 0, newNbMoveAvailable);
         if (newNbMoveAvailable == 1) {
-            this.props.nextPlayer();
+            this.nextPlayer();
         }
+    }
+
+    nextPlayer() {
+        this.resetCellsAround(this.state.turnPlayer.position.x, this.state.turnPlayer.position.y, this.state.nbMoveAvailable);
+        let tmpDataGrid = Object.assign({}, this.state.dataGrid);
+        tmpDataGrid.data.cells[this.state.turnPlayer.position.y][this.state.turnPlayer.position.x].isActifPlayer = false;
+
+        this.setState({
+            dataGrid: tmpDataGrid,
+            nbMoveAvailable: 1
+        }, () => {
+            this.props.nextPlayer();
+        });
     }
 
     render() {
         const copyObject = Object.assign({}, this.state.dataGrid);
-        copyObject.data.players.forEach(player => {
+        copyObject.data.players.forEach((player, index) => {
             copyObject.data.cells[player.position.y][player.position.x].isPlayer = true;
+            copyObject.data.cells[player.position.y][player.position.x].playerId = index + 1;
+            copyObject.data.cells[player.position.y][player.position.x].data = { player: player };
+            if (player == this.state.turnPlayer && this.state.nbMoveAvailable != 1) {
+                copyObject.data.cells[this.state.turnPlayer.position.y][this.state.turnPlayer.position.x].isActifPlayer = true;
+            }
         });
+
         this.accessibleCellsAround(this.state.turnPlayer.position.x, this.state.turnPlayer.position.y, this.state.nbMoveAvailable);
         const Grid = () => copyObject.data.cells.map((row, rowIndex) => {
             return <div key={rowIndex} className={`row`}>
@@ -173,7 +189,8 @@ class Grid extends React.Component {
         });
         return <div className="Grid">
             <Grid />
-            <div><Button onClick={this.props.updateTest}>{this.state.test}</Button></div>
+            <Button onClick={this.nextPlayer.bind(this)}>Next Player</Button>
+
         </div>
 
     }

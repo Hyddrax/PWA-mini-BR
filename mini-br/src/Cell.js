@@ -37,7 +37,15 @@ class Cell extends React.Component {
         }
 
         if (dataCell.isPlayer) {
-            classes.push("player");
+            let playerClass = "player"
+            if (dataCell.playerId != null && dataCell.playerId > 0 && dataCell.playerId <= 5) {
+                playerClass += dataCell.playerId;
+            }
+            classes.push(playerClass);
+        }
+
+        if (dataCell.isActifPlayer) {
+            classes.push("actifPlayer");
         }
 
         return classes;
@@ -52,7 +60,8 @@ class Cell extends React.Component {
         return classes;
     }
 
-    clickHandler(params) {
+    clickHandler(e) {
+        e.preventDefault();
         if (this.state.dataCell.isWalkable) {
             if (!this.state.dataCell.isPlayer) {
                 this.props.movePlayer(this.props.cellPosition.x, this.props.cellPosition.y);
@@ -63,10 +72,17 @@ class Cell extends React.Component {
         console.log("you click on cell number x: " + this.props.cellPosition.x + " y: " + this.props.cellPosition.y);
     }
 
+    rightClickHandler(params) {
+        params.preventDefault();
+        if (this.state.dataCell.isPlayer) {
+            console.log("Player Info :", this.state.dataCell.data.player);
+        }
+    }
+
     render() {
         return (
-            <div id={"cell"} className={this.getClasses()} onClick={() => { this.clickHandler() }} >
-                {/* {props.cellValue} */}
+            <div id={"cell"} className={this.getClasses()} onClick={this.clickHandler.bind(this)} onContextMenu={this.rightClickHandler.bind(this)} >
+                {this.state.dataCell.playerId}
             </div>
         );
     }
