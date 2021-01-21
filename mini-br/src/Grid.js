@@ -1,5 +1,6 @@
 import './Grid.css';
 import Cell from "./Cell.js";
+import { Container } from '@material-ui/core';
 
 function Grid() {
 
@@ -41,9 +42,9 @@ function Grid() {
     }
 
     return (
-        <div className="Grid">
-            {buildGrid()}
-        </div>
+               <div className="Grid">
+                 {buildGrid()}
+               </div>
     );
 }
 
