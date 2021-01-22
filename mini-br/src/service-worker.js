@@ -70,3 +70,22 @@ self.addEventListener('message', (event) => {
 });
 
 // Any other custom service worker logic can go here.
+self.addEventListener('push', (event) => {
+  const data = event.data.json();
+  self.registration.showNotification(data.title, {
+    body: data.body,
+    icon: data.icon
+  });
+});
+
+self.addEventListener("notificationclick", (event) => {
+  event.preventDefault();
+  event.notification.close();
+  if(event.action){
+      event.waitUntil(self.clients.openWindow(`/?origin=${event.action}`));
+  }
+  else{
+      event.waitUntil(self.clients.openWindow("/?origin=noaction"));
+  }
+  
+});

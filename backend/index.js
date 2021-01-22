@@ -2,10 +2,21 @@ const express = require('express')
 const chalk = require('chalk')
 const cors = require('cors')
 const bodyParser = require('body-parser')
+const webpush = require('web-push')
 
 const app = express()
 app.use(cors())
 const PORT = 8000
+
+// Config web-push
+const publicVapidKey = 'BOgjL4TQxxngezXpmDytqwDc01U-JdI6JikShCWQSW6X92S5Pe5Hq_wGidEK-SsPpIi4dhsB2S-0i7N8fSBcfGE'
+const privateVapidKey = 'drffnLNhK9wWL6nuzM4rYSCQ88dAjsaVW_tTJzfFPdI'
+webpush.setVapidDetails(
+  'mailto: baptiste.lechat@ynov.com',
+  publicVapidKey,
+  privateVapidKey
+)
+
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }))
 // parse application/json
@@ -113,14 +124,12 @@ app.delete('/games/remove/:id', (req, res) => {
 
 // fakes PLAYERS data
 const players = []
-const gm = ['000000', '111111'];
-const bool = [{'sub':true}, {}];
 
-for(let i = 0; i <= 15; i++){
+for(let i = 0; i <= 4; i++){
   const data = {
-      "gameId": gm[Math.floor(Math.random() * gm.length)],
-      "playerId": (Math.floor(Math.random() * (5-1)) + 1).toString(),
-      "subscription": bool[Math.floor(Math.random() * bool.length)],
+      "gameId": 'game1',
+      "playerId": ''+(i+1),
+      "subscription": null,
     }
   players.push(data)
 }
@@ -191,6 +200,100 @@ app.delete('/players/remove/:game/:id', (req, res) => {
 // -------------------------------------
 // ----------- SUBSCRIPTION ------------
 // -------------------------------------
+
+let tmpPlayerId = 1
+
+// Subcribe route
+app.post('/subscribe', (req, res) => {
+  // Get pushSubscription Options
+  const subscription = req.body.subscription
+  const gameId = req.body.gameId
+  // const playerId = req.body.playerId
+  const playerId = ''+tmpPlayerId
+  tmpPlayerId++
+
+  console.log(req.body);
+
+  for (let i = 0; i < players.length; i++) {
+    console.log(players[i].gameId === gameId, players[i].playerId === playerId);
+    if (players[i].gameId === gameId && players[i].playerId === playerId) {
+      console.log('add subcription');
+      players[i].subscription = subscription
+    }
+    console.log(players[i]);
+  }
+
+  // Send 201 - Ressource create
+  res.status(201).json({})
+
+  //Create payload
+  const payload = JSON.stringify({
+    title: 'PWA Mini BR',
+    body: 'Vous vous êtes abonné aux notifications',
+    icon: 'https://img.icons8.com/dusk/64/000000/appointment-reminders--v1.pn'
+  })
+
+
+  // Send object into sendNotification
+  webpush.sendNotification(subscription, payload).catch(err => console.log(err))
+})
+
+app.post('/sendNotification', (req, res) => {
+  const subscription = req.body.subscription
+  const notificationTitle = req.body.payload.title
+  const notificationBody = req.body.payload.body
+  const notificationIcon = req.body.payload.icon
+
+  // Send 201 - Ressource create
+  res.status(201).json({})
+
+  //Create payload
+  const payload = JSON.stringify({
+    title: notificationTitle,
+    body: notificationBody,
+    icon: notificationIcon
+  })
+
+  // Send object into sendNotification
+  webpush.sendNotification(subscription, payload).catch(err => console.log(err))
+})
+
+app.post('/notifyAll', (req, res) => {
+  const notificationTitle = req.body.payload.title
+  const notificationBody = req.body.payload.body
+  const notificationIcon = req.body.payload.icon
+
+  let subscriptions = []
+
+  for (let i = 0; i < players.length; i++) {
+    if (players[i].subscription != null) {
+      subscriptions.push(players[i].subscription)
+    }
+  }  
+
+  // Send 201 - Ressource create
+  res.status(201).json({})
+
+  //Create payload
+  const payload = JSON.stringify({
+    title: notificationTitle,
+    body: notificationBody,
+    icon: notificationIcon
+  })
+
+  console.log(subscriptions)
+
+  subscriptions.forEach((subscription, index) => {
+    // Send object into sendNotification
+    webpush.sendNotification(subscription, payload).catch(err => console.log(err))
+    console.log('notify'+index);
+  });
+
+  res.body = {
+    "Message": "SUCCESS !"
+  }
+
+})
 
 // GET /subscribers/:game/:id
 app.get('/subscribers/:game/:id', (req, res) => {
