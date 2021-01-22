@@ -5,14 +5,11 @@ import CreateGame from './Modal/CreateGame'
 
 function Accueil() {
     
-    const [supportsPWA, setSupportsPWA] = useState(false);
     const [promptInstall, setPromptInstall] = useState(null);
   
     useEffect(() => {
       const handler = e => {
         e.preventDefault();
-        console.log("we are being triggered :D");
-        setSupportsPWA(true);
         setPromptInstall(e);
       };
       window.addEventListener("beforeinstallprompt", handler);
