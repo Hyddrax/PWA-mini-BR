@@ -22,20 +22,20 @@ app.use(bodyParser.urlencoded({ extended: false }))
 // parse application/json
 app.use(bodyParser.json())
 
-const stringToHash = (string) => { 
-                  
-  var hash = 0; 
-    
-  if (string.length == 0) return hash; 
-    
-  for (i = 0; i < string.length; i++) { 
-      char = string.charCodeAt(i); 
-      hash = ((hash << 5) - hash) + char; 
-      hash = hash & hash; 
-  } 
+const stringToHash = (string) => {
 
-  return hash; 
-} 
+  var hash = 0;
+
+  if (string.length == 0) return hash;
+
+  for (i = 0; i < string.length; i++) {
+    char = string.charCodeAt(i);
+    hash = ((hash << 5) - hash) + char;
+    hash = hash & hash;
+  }
+
+  return hash;
+}
 
 // -------------------------------------
 // --------------- GAMES ---------------
@@ -44,14 +44,14 @@ const stringToHash = (string) => {
 // fakes GAMES data
 const games = []
 
-for(let i = 0; i <= 5; i++){
+for (let i = 0; i <= 5; i++) {
   const data = {
-      "gameId": (Math.floor(Math.random() * (9999999-1111111)) + 1111111).toString(),
-      "nomPartie": `Game ${i}`,
-      "password": (Math.floor(Math.random() * (9999-1111)) + 1111).toString(),
-      "turnPlayerId": (Math.floor(Math.random() * (5-1)) + 1).toString(),
-      "data": {}
-    }
+    "gameId": (Math.floor(Math.random() * (9999999 - 1111111)) + 1111111).toString(),
+    "nomPartie": `Game ${i}`,
+    "password": (Math.floor(Math.random() * (9999 - 1111)) + 1111).toString(),
+    "turnPlayerId": (Math.floor(Math.random() * (5 - 1)) + 1).toString(),
+    "data": {}
+  }
   games.push(data)
 }
 
@@ -69,27 +69,37 @@ app.get('/games', (req, res) => {
 
 // GET /games:id
 app.get('/games/:id', (req, res) => {
-  const id = req.params.id
-  const game = []
+  const gameId = req.params.id
+  let dataGame = []
   for (let i = 0; i < games.length; i++) {
-    if (games[i].gameId === id) {
-      game.push(games[i])
-      console.log(chalk.bgBlue.black(`GET game on index : ${id}`))
+    if (games[i].gameId == gameId) {
+      dataGame.push(games[i])
+      console.log(chalk.bgBlue.black(`GET game on index : ${gameId}`))
     }
-  } 
+  }
+  console.log(dataGame);
   res.json({
-    data: game
+    dataGame: dataGame[0]
   })
 })
 
-// POST /games/add
+// POST /games/add -> Create New partie
 app.post('/games/add', (req, res) => {
-  const data = req.body
-  games.push(data)
+  const dataGame = req.body;
+  const dataPlayer = dataGame.data.grid.data.players;
+  console.log(dataPlayer);
+
+  games.push(dataGame)
+  dataPlayer.forEach(player => {
+    players.push(player)
+  });
+
   res.json({
-    data: data
+    dataGame: dataGame,
+    dataPLayer: dataPlayer
   })
-  console.log(chalk.bgBlue.black(`POST new Game : ${games[games.length-1].nomPartie}`))
+  console.log(chalk.bgBlue.black(`POST new Game : ${games[games.length - 1].gameName}`))
+  console.log(chalk.bgBlue.black(`POST new Player : ${players[players.length - 1].name}`))
 })
 
 // PUT /games/update/:id
@@ -101,7 +111,7 @@ app.put('/games/update/:id', (req, res) => {
       games[i] = Object.assign(games[i], data)
       console.log(chalk.bgBlue.black(`PUT Game : ${games[id].nomPartie} / gameId : ${id}`))
     }
-  } 
+  }
   res.json({
     data: data
   })
@@ -125,12 +135,12 @@ app.delete('/games/remove/:id', (req, res) => {
 // fakes PLAYERS data
 const players = []
 
-for(let i = 0; i <= 4; i++){
+for (let i = 0; i <= 4; i++) {
   const data = {
-      "gameId": 'game1',
-      "playerId": ''+(i+1),
-      "subscription": null,
-    }
+    "gameId": 'game1',
+    "playerId": '' + (i + 1),
+    "subscription": null,
+  }
   players.push(data)
 }
 
@@ -160,12 +170,62 @@ app.get('/players/:game/:id', (req, res) => {
 
 // POST /players/add
 app.post('/players/add', (req, res) => {
-  const data = req.body
-  players.push(data)
-  res.json({
-    data: data
-  })
-  console.log(chalk.bgBlue.black(`POST new players : ${players[players.length-1].playerId} / index : ${players.length-1}`))
+  const newPlayer = req.body;
+
+  let gamePlayers = [];
+
+  players.forEach(player => {
+    if (player.gameId == newPlayer.gameId) {
+      gamePlayers.push(player);
+    }
+  });
+
+  if (gamePlayers.length == 5) {
+    res.json({
+      message: "The game is already full"
+    })
+  } else {
+    let ids = [1, 2, 3, 4, 5];
+    let alreadyUsedIds = [];
+    gamePlayers.forEach(player => {
+      if (ids.includes(player.playerId)) {
+        alreadyUsedIds.push(player.playerId);
+      }
+    });
+
+    let notUsedIds = ids.filter(item => !alreadyUsedIds.includes(item));
+    if (notUsedIds.length == 0) {
+      res.json({
+        message: "Tout les id sont déjà utilisé"
+      })
+    } else {
+      newPlayer.playerId = notUsedIds[0];
+
+      let positionList = [{ x: 3, y: 2 }, { x: 38, y: 17 }, { x: 38, y: 2 }, { x: 3, y: 17 }, { x: 21, y: 9 }]
+
+      newPlayer.position = positionList[newPlayer.playerId - 1];
+
+      players.push(newPlayer)
+
+      let dataGame = []
+      for (let i = 0; i < games.length; i++) {
+        if (games[i].gameId == newPlayer.gameId) {
+          dataGame.push(games[i])
+          console.log(chalk.bgBlue.black(`GET game on index : ${newPlayer.gameId}`))
+        }
+      }
+
+      dataGame[0].data.grid.data.players = [...dataGame[0].data.grid.data.players, newPlayer];
+
+      res.json({
+        newPlayer: newPlayer
+      })
+      console.log(chalk.bgBlue.black(`POST new players : ${players[players.length - 1].playerId} / index : ${players.length - 1}`))
+    }
+  }
+
+
+
 })
 
 // PUT /games/update/:game/:id
@@ -209,7 +269,7 @@ app.post('/subscribe', (req, res) => {
   const subscription = req.body.subscription
   const gameId = req.body.gameId
   // const playerId = req.body.playerId
-  const playerId = ''+tmpPlayerId
+  const playerId = '' + tmpPlayerId
   tmpPlayerId++
 
   console.log(req.body);
@@ -269,7 +329,7 @@ app.post('/notifyAll', (req, res) => {
     if (players[i].subscription != null) {
       subscriptions.push(players[i].subscription)
     }
-  }  
+  }
 
   // Send 201 - Ressource create
   res.status(201).json({})
@@ -286,7 +346,7 @@ app.post('/notifyAll', (req, res) => {
   subscriptions.forEach((subscription, index) => {
     // Send object into sendNotification
     webpush.sendNotification(subscription, payload).catch(err => console.log(err))
-    console.log('notify'+index);
+    console.log('notify' + index);
   });
 
   res.body = {
@@ -307,7 +367,7 @@ app.get('/subscribers/:game/:id', (req, res) => {
       player.push(players[i])
     }
 
-  }  
+  }
   res.json({
     data: {
       player

@@ -7,18 +7,6 @@ import DataPlayer from './DataObject/DataPlayer';
 function Accueil() {
 
 
-    function testPlayerData() {
-        var player1 = new DataPlayer("123456789", 1, {});
-        var player2 = new DataPlayer("123456789", 2, { name: "Can", armor: null, weapon: null, health: 100, position: { x: 20, y: 9 } });
-        console.log(player1);
-        console.log(player2);
-
-        return (
-            <div>
-            </div>
-        )
-    }
-
 
     const [promptInstall, setPromptInstall] = useState(null);
 
@@ -105,8 +93,8 @@ function Accueil() {
             <div className="accueil__body">
                 <div className="accueil__left">
                     <ul>
-                        <li><CreateGame /></li>
-                        <li><JoinGame /></li>
+                        <CreateGame />
+                        <JoinGame />
                         <li onClick={() => subscribePushNotification('game1', '1')}>🔔 S'abonner aux notifications</li>
                         <li onClick={install}>📦 Installer PWA Mini BR</li>
                         {/* <a href='Game/'><li><CreateGame /></li></a> */}
@@ -124,8 +112,6 @@ function Accueil() {
                         <a href='Game/'><li onClick={notifJoinGame}>Partie 6</li></a>
                     </ul>
                 </div>
-
-                {testPlayerData()}
             </div>
         </div >
     )

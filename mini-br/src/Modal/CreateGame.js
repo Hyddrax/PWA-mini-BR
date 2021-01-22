@@ -9,7 +9,14 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
 import TextField from '@material-ui/core/TextField';
+import DataPlayer from '../DataObject/DataPlayer'
+import DataGame from '../DataObject/DataGame'
+import DataGrid from '../DataObject/DataGrid'
+import DataCell from '../DataObject/DataCell'
 import './modal.css';
+
+
+
 
 const useStyles = makeStyles((theme) => ({
     modal: {
@@ -50,6 +57,10 @@ export default function CreateGame() {
     const [nbj, setNbj] = React.useState('');
     const [nbt, setNbt] = React.useState('');
 
+    const [playerName, setPlayerName] = React.useState("");
+    let gameId
+
+
     const handleOpen = () => {
         setOpen(true);
     };
@@ -86,6 +97,29 @@ export default function CreateGame() {
         console.log('Create New Game ...');
     }
 
+    const createNewGame = async () => {
+        gameId = getGameId();
+        let player1 = new DataPlayer(gameId, 1, { name: playerName, weapon: { dmg: 0 }, position: { x: 3, y: 2 } })
+        // Save une BDD call backend
+        let dataGrid = new DataGrid(gameId, { players: [player1] });
+        let dataGame = new DataGame(gameId, nom, { grid: dataGrid });
+
+        await fetch("http://localhost:8000/games/add", {
+            method: "POST",
+            body: JSON.stringify(dataGame),
+            headers: {
+                'content-type': "application/json"
+            }
+        });
+
+
+        notifNewGame();
+    }
+
+    const getGameId = () => {
+        return nom + password;
+    }
+
     return (
         <div>
 
@@ -108,25 +142,10 @@ export default function CreateGame() {
                 <Fade in={open}>
                     <div className={classes.paper}>
                         <form noValidate autoComplete="off" className={classes.form}>
-                            <input className="Input" type="text" onChange={(e) => setNom(e.target.value)} placeholder="Nom de la partie" />
-                            <input className="Input" type="text" onChange={(e) => setPassword(e.target.value)} placeholder="Password de la partie" />
+                            <input className="Input" type="text" onChange={(e) => { setNom(e.target.value) }} placeholder="Nom de la partie" value={nom} />
+                            <input className="Input" type="text" onChange={(e) => { setPassword(e.target.value) }} placeholder="Password de la partie" value={password} />
+                            <input className="Input" type="text" onChange={(e) => setPlayerName(e.target.value)} placeholder="Pseudo" value={playerName} />
                             <div className={classes.formItem}>
-                                <FormControl className={classes.formControl}>
-                                    <InputLabel htmlFor="grouped-native-select">Nombres de jouers</InputLabel>
-                                    <Select native defaultValue=""
-                                        id="grouped-native-select"
-                                        value={nbj}
-                                        onChange={handleChangeNbj}
-                                    >
-                                        <option value={4}>4</option>
-                                        <option value={5}>5</option>
-                                        <option value={6}>6</option>
-                                        <option value={7}>7</option>
-                                        <option value={8}>8</option>
-                                        <option value={9}>9</option>
-                                        <option value={10}>10</option>
-                                    </Select>
-                                </FormControl>
                                 <FormControl className={classes.formControl}>
                                     <InputLabel htmlFor="grouped-native-select">Temps par tour:</InputLabel>
                                     <Select native defaultValue=""
@@ -143,8 +162,8 @@ export default function CreateGame() {
                             </div>
                         </form>
                         <div className={classes.formItem}>
-                            <Link to={`/Game/${nom + password}/${nom}`} style={{ textDecoration: 'none', color: 'black' }}>
-                                <div className="btn" variant="outlined" onClick={notifNewGame}>Créer la partie</div>
+                            <Link to={{ pathname: `/Game/${getGameId()}` }} style={{ textDecoration: 'none', color: 'black' }}>
+                                <div className="btn" variant="outlined" onClick={createNewGame}>Créer la partie</div>
                             </Link>
                         </div>
                     </div>

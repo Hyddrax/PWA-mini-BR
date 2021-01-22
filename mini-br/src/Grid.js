@@ -145,7 +145,7 @@ class Grid extends React.Component {
             console.log("Attack Player", attackedPlayerIndex + 1);
             let attackedPlayer = tmpDataGrid.data.players[attackedPlayerIndex];
 
-            if (tmpPlayer.weapon != null) {
+            if (tmpPlayer.weapon != null && tmpPlayer.weapon.dmg != 0) {
                 let dealedDmg = 0;
                 dealedDmg = (tmpPlayer.weapon.dmg - attackedPlayer.armor.dmgAbsorption);
                 if (dealedDmg > 0) {
