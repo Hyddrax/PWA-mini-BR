@@ -5,11 +5,13 @@ import CreateGame from './Modal/CreateGame'
 
 function Accueil() {
     
+    const [supportsPWA, setSupportsPWA] = useState(false);
     const [promptInstall, setPromptInstall] = useState(null);
   
     useEffect(() => {
       const handler = e => {
         e.preventDefault();
+        setSupportsPWA(true);
         setPromptInstall(e);
       };
       window.addEventListener("beforeinstallprompt", handler);
@@ -20,7 +22,7 @@ function Accueil() {
     const install = (event) => {
         event.preventDefault();
         if (!promptInstall) {
-          return;
+            return
         }
         promptInstall.prompt();
     }
@@ -83,7 +85,6 @@ function Accueil() {
             console.log("Subscribe rejected");
         }
     }
-    
     return (
         <div className='accueil'>
             <h1 className="accueil__title">My Mini BR</h1>
@@ -93,7 +94,7 @@ function Accueil() {
                         <li><CreateGame /></li>
                         <li><JoinGame /></li>
                         <li onClick={() => subscribePushNotification('game1', '1')}>🔔 S'abonner aux notifications</li>
-                        <li onClick={install}>📦 Installer PWA Mini BR</li>
+                        {supportsPWA ? <li onClick={install}>📦 Installer PWA Mini BR</li> : <div></div>}
                         {/* <a href='Game/'><li><CreateGame /></li></a> */}
                         {/* <a href='Game/'><li><JoinGame /></li></a> */}
                     </ul>
@@ -112,6 +113,7 @@ function Accueil() {
             </div>
         </div>
     )
+
 }
 
 export default Accueil
