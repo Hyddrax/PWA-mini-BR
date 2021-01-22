@@ -1,70 +1,85 @@
+import React from "react";
 import { Button } from '@material-ui/core';
 import './Game.css';
 import Grid from './Grid.js';
-import App from './App.js';
-import { Container } from '@material-ui/core';
-import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
-import React, { Component } from "react";
+import DataGame from './DataObject/DataGame'
+import DataGrid from './DataObject/DataGrid'
+import DataCell from './DataObject/DataCell'
+import DataPlayer from './DataObject/DataPlayer'
 
-function Game() {
+class Game extends React.Component {
 
-    // function test () {
-    //     const grid = new Grid();
-    //     const startingPoint = {x : 9, y : 20};
-    //     const distance = 9;
-    //     document.querySelector(`.x${startingPoint.x}y${startingPoint.y}`).classList.add("player");
 
-    //     const worker = new Worker("./worker.js");
-    //     const startTime = performance.now();
-    //     worker.addEventListener("message", (e) => {
-    //         const accessible = e.data;
-    //         for(coords of accessible){
-    //             document.querySelector(`.x${coords.x}y${coords.y}`).classList.add("walkable");
-    //         }
-    //         console.log(`Finished in ${performance.now() - startTime} ms.`); 
-    //     });
-    //     worker.postMessage({this,startingPoint,distance});
+    CELLS = [
+        [new DataCell({ isObstacle: true }), new DataCell({ isObstacle: true }), new DataCell({ isObstacle: true }), new DataCell({ isObstacle: true }), new DataCell({ isObstacle: true }), new DataCell({ isObstacle: true }), new DataCell({ isObstacle: true }), new DataCell({ isObstacle: true }), new DataCell({ isObstacle: true }), new DataCell({ isObstacle: true }), new DataCell({ isObstacle: true }), new DataCell({ isObstacle: true }), new DataCell({ isObstacle: true }), new DataCell({ isObstacle: true }), new DataCell({ isObstacle: true }), new DataCell({ isObstacle: true }), new DataCell({ isObstacle: true }), new DataCell({ isObstacle: true }), new DataCell({ isObstacle: true }), new DataCell({ isObstacle: true }), new DataCell({ isObstacle: true }), new DataCell({ isObstacle: true }), new DataCell({ isObstacle: true }), new DataCell({ isObstacle: true }), new DataCell({ isObstacle: true }), new DataCell({ isObstacle: true }), new DataCell({ isObstacle: true }), new DataCell({ isObstacle: true }), new DataCell({ isObstacle: true }), new DataCell({ isObstacle: true }), new DataCell({ isObstacle: true }), new DataCell({ isObstacle: true }), new DataCell({ isObstacle: true }), new DataCell({ isObstacle: true }), new DataCell({ isObstacle: true }), new DataCell({ isObstacle: true }), new DataCell({ isObstacle: true }), new DataCell({ isObstacle: true }), new DataCell({ isObstacle: true }), new DataCell({ isObstacle: true }), new DataCell({ isObstacle: true }), new DataCell({ isObstacle: true })],
+        [new DataCell({ isObstacle: true }), new DataCell({ isObstacle: true }), new DataCell({ isObstacle: true }), new DataCell({ isObstacle: true }), new DataCell({ isObstacle: true }), new DataCell({ isObstacle: true }), new DataCell({ isObstacle: true }), new DataCell({ isLootWeapon: true }), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({ isLootWeapon: true }), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({ isLoot: true }), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({ isLootWeapon: true }), new DataCell({ isObstacle: true }), new DataCell({ isObstacle: true }), new DataCell({ isObstacle: true }), new DataCell({ isObstacle: true }), new DataCell({ isObstacle: true }), new DataCell({ isObstacle: true }), new DataCell({ isObstacle: true })],
+        [new DataCell({ isObstacle: true }), new DataCell({ isObstacle: true }), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({ isObstacle: true }), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({ isObstacle: true }), new DataCell({}), new DataCell({}), new DataCell({ isObstacle: true }), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({ isObstacle: true }), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({ isObstacle: true }), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({ isObstacle: true }), new DataCell({ isObstacle: true })],
+        [new DataCell({ isObstacle: true }), new DataCell({ isObstacle: true }), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({ isObstacle: true }), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({ isObstacle: true }), new DataCell({ isLootArmor: true }), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({ isObstacle: true }), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({ isObstacle: true }), new DataCell({ isObstacle: true })],
+        [new DataCell({ isObstacle: true }), new DataCell({ isObstacle: true }), new DataCell({ isObstacle: true }), new DataCell({}), new DataCell({}), new DataCell({ isObstacle: true }), new DataCell({ isObstacle: true }), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({ isObstacle: true }), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({ isObstacle: true }), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({ isObstacle: true }), new DataCell({ isObstacle: true }), new DataCell({}), new DataCell({}), new DataCell({ isObstacle: true }), new DataCell({ isObstacle: true }), new DataCell({ isObstacle: true })],
+        [new DataCell({ isObstacle: true }), new DataCell({ isLootWeapon: true }), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({ isLoot: true }), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({ isObstacle: true }), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({ isLootWeapon: true }), new DataCell({ isObstacle: true })],
+        [new DataCell({ isObstacle: true }), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({ isLootArmor: true }), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({ isLootArmor: true }), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({ isObstacle: true })],
+        [new DataCell({ isObstacle: true }), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({ isObstacle: true }), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({ isObstacle: true })],
+        [new DataCell({ isObstacle: true }), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({ isObstacle: true }), new DataCell({ isObstacle: true }), new DataCell({ isObstacle: true }), new DataCell({ isObstacle: true }), new DataCell({ isObstacle: true }), new DataCell({ isObstacle: true }), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({ isObstacle: true }), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({ isLoot: true }), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({ isObstacle: true })],
+        [new DataCell({ isObstacle: true }), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({ isObstacle: true }), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({ isLootWeapon: true }), new DataCell({ isObstacle: true }), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({ isObstacle: true }), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({ isLootArmor: true }), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({ isObstacle: true }), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({ isObstacle: true })],
+        [new DataCell({ isObstacle: true }), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({ isObstacle: true }), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({ isObstacle: true }), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({ isObstacle: true }), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({ isLootArmor: true }), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({ isObstacle: true })],
+        [new DataCell({ isObstacle: true }), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({ isObstacle: true }), new DataCell({ isObstacle: true }), new DataCell({}), new DataCell({}), new DataCell({ isObstacle: true }), new DataCell({ isObstacle: true }), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({ isObstacle: true })],
+        [new DataCell({ isObstacle: true }), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({ isObstacle: true }), new DataCell({ isLootArmor: true }), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({ isLootWeapon: true }), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({ isObstacle: true })],
+        [new DataCell({ isObstacle: true }), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({ isObstacle: true }), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({ isObstacle: true }), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({ isObstacle: true })],
+        [new DataCell({ isObstacle: true }), new DataCell({ isLootWeapon: true }), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({ isLoot: true }), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({ isObstacle: true }), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({ isLoot: true }), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({ isLootWeapon: true }), new DataCell({ isObstacle: true })],
+        [new DataCell({ isObstacle: true }), new DataCell({ isObstacle: true }), new DataCell({ isObstacle: true }), new DataCell({}), new DataCell({}), new DataCell({ isObstacle: true }), new DataCell({ isObstacle: true }), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({ isObstacle: true }), new DataCell({ isObstacle: true }), new DataCell({}), new DataCell({}), new DataCell({ isObstacle: true }), new DataCell({ isObstacle: true }), new DataCell({ isObstacle: true })],
+        [new DataCell({ isObstacle: true }), new DataCell({ isObstacle: true }), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({ isObstacle: true }), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({ isObstacle: true }), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({ isObstacle: true }), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({ isObstacle: true }), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({ isObstacle: true }), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({ isObstacle: true }), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({ isObstacle: true }), new DataCell({ isObstacle: true })],
+        [new DataCell({ isObstacle: true }), new DataCell({ isObstacle: true }), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({ isObstacle: true }), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({ isLootArmor: true }), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({ isLoot: true }), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({ isLootArmor: true }), new DataCell({ isObstacle: true }), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({ isObstacle: true }), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({ isObstacle: true }), new DataCell({ isObstacle: true })],
+        [new DataCell({ isObstacle: true }), new DataCell({ isObstacle: true }), new DataCell({ isObstacle: true }), new DataCell({ isObstacle: true }), new DataCell({ isObstacle: true }), new DataCell({ isObstacle: true }), new DataCell({ isObstacle: true }), new DataCell({ isLootWeapon: true }), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({ isLootWeapon: true }), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({}), new DataCell({ isLootWeapon: true }), new DataCell({ isObstacle: true }), new DataCell({ isObstacle: true }), new DataCell({ isObstacle: true }), new DataCell({ isObstacle: true }), new DataCell({ isObstacle: true }), new DataCell({ isObstacle: true }), new DataCell({ isObstacle: true })],
+        [new DataCell({ isObstacle: true }), new DataCell({ isObstacle: true }), new DataCell({ isObstacle: true }), new DataCell({ isObstacle: true }), new DataCell({ isObstacle: true }), new DataCell({ isObstacle: true }), new DataCell({ isObstacle: true }), new DataCell({ isObstacle: true }), new DataCell({ isObstacle: true }), new DataCell({ isObstacle: true }), new DataCell({ isObstacle: true }), new DataCell({ isObstacle: true }), new DataCell({ isObstacle: true }), new DataCell({ isObstacle: true }), new DataCell({ isObstacle: true }), new DataCell({ isObstacle: true }), new DataCell({ isObstacle: true }), new DataCell({ isObstacle: true }), new DataCell({ isObstacle: true }), new DataCell({ isObstacle: true }), new DataCell({ isObstacle: true }), new DataCell({ isObstacle: true }), new DataCell({ isObstacle: true }), new DataCell({ isObstacle: true }), new DataCell({ isObstacle: true }), new DataCell({ isObstacle: true }), new DataCell({ isObstacle: true }), new DataCell({ isObstacle: true }), new DataCell({ isObstacle: true }), new DataCell({ isObstacle: true }), new DataCell({ isObstacle: true }), new DataCell({ isObstacle: true }), new DataCell({ isObstacle: true }), new DataCell({ isObstacle: true }), new DataCell({ isObstacle: true }), new DataCell({ isObstacle: true }), new DataCell({ isObstacle: true }), new DataCell({ isObstacle: true }), new DataCell({ isObstacle: true }), new DataCell({ isObstacle: true }), new DataCell({ isObstacle: true }), new DataCell({ isObstacle: true })],
+    ];
 
-    //     return 
-    // }
 
-    return (
-        <div className="Ctn">
-        <Container maxWidth='lg'>
-        <div className="Game">
-            <div className="Game-TopBar">
-                <div className="GameName">
-                    <div className="Name">Nom de la partie</div>
+    constructor(props) {
+        super(props);
+        let tmpGameId = props.match.params.gameId;
+        let tmpGameName = props.match.params.gameName;
+
+        this.state = {
+            gameName: tmpGameName,
+            gameId: tmpGameId,
+            dataGrid: new DataGrid(tmpGameId, { cells: this.CELLS, players: [new DataPlayer(tmpGameId, 1, { name: "Can", weapon: { dmg: 25 }, position: { x: 20, y: 9 } }), new DataPlayer(tmpGameId, 2, { name: "Baptiste", position: { x: 3, y: 3 } })] }),
+            dataGame: new DataGame(tmpGameId, tmpGameName, { grid: this.dataGrid }),
+            test: 1
+        }
+    }
+
+    nextPlayer() {
+        console.log("NextPlayer");
+        let tmpDataGame = Object.assign({}, this.state.dataGame);
+        if (tmpDataGame.turnPlayerId == this.state.dataGrid.data.players.length) {
+            tmpDataGame.turnPlayerId = 1;
+        } else {
+            tmpDataGame.turnPlayerId++;
+        }
+
+        this.setState({
+            dataGame: tmpDataGame
+        });
+    }
+
+    render() {
+        return (
+            <div className="Game">
+                <div className="Game-TopBar">
+                    <div className="GameName">
+                        <div className="Name">{this.state.gameName != null ? this.state.gameName : "Nom de la partie"}</div>
+                    </div>
+                    <div className="RightPanel">
+                        <Button className="ShowPlayers">Joueurs</Button>
+                        <Button href="/" className="GoBack">Retour</Button>
+                    </div>
                 </div>
-                <div className="RightPanel">
-                    <Button className="ShowPlayers">Joueurs</Button>
-                    <Button href="/" className="GoBack">Retour</Button>
+                <div className="Game-Playground">
+                    <Grid dataGrid={this.state.dataGrid} turnPlayerId={this.state.dataGame.turnPlayerId} nextPlayer={this.nextPlayer.bind(this)}></Grid>
                 </div>
             </div>
-            <div className="Game-Playground">
-            <TransformWrapper
-            defaultScale={1}
-            defaultPositionX={0}
-            defaultPositionY={0}
-            >
-         {({ zoomIn, zoomOut, resetTransform, ...rest }) => (
-           <React.Fragment>
-             <div className="tools">
-               <button onClick={zoomIn}>+</button>
-               <button onClick={zoomOut}>-</button>
-               <button onClick={resetTransform}>x</button>
-             </div>
-             <TransformComponent>
-               <Grid></Grid>
-             </TransformComponent>
-           </React.Fragment>
-         )}
-       </TransformWrapper>
-            </div>
-        </div>
-        </Container>
-        </div>
-    );
+        );
+    }
 }
 
 export default Game;

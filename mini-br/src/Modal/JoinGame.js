@@ -69,10 +69,10 @@ export default function TransitionsModal() {
                 <Fade in={open}>
                     <div className={classes.paper}>
                         <form noValidate autoComplete="off" className={classes.form}>
-                           <input className="Input" type="text" onChange={(e) => setNom(e.target.value)} placeholder="Nom de la partie" />
-                           <input className="Input" type="text" onChange={(e) => setPassword(e.target.value)} placeholder="Password de la partie" />
+                            <input className="Input" type="text" onChange={(e) => setNom(e.target.value)} placeholder="Nom de la partie" />
+                            <input className="Input" type="text" onChange={(e) => setPassword(e.target.value)} placeholder="Password de la partie" />
                             <Link to="/Game" style={{ textDecoration: 'none', color: 'black' }}>
-                              <div className="btn" variant="outlined">Rejoindre la partie</div>
+                                <div className="btn" variant="outlined">Rejoindre la partie</div>
                             </Link>
                         </form>
                     </div>

@@ -68,7 +68,9 @@ export default function CreateGame() {
 
     return (
         <div>
+
             <div className="btn1" onClick={handleOpen}>
+
                 Créer une partie
             </div>
             <Modal
@@ -86,8 +88,8 @@ export default function CreateGame() {
                 <Fade in={open}>
                     <div className={classes.paper}>
                         <form noValidate autoComplete="off" className={classes.form}>
-                           <input className="Input" type="text" onChange={(e) => setNom(e.target.value)} placeholder="Nom de la partie" />
-                           <input className="Input" type="text" onChange={(e) => setPassword(e.target.value)} placeholder="Password de la partie" />
+                            <input className="Input" type="text" onChange={(e) => setNom(e.target.value)} placeholder="Nom de la partie" />
+                            <input className="Input" type="text" onChange={(e) => setPassword(e.target.value)} placeholder="Password de la partie" />
                             <div className={classes.formItem}>
                                 <FormControl className={classes.formControl}>
                                     <InputLabel htmlFor="grouped-native-select">Nombres de jouers</InputLabel>
@@ -121,8 +123,8 @@ export default function CreateGame() {
                             </div>
                         </form>
                         <div className={classes.formItem}>
-                            <Link to="/Game" style={{ textDecoration: 'none', color: 'black' }}>
-                              <div className="btn" variant="outlined">Créer la partie</div>
+                            <Link to={`/Game/${nom + password}/${nom}`} style={{ textDecoration: 'none', color: 'black' }}>
+                                <div className="btn" variant="outlined">Créer la partie</div>
                             </Link>
                         </div>
                     </div>
