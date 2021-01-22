@@ -16,8 +16,8 @@ class DataPlayer {
     this.data = data;
 
     this.name = data.name != null ? data.name : "Joueur" + this.playerId;
-    this.armor = data.armor;
-    this.weapon = data.weapon;
+    this.armor = data.armor != null ? data.armor : { dmgAbsorption: 0 };
+    this.weapon = data.weapon != null ? data.weapon : { dmg: 10 };
     this.health = data.health != null ? data.health : 100;
     this.position = data.position;
 

@@ -37,6 +37,11 @@
 .obstacle {
   background-color: rgba(0, 0, 0, 0.5);
 }
+
+.walkable {
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
 .loot {
   background-color: rgba(0, 37, 248, 0.5);
 }
@@ -47,9 +52,6 @@
 
 .lootArmor {
   background-color: rgba(248, 244, 0, 0.5);
-}
-.walkable {
-  background-color: rgba(255, 255, 255, 0.5);
 }
 
 .player {

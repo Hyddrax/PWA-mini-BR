@@ -96,6 +96,46 @@ class Grid extends React.Component {
         return attackedPlayerIndex
     }
 
+    randomRange(min, max) {
+        return Math.floor(Math.random() * (+max - +min)) + +min;
+    }
+
+    lootWeapon() {
+        let tmpDataGrid = Object.assign({}, this.state.dataGrid);
+        let player = tmpDataGrid.data.players[this.state.turnPlayerId - 1];
+
+        var lootedWeapon = { dmg: this.randomRange(15, 100) };
+        console.log("Looted Weapon : ", lootedWeapon);
+        if (player.weapon.dmg < lootedWeapon.dmg) {
+            player.weapon = lootedWeapon;
+        }
+
+        this.setState({
+            dataGrid: tmpDataGrid
+        }, () => {
+            console.log(this.state.dataGrid);
+            this.nextPlayer();
+        });
+    }
+
+    lootArmor() {
+        let tmpDataGrid = Object.assign({}, this.state.dataGrid);
+        let player = tmpDataGrid.data.players[this.state.turnPlayerId - 1];
+
+        var lootedArmor = { dmgAbsorption: this.randomRange(10, 75) };
+        console.log("Looted Armor : ", lootedArmor);
+        if (player.armor.dmgAbsorption < lootedArmor.dmgAbsorption) {
+            player.armor = lootedArmor;
+        }
+
+        this.setState({
+            dataGrid: tmpDataGrid
+        }, () => {
+            console.log(this.state.dataGrid);
+            this.nextPlayer();
+        });
+    }
+
     attackPlayer(x, y) {
         let tmpDataGrid = Object.assign({}, this.state.dataGrid);
         let tmpPlayer = Object.assign({}, this.state.turnPlayer);
@@ -114,7 +154,8 @@ class Grid extends React.Component {
             }
 
             this.setState({
-                dataGrid: tmpDataGrid
+                dataGrid: tmpDataGrid,
+                turnPlayer: tmpPlayer
             }, () => {
                 this.nextPlayer();
             });
@@ -164,6 +205,7 @@ class Grid extends React.Component {
     }
 
     render() {
+        console.log("render");
         const copyObject = Object.assign({}, this.state.dataGrid);
         copyObject.data.players.forEach((player, index) => {
             copyObject.data.cells[player.position.y][player.position.x].isPlayer = true;
@@ -183,7 +225,9 @@ class Grid extends React.Component {
                         cellPosition={{ "x": cellIndex, "y": rowIndex }}
                         dataCell={cell}
                         movePlayer={this.movePlayer.bind(this)}
-                        attackPlayer={this.attackPlayer.bind(this)} />
+                        attackPlayer={this.attackPlayer.bind(this)}
+                        lootWeapon={this.lootWeapon.bind(this)}
+                        lootArmor={this.lootArmor.bind(this)} />
                     )}
             </div>
         });
