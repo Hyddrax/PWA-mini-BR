@@ -48,6 +48,25 @@ export default function TransitionsModal() {
         setOpen(false);
     };
 
+    const showNotification = () => {
+        const notifJoin = new Notification("Nouvelle partie rejointe !", {
+            body: "🛡 Partie rejointe avec succès. Que le meilleur gagne !",
+            icon: "https://img.icons8.com/dusk/64/000000/appointment-reminders--v1.png"
+        })
+    }
+
+    const notifJoinGame = () => {
+        if (Notification.permission === 'granted') {
+            showNotification()
+        } else if (Notification.permission !== 'denied') {
+            Notification.requestPermission().then(permission => {
+                if (Notification.permission === 'granted') {
+                    showNotification()
+                }
+            })
+        }
+        console.log('Join Game ...');
+    }
 
     return (
         <div>
@@ -72,7 +91,7 @@ export default function TransitionsModal() {
                             <input className="Input" type="text" onChange={(e) => setNom(e.target.value)} placeholder="Nom de la partie" />
                             <input className="Input" type="text" onChange={(e) => setPassword(e.target.value)} placeholder="Password de la partie" />
                             <Link to="/Game" style={{ textDecoration: 'none', color: 'black' }}>
-                                <div className="btn" variant="outlined">Rejoindre la partie</div>
+                                <div className="btn" variant="outlined" onClick={notifJoinGame}>Rejoindre la partie</div>
                             </Link>
                         </form>
                     </div>

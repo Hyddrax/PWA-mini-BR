@@ -66,6 +66,26 @@ export default function CreateGame() {
         setNbt(event.target.value);
     };
 
+    const showNotification = () => {
+        const notifCreate = new Notification("Création d'une nouvelle partie !", {
+            body: "⚔ Partie créée avec succès. Que le meilleur gagne !",
+            icon: "https://img.icons8.com/dusk/64/000000/appointment-reminders--v1.png"
+        })
+    }
+
+    const notifNewGame = () => {
+        if (Notification.permission === 'granted') {
+            showNotification()
+        } else if (Notification.permission !== 'denied') {
+            Notification.requestPermission().then(permission => {
+                if (Notification.permission === 'granted') {
+                    showNotification()
+                }
+            })
+        }
+        console.log('Create New Game ...');
+    }
+
     return (
         <div>
 
@@ -124,7 +144,7 @@ export default function CreateGame() {
                         </form>
                         <div className={classes.formItem}>
                             <Link to={`/Game/${nom + password}/${nom}`} style={{ textDecoration: 'none', color: 'black' }}>
-                                <div className="btn" variant="outlined">Créer la partie</div>
+                                <div className="btn" variant="outlined" onClick={notifNewGame}>Créer la partie</div>
                             </Link>
                         </div>
                     </div>
