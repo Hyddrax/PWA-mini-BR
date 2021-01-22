@@ -53,10 +53,6 @@ export default function TransitionsModal() {
             body: "🛡 Partie rejointe avec succès. Que le meilleur gagne !",
             icon: "https://img.icons8.com/dusk/64/000000/appointment-reminders--v1.png"
         })
-
-        notifJoin.onclick = (e) => {
-            window.open("/game/?fromnotification=true","_blank");
-        }
     }
 
     const notifJoinGame = () => {

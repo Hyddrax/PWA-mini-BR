@@ -71,10 +71,6 @@ export default function CreateGame() {
             body: "⚔ Partie créée avec succès. Que le meilleur gagne !",
             icon: "https://img.icons8.com/dusk/64/000000/appointment-reminders--v1.png"
         })
-
-        notifCreate.onclick = (e) => {
-            window.open("/game/?fromnotification=true","_blank");
-        }
     }
 
     const notifNewGame = () => {
