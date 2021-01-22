@@ -3,7 +3,6 @@ import './Game.css';
 import Grid from './Grid.js';
 import App from './App.js';
 import { Container } from '@material-ui/core';
-import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 import React, { Component } from "react";
 
 function Game() {
@@ -21,20 +20,20 @@ function Game() {
     //         for(coords of accessible){
     //             document.querySelector(`.x${coords.x}y${coords.y}`).classList.add("walkable");
     //         }
-    //         console.log(`Finished in ${performance.now() - startTime} ms.`); 
+    //         console.log(`Finished in ${performance.now() - startTime} ms.`);
     //     });
     //     worker.postMessage({this,startingPoint,distance});
 
-    //     return 
+    //     return
     // }
 
     return (
+      <div className="Full">
         <div className="Ctn">
-        <Container maxWidth='lg'>
         <div className="Game">
             <div className="Game-TopBar">
                 <div className="GameName">
-                    <div className="Name">Nom de la partie</div>
+                    <Button className="Name">Nom de la partie</Button>
                 </div>
                 <div className="RightPanel">
                     <Button className="ShowPlayers">Joueurs</Button>
@@ -42,27 +41,10 @@ function Game() {
                 </div>
             </div>
             <div className="Game-Playground">
-            <TransformWrapper
-            defaultScale={1}
-            defaultPositionX={0}
-            defaultPositionY={0}
-            >
-         {({ zoomIn, zoomOut, resetTransform, ...rest }) => (
-           <React.Fragment>
-             <div className="tools">
-               <button onClick={zoomIn}>+</button>
-               <button onClick={zoomOut}>-</button>
-               <button onClick={resetTransform}>x</button>
-             </div>
-             <TransformComponent>
-               <Grid></Grid>
-             </TransformComponent>
-           </React.Fragment>
-         )}
-       </TransformWrapper>
+                <Grid></Grid>
             </div>
-        </div>
-        </Container>
+           </div>
+          </div>
         </div>
     );
 }

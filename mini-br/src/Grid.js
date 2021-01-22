@@ -1,6 +1,9 @@
 import './Grid.css';
 import Cell from "./Cell.js";
 import { Container } from '@material-ui/core';
+import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
+import React, { Component } from "react";
+
 
 function Grid() {
 
@@ -87,9 +90,26 @@ function Grid() {
     }
 
     return (
-               <div className="Grid">
-                 {buildGrid()}
-               </div>
+        <TransformWrapper
+            defaultScale={1}
+            defaultPositionX={0}
+            defaultPositionY={0}
+        >
+            {({ zoomIn, zoomOut, resetTransform, ...rest }) => (
+                <React.Fragment>
+                    <TransformComponent>
+                        <div className="Grid">
+                           <div className="tools">
+                            <button onClick={zoomIn}>+</button>
+                            <button onClick={zoomOut}>-</button>
+                            <button onClick={resetTransform}>x</button>
+                           </div>
+                            {buildGrid()}
+                        </div>
+                    </TransformComponent>
+                </React.Fragment>
+            )}
+        </TransformWrapper>
     );
 }
 
