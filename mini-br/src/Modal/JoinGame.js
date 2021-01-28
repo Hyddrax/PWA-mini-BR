@@ -136,9 +136,9 @@ export default function TransitionsModal() {
 
     return (
         <div>
-            <div onClick={handleOpen}>
+            <Button className="CustomButton" onClick={handleOpen}>
                 Joindre une partie
-            </div>
+            </Button>
             <Modal
                 aria-labelledby="transition-modal-title"
                 aria-describedby="transition-modal-description"

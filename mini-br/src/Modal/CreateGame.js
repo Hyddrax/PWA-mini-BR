@@ -12,6 +12,7 @@ import DataPlayer from '../DataObject/DataPlayer'
 import DataGame from '../DataObject/DataGame'
 import DataGrid from '../DataObject/DataGrid'
 import DataCell from '../DataObject/DataCell'
+import { Button, Container } from '@material-ui/core';
 import './modal.css';
 
 
@@ -165,10 +166,9 @@ export default function CreateGame() {
     return (
         <div>
 
-            <div onClick={handleOpen}>
-
+            <Button className="CustomButton" onClick={handleOpen}>
                 Créer une partie
-            </div>
+            </Button>
             <Modal
                 aria-labelledby="transition-modal-title"
                 aria-describedby="transition-modal-description"

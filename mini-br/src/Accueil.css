@@ -39,7 +39,7 @@
   margin: 2%;
 }
 
-.accueil__left > div {
+.accueil__left > button {
   background: #ffffff;
   height: 70px;
   border: 1px solid #000000;
@@ -48,6 +48,26 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  font-weight: bold;
+}
+
+.accueil__left .CustomButton {
+  background: #ffffff;
+  width: 100%;
+  height: 70px;
+  border: 1px solid #000000;
+  border-radius: 100px;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  font-weight: bold;
 }
 
 .accueil__right {

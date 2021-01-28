@@ -3,6 +3,7 @@ import './Accueil.css';
 import JoinGame from './Modal/JoinGame'
 import CreateGame from './Modal/CreateGame'
 import DataPlayer from './DataObject/DataPlayer';
+import { Button, Container } from '@material-ui/core';
 
 function Accueil() {
 
@@ -94,8 +95,8 @@ function Accueil() {
                 <div className="accueil__left">
                     <CreateGame />
                     <JoinGame />
-                    <div className="accueil__left_div" onClick={() => subscribePushNotification('game1', '1')}>🔔 S'abonner aux notifications</div>
-                    <div className="accueil__left_div" onClick={install}>📦 Installer PWA Mini BR</div>
+                    <Button className="accueil__left_div" onClick={() => subscribePushNotification('game1', '1')}>🔔 S'abonner aux notifications</Button>
+                    <Button className="accueil__left_div" onClick={install}>📦 Installer PWA Mini BR</Button>
                     {/* <a href='Game/'><li><CreateGame /></li></a> */}
                     {/* <a href='Game/'><li><JoinGame /></li></a> */}
                 </div>
