@@ -3,19 +3,48 @@ const chalk = require('chalk')
 const cors = require('cors')
 const bodyParser = require('body-parser')
 const webpush = require('web-push')
+const mongoose = require('mongoose');
+const Game = require('./models/game')
+const Player = require('./models/player')
 
 const app = express()
 app.use(cors())
 const PORT = 8000
 
+console.log(process.env.NODE_ENV)
+
 // Config web-push
 const publicVapidKey = 'BOgjL4TQxxngezXpmDytqwDc01U-JdI6JikShCWQSW6X92S5Pe5Hq_wGidEK-SsPpIi4dhsB2S-0i7N8fSBcfGE'
 const privateVapidKey = 'drffnLNhK9wWL6nuzM4rYSCQ88dAjsaVW_tTJzfFPdI'
+
 webpush.setVapidDetails(
   'mailto: baptiste.lechat@ynov.com',
   publicVapidKey,
   privateVapidKey
 )
+
+const db = "mongodb+srv://pwa-mini-br-admin:_123456@cluster0.lb8gb.mongodb.net/pwa-mini-br-database?retryWrites=true&w=majority";
+
+
+mongoose.connect(db, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+})
+.then(() => {
+  console.log('MongoDB Connected...')
+})
+.catch(err => console.log(err))
+
+// fake data
+const games = []
+const mongoGames = Game.find().then(games => {
+  games.forEach(el => {
+    games.push(el);
+  });
+})
+console.log(games);
+
+
 
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }))
@@ -40,21 +69,6 @@ const stringToHash = (string) => {
 // -------------------------------------
 // --------------- GAMES ---------------
 // -------------------------------------
-
-// fakes GAMES data
-const games = []
-
-for(let i = 0; i <= 5; i++){
-  const data = {
-      "gameId": (Math.floor(Math.random() * (9999999-1111111)) + 1111111).toString(),
-      "nomPartie": `Game ${i}`,
-      "password": (Math.floor(Math.random() * (9999-1111)) + 1111).toString(),
-      "turnPlayerId": (Math.floor(Math.random() * (5-1)) + 1).toString(),
-      "data": {}
-    }
-  games.push(data)
-}
-
 app.get('/', (req, res) => {
   res.send('🌍 PWA Mini BR Backend Work !')
 })
@@ -91,6 +105,7 @@ app.post('/games/add', (req, res) => {
   })
   console.log(chalk.bgBlue.black(`POST new Game : ${games[games.length-1].nomPartie}`))
 })
+
 
 // PUT /games/update/:id
 app.put('/games/update/:id', (req, res) => {
