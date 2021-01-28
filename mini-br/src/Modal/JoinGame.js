@@ -3,8 +3,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
-import { Button, capitalize } from '@material-ui/core';
-import TextField from '@material-ui/core/TextField';
 import { Link } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
@@ -18,7 +16,9 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor: theme.palette.background.paper,
         boxShadow: theme.shadows[5],
         padding: theme.spacing(2, 4, 3),
-        width: '30%',
+        minWidth: '200px',
+        width: '50%',
+        maxWidth: '700px',
         alignItems: 'center',
         justifyContent: 'center'
     },
@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
         justifyContent: 'space-between',
     },
     formItem: {
-        margin: '25px 10px',
+        margin: '10px 10px',
         color: 'black',
         textTransform: 'capitalize'
     }
@@ -69,10 +69,10 @@ export default function TransitionsModal() {
                 <Fade in={open}>
                     <div className={classes.paper}>
                         <form noValidate autoComplete="off" className={classes.form}>
-                           <input className="Input" type="text" onChange={(e) => setNom(e.target.value)} placeholder="Nom de la partie" />
-                           <input className="Input" type="text" onChange={(e) => setPassword(e.target.value)} placeholder="Password de la partie" />
+                            <input className="Input" type="text" onChange={(e) => setNom(e.target.value)} placeholder="Nom de la partie" />
+                            <input className="Input" type="text" onChange={(e) => setPassword(e.target.value)} placeholder="Password de la partie" />
                             <Link to="/Game" style={{ textDecoration: 'none', color: 'black' }}>
-                              <div className="btn" variant="outlined">Rejoindre la partie</div>
+                                <div className="btn" variant="outlined">Rejoindre la partie</div>
                             </Link>
                         </form>
                     </div>
