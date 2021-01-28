@@ -2,8 +2,7 @@ import React, { useEffect, useState } from 'react';
 import './Accueil.css';
 import JoinGame from './Modal/JoinGame'
 import CreateGame from './Modal/CreateGame'
-import DataPlayer from './DataObject/DataPlayer';
-import { Button, Container } from '@material-ui/core';
+import { Button } from '@material-ui/core';
 
 function Accueil() {
 
@@ -30,7 +29,7 @@ function Accueil() {
     }
 
     const showNotification = () => {
-        const notifJoinHome = new Notification("Nouvelle partie rejointe !", {
+        new Notification("Nouvelle partie rejointe !", {
             body: "🛡 Partie rejointe avec succès. Que le meilleur gagne !",
             icon: "https://img.icons8.com/dusk/64/000000/appointment-reminders--v1.png"
         })

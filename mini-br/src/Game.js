@@ -2,10 +2,7 @@ import React from "react";
 import { Button } from '@material-ui/core';
 import './Game.css';
 import Grid from './Grid.js';
-import DataGame from './DataObject/DataGame'
-import DataGrid from './DataObject/DataGrid'
 import DataCell from './DataObject/DataCell'
-import DataPlayer from './DataObject/DataPlayer'
 import Loader from 'react-loader-spinner';
 class Game extends React.Component {
 

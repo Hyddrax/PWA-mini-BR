@@ -1,7 +1,7 @@
 import React from "react";
 import './Grid.css';
 import Cell from "./Cell.js";
-import { Button, Container } from '@material-ui/core';
+import { Button } from '@material-ui/core';
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 
 class Grid extends React.Component {

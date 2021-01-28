@@ -4,15 +4,10 @@ import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
 import { Link } from "react-router-dom";
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
-import InputLabel from '@material-ui/core/InputLabel';
-import TextField from '@material-ui/core/TextField';
 import DataPlayer from '../DataObject/DataPlayer'
 import DataGame from '../DataObject/DataGame'
 import DataGrid from '../DataObject/DataGrid'
-import DataCell from '../DataObject/DataCell'
-import { Button, Container } from '@material-ui/core';
+import { Button } from '@material-ui/core';
 import './modal.css';
 
 
@@ -48,12 +43,8 @@ export default function CreateGame() {
     const [open, setOpen] = React.useState(false);
     const [nom, setNom] = React.useState('');
     const [password, setPassword] = React.useState('');
-    const [nbj, setNbj] = React.useState('');
-    const [nbt, setNbt] = React.useState('');
 
     const [playerName, setPlayerName] = React.useState("");
-    let gameId
-
 
     const handleOpen = () => {
         setOpen(true);
@@ -63,16 +54,8 @@ export default function CreateGame() {
         setOpen(false);
     };
 
-    const handleChangeNbj = (event) => {
-        setNbj(event.target.value);
-    };
-
-    const handleChangeNbt = (event) => {
-        setNbt(event.target.value);
-    };
-
     const showNotification = () => {
-        const notifCreate = new Notification("Création d'une nouvelle partie !", {
+        new Notification("Création d'une nouvelle partie !", {
             body: "⚔ Partie créée avec succès. Que le meilleur gagne !",
             icon: "https://img.icons8.com/dusk/64/000000/appointment-reminders--v1.png"
         })
@@ -88,7 +71,6 @@ export default function CreateGame() {
                 }
             })
         }
-        console.log('Create New Game ...');
     }
 
 
@@ -154,7 +136,6 @@ export default function CreateGame() {
         });
 
         const data = await response.json();
-        console.log(data);
         subscribePushNotification(data.dataPlayer[0].gameId, data.dataPlayer[0].playerId);
         notifNewGame();
     }
