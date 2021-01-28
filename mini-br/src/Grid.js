@@ -128,7 +128,7 @@ class Grid extends React.Component {
         let playerId = player.playerId;
         let data = { weapon: player.weapon, armor: player.armor };
 
-        await fetch(`https://pwa-mini-br-backend.vercel.app/players/updateEquipment/${gameId}/${playerId}`, {
+        await fetch(`http://localhost:8000/players/updateEquipment/${gameId}/${playerId}`, {
             method: "PUT",
             body: JSON.stringify(data),
             headers: {
@@ -136,7 +136,7 @@ class Grid extends React.Component {
             }
         });
 
-        await fetch(`https://pwa-mini-br-backend.vercel.app/loots/add`, {
+        await fetch(`http://localhost:8000/loots/add`, {
             method: "POST",
             body: JSON.stringify({ gameId: gameId, lootedCell: { x: player.position.x, y: player.position.y, isLooted: true } }),
             headers: {
@@ -148,7 +148,7 @@ class Grid extends React.Component {
     }
 
     async getLootsInfo() {
-        const response = await fetch("https://pwa-mini-br-backend.vercel.app/loots/" + this.state.turnPlayer.gameId);
+        const response = await fetch("http://localhost:8000/loots/" + this.state.turnPlayer.gameId);
         const data = await response.json();
         if (data.lootedCells) {
             let tmpDataGrid = Object.assign({}, this.state.dataGrid);
@@ -205,7 +205,7 @@ class Grid extends React.Component {
             let tmpDataGrid = Object.assign({}, this.state.dataGrid);
             let player = tmpDataGrid.data.players[this.state.turnPlayerId - 1];
             if (player.subscription == null) {
-                const response = await fetch(`https://pwa-mini-br-backend.vercel.app/subscriber/${player.gameId}/${player.playerId}`);
+                const response = await fetch(`http://localhost:8000/subscriber/${player.gameId}/${player.playerId}`);
                 const data = await response.json();
                 player.subscription = data.subscription;
             }
@@ -292,7 +292,7 @@ class Grid extends React.Component {
                                 attackedPlayer.isDead = true;
                             }
 
-                            await fetch(`https://pwa-mini-br-backend.vercel.app/players/updateHealth/${attackedPlayer.gameId}/${attackedPlayer.playerId}`, {
+                            await fetch(`http://localhost:8000/players/updateHealth/${attackedPlayer.gameId}/${attackedPlayer.playerId}`, {
                                 method: "PUT",
                                 body: JSON.stringify({ health: attackedPlayer.health }),
                                 headers: {
@@ -345,7 +345,7 @@ class Grid extends React.Component {
             tmpPlayer.position.y = newY;
             tmpDataGrid.data.cells[this.state.turnPlayer.position.y][this.state.turnPlayer.position.x].isActifPlayer = true;
 
-            await fetch(`https://pwa-mini-br-backend.vercel.app/players/updatePosition/${tmpPlayer.gameId}/${tmpPlayer.playerId}`, {
+            await fetch(`http://localhost:8000/players/updatePosition/${tmpPlayer.gameId}/${tmpPlayer.playerId}`, {
                 method: "PUT",
                 body: JSON.stringify({ position: tmpPlayer.position, nbMoveAvailable: newNbMoveAvailable }),
                 headers: {

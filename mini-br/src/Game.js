@@ -54,7 +54,7 @@ class Game extends React.Component {
     async fetchGameData(gameId) {
         //getGame
         this.state.fetchingData = true;
-        const response = await fetch("https://pwa-mini-br-backend.vercel.app/games/" + gameId);
+        const response = await fetch("http://localhost:8000/games/" + gameId);
         const data = await response.json();
         if ((data != null && data != undefined) && (data.dataGame != null && data.dataGame != undefined)) {
             let dataGame = data.dataGame;
@@ -110,7 +110,7 @@ class Game extends React.Component {
     //             userVisibleOnly: true,
     //             applicationServerKey: urlBase64ToUint8Array(publicVapidKey)
     //         });
-    //         await fetch("https://pwa-mini-br-backend.vercel.app/subscribe", {
+    //         await fetch("http://localhost:8000/subscribe", {
     //             method: "POST",
     //             body: JSON.stringify({ "subscription": subscription, "gameId": gameId, "playerId": playerId }),
     //             headers: {
@@ -143,7 +143,7 @@ class Game extends React.Component {
             }
         }
 
-        await fetch("https://pwa-mini-br-backend.vercel.app/games/updateTurnPlayerId/" + tmpDataGame.gameId, {
+        await fetch("http://localhost:8000/games/updateTurnPlayerId/" + tmpDataGame.gameId, {
             method: "PUT",
             body: JSON.stringify({ turnPlayerId: tmpDataGame.turnPlayerId }),
             headers: {
@@ -151,7 +151,7 @@ class Game extends React.Component {
             }
         });
 
-        await fetch("https://pwa-mini-br-backend.vercel.app/sendNotificationTo", {
+        await fetch("http://localhost:8000/sendNotificationTo", {
             method: "POST",
             body: JSON.stringify({ gameId: nextPlayer.gameId, playerId: nextPlayer.playerId, payload: { title: "It's Your Turn !", body: "You can play your turn whenever you want.", icon: "" } }),
             headers: {
