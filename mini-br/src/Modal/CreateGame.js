@@ -100,7 +100,6 @@ export default function CreateGame() {
                 userVisibleOnly: true,
                 applicationServerKey: urlBase64ToUint8Array(publicVapidKey)
             });
-            console.log(subscription);
 
             await fetch("http://localhost:8000/subscribe", {
                 method: "POST",
@@ -113,7 +112,7 @@ export default function CreateGame() {
 
         }
         catch (e) {
-            console.log("Subscribe rejected");
+            console.error("Subscribe rejected");
         }
     }
 

@@ -82,48 +82,8 @@ class Game extends React.Component {
     }
 
 
-    // subscribePushNotification = async (gameId, playerId) => {
-
-    //     const publicVapidKey = 'BOgjL4TQxxngezXpmDytqwDc01U-JdI6JikShCWQSW6X92S5Pe5Hq_wGidEK-SsPpIi4dhsB2S-0i7N8fSBcfGE'
-
-    //     const urlBase64ToUint8Array = (base64String) => {
-    //         const padding = '='.repeat((4 - base64String.length % 4) % 4);
-    //         const base64 = (base64String + padding)
-    //             .replace(/\-/g, '+')
-    //             .replace(/_/g, '/');
-
-    //         const rawData = window.atob(base64);
-    //         const outputArray = new Uint8Array(rawData.length);
-
-    //         for (let i = 0; i < rawData.length; ++i) {
-    //             outputArray[i] = rawData.charCodeAt(i);
-    //         }
-    //         return outputArray;
-    //     };
-
-    //     const register = await navigator.serviceWorker.ready;
-    //     try {
-    //         const subscription = await register.pushManager.subscribe({
-    //             userVisibleOnly: true,
-    //             applicationServerKey: urlBase64ToUint8Array(publicVapidKey)
-    //         });
-    //         await fetch("http://localhost:8000/subscribe", {
-    //             method: "POST",
-    //             body: JSON.stringify({ "subscription": subscription, "gameId": gameId, "playerId": playerId }),
-    //             headers: {
-    //                 'content-type': "application/json"
-    //             }
-    //         });
-    //         console.log('Push send !');
-    //     }
-    //     catch (e) {
-    //         console.log("Subscribe rejected");
-    //     }
-    // }
-
     async nextPlayer() {
         const unStateState = await this.fetchGameData(this.state.gameId);
-        console.log(unStateState);
         let tmpDataGame = unStateState.dataGame;
         let tmpDataGrid = unStateState.dataGrid;
         let playerIsDead = true
@@ -155,7 +115,6 @@ class Game extends React.Component {
                 'content-type': "application/json"
             }
         });
-        console.log("NextPlayer");
         this.setState({
             dataGame: tmpDataGame
         });

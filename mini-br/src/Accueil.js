@@ -45,7 +45,6 @@ function Accueil() {
                 }
             })
         }
-        console.log('Join Game ...');
     }
 
     const subscribePushNotification = async (gameId, playerId) => {
@@ -80,10 +79,9 @@ function Accueil() {
                     'content-type': "application/json"
                 }
             });
-            console.log('Push send !');
         }
         catch (e) {
-            console.log("Subscribe rejected");
+            console.error("Subscribe rejected");
         }
     }
 

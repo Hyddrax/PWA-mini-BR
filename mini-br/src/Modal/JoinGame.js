@@ -66,7 +66,6 @@ export default function TransitionsModal() {
                 }
             })
         }
-        console.log('Join Game ...');
     }
 
     const subscribePushNotification = async (gameId, playerId) => {
@@ -94,7 +93,6 @@ export default function TransitionsModal() {
                 userVisibleOnly: true,
                 applicationServerKey: urlBase64ToUint8Array(publicVapidKey)
             });
-            console.log(subscription);
 
             await fetch("http://localhost:8000/subscribe", {
                 method: "POST",
@@ -107,7 +105,7 @@ export default function TransitionsModal() {
 
         }
         catch (e) {
-            console.log("Subscribe rejected");
+            console.error("Subscribe rejected");
         }
     }
 

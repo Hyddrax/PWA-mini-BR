@@ -94,13 +94,23 @@ class Cell extends React.Component {
             this.props.attackPlayer(this.props.cellPosition.x, this.props.cellPosition.y);
         }
 
-        console.log("you click on cell number x: " + this.props.cellPosition.x + " y: " + this.props.cellPosition.y);
+        console.log("You click on cell number x: " + this.props.cellPosition.x + " y: " + this.props.cellPosition.y);
     }
 
     rightClickHandler(params) {
         params.preventDefault();
         if (this.state.dataCell.isPlayer) {
-            console.log("Player Info :", this.state.dataCell.data.player);
+            console.clear();
+            let player = this.state.dataCell.data.player;
+            console.log("============================================================");
+            console.log("Name :              ", player.name);
+            console.log("Health :            ", player.health);
+            console.log("Position :          ", player.position);
+            console.log("Mouvement restant : ", player.nbMoveAvailable);
+            console.log("Armor :             ", player.armor);
+            console.log("Weapon :            ", player.weapon);
+            console.log("============================================================");
+
         }
     }
 

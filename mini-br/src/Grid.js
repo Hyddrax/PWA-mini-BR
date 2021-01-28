@@ -1,7 +1,7 @@
 import React from "react";
 import './Grid.css';
 import Cell from "./Cell.js";
-import { Button } from '@material-ui/core';
+import { Button, Container } from '@material-ui/core';
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 
 class Grid extends React.Component {
@@ -21,7 +21,6 @@ class Grid extends React.Component {
             turnPlayer: this.props.dataGrid.data.players[this.props.turnPlayerId - 1],
             nbMoveAvailable: nbMoveAvailable,
         }
-        console.log();
 
     }
 
@@ -189,12 +188,11 @@ class Grid extends React.Component {
                 userVisibleOnly: true,
                 applicationServerKey: urlBase64ToUint8Array(publicVapidKey)
             });
-            console.log(subscription);
 
             return subscription
         }
         catch (e) {
-            console.log("Subscribe rejected");
+            console.error("Subscribe rejected");
         }
     }
 
@@ -228,7 +226,11 @@ class Grid extends React.Component {
             let player = tmpDataGrid.data.players[this.state.turnPlayerId - 1];
 
             var lootedWeapon = { dmg: this.randomRange(15, 100) };
+            console.clear();
+            console.log("============================================================");
             console.log("Looted Weapon : ", lootedWeapon);
+            console.log("============================================================");
+
             if (player.weapon.dmg < lootedWeapon.dmg) {
                 player.weapon = lootedWeapon;
             }
@@ -238,7 +240,6 @@ class Grid extends React.Component {
             this.setState({
                 dataGrid: tmpDataGrid
             }, () => {
-                console.log(this.state.dataGrid);
                 this.nextPlayer();
             });
         } else {
@@ -253,7 +254,10 @@ class Grid extends React.Component {
             let player = tmpDataGrid.data.players[this.state.turnPlayerId - 1];
 
             var lootedArmor = { dmgAbsorption: this.randomRange(10, 75) };
+            console.clear();
+            console.log("============================================================");
             console.log("Looted Armor : ", lootedArmor);
+            console.log("============================================================");
             if (player.armor.dmgAbsorption < lootedArmor.dmgAbsorption) {
                 player.armor = lootedArmor;
             }
@@ -263,11 +267,13 @@ class Grid extends React.Component {
             this.setState({
                 dataGrid: tmpDataGrid
             }, () => {
-                console.log(this.state.dataGrid);
                 this.nextPlayer();
             });
         } else {
-            console.log("Is not your turn to play !");
+            console.clear();
+            console.log("############################################################");
+            console.log("#############    Is not your turn to play !    #############");
+            console.log("############################################################");
         }
     }
     async attackPlayer(x, y) {
@@ -280,15 +286,21 @@ class Grid extends React.Component {
                 let attackedPlayerIndex = this.findPlayerIndexByPosition(x, y);
                 let attackedPlayer = tmpDataGrid.data.players[attackedPlayerIndex];
                 if (!attackedPlayer.isDead) {
-                    console.log("Attack Player", attackedPlayerIndex + 1);
                     if (tmpPlayer.weapon != null && tmpPlayer.weapon.dmg != 0) {
                         let dealedDmg = 0;
                         dealedDmg = (tmpPlayer.weapon.dmg - attackedPlayer.armor.dmgAbsorption);
                         if (dealedDmg > 0) {
+                            console.clear();
+                            console.log("============================================================");
                             console.log(`${tmpPlayer.name} deal ${dealedDmg} dmg to ${attackedPlayer.name}`);
+                            console.log("============================================================");
+
                             attackedPlayer.health -= tmpPlayer.weapon.dmg;
                             if (attackedPlayer.health <= 0) {
+                                console.log("============================================================");
                                 console.log(`${tmpPlayer.name} kill ${attackedPlayer.name}`);
+                                console.log("============================================================");
+
                                 attackedPlayer.isDead = true;
                             }
 
@@ -302,11 +314,18 @@ class Grid extends React.Component {
 
 
                         } else {
+                            console.clear();
+                            console.log("============================================================");
                             console.log(`${attackedPlayer.name} has too many armor and take no dommage from ${tmpPlayer.name}`);
+                            console.log("============================================================");
                         }
 
                     } else {
-                        console.log(`You don't have Weapon, you can't attack ${this.state.dataGrid.data.players[attackedPlayerIndex].name}`);
+                        console.clear();
+                        console.log("############################################################");
+                        console.log(`################    You don't have Weapon, you can't attack    ################`);
+                        console.log("############################################################");
+
                     }
 
 
@@ -321,10 +340,17 @@ class Grid extends React.Component {
 
 
             } else if (distance != 0) {
-                console.log("The player is out of range !");
+                console.clear();
+                console.log("############################################################");
+                console.log("############    The player is out of range !    ############");
+                console.log("############################################################");
+
             }
         } else {
-            console.log("Is not your turn to play !");
+            console.clear();
+            console.log("############################################################");
+            console.log("#############    Is not your turn to play !    #############");
+            console.log("############################################################");
         }
     }
 
@@ -362,7 +388,10 @@ class Grid extends React.Component {
                 this.nextPlayer();
             }
         } else {
-            console.log("Is not your turn to play !");
+            console.clear();
+            console.log("############################################################");
+            console.log("#############    Is not your turn to play !    #############");
+            console.log("############################################################");
         }
 
     }
