@@ -1,29 +1,80 @@
 .Game {
-  display: flex;
   flex-direction: column;
-  justify-content: space-between;
+}
+
+.Full {
   background-color: #95bdff;
 }
 
 .Ctn {
-  background-color: #95bdff;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 20px;
+  padding-right: 20px;
+  max-width: fit-content;
+  min-width: auto;
 }
 
 .Game-TopBar {
   display: flex;
-  margin-top: 1%;
 }
 
 .Game-TopBar .GameName {
   display: flex;
   flex: 1;
+  margin-top: 5px;
 }
 
-@media screen and (min-width: 600px) {
-  .Game-TopBar .GameName .Name {
-    display: flex;
+.Game-TopBar .ShowPlayers:hover {
+  background-color: white;
+}
+
+.Game-TopBar .GoBack:hover {
+  background-color: white;
+}
+
+@media screen and (max-width: 586px) {
+  .Game-TopBar {
+    flex-direction: column;
+    justify-content: center;
+  }
+  .RightPanel {
+    margin-top: 5px;
+  }
+
+  .Game-TopBar .ShowPlayers {
     align-items: center;
     border-radius: 100px;
+    margin-bottom: 5px;
+    color: black;
+    text-transform: capitalize;
+    font-size: 15px;
+    background-color: white;
+    border: solid black 2px;
+    font-weight: bold;
+    width: 100%;
+  }
+
+  .Game-TopBar .GoBack {
+    align-items: center;
+    border-radius: 100px;
+    color: black;
+    text-transform: capitalize;
+    font-size: 15px;
+    background-color: white;
+    border: solid black 2px;
+    font-weight: bold;
+    width: 100%;
+  }
+}
+
+@media screen and (min-width: 584px) {
+  .Game-TopBar .GameName .Name {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 100px;
+    text-transform: capitalize;
     background-color: white;
     border: solid black 2px;
     cursor: pointer;
@@ -34,19 +85,27 @@
     padding-left: 40px;
     padding-right: 40px;
   }
+  .RightPanel {
+    margin-top: 5px;
+  }
 }
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 584px) {
   .Game-TopBar .GameName .Name {
     display: flex;
+    justify-content: center;
     padding: 10px;
-    width: fit-content;
+    width: 100%;
     align-items: center;
+    text-transform: capitalize;
     border-radius: 100px;
     background-color: white;
     border: solid black 2px;
     cursor: pointer;
     font-weight: bold;
+  }
+  .RightPanel {
+    margin-top: 5px;
   }
 }
 
@@ -64,49 +123,51 @@
   cursor: pointer;
 }
 
-@media screen and (min-width: 100px) {
+/* @media screen and (min-width: 460px) {
   .Game-TopBar .RightPanel {
     display: flex;
     justify-content: space-between;
   }
-}
+} */
 
-.Game-TopBar .ShowPlayers {
-  align-items: center;
-  text-align: center;
-  border-radius: 100px;
-  background-color: white;
-  border: solid black 2px;
-  text-transform: capitalize;
-  flex: 1;
-  font-weight: bold;
-  cursor: pointer;
-  width: fit-content;
-  height: fit-content;
-  padding: 10px;
-  padding-left: 40px;
-  padding-right: 40px;
-}
+@media screen and (min-width: 586px) {
+  .Game-TopBar .ShowPlayers {
+    align-items: center;
+    text-align: center;
+    border-radius: 100px;
+    background-color: white;
+    border: solid black 2px;
+    text-transform: capitalize;
+    flex: 1;
+    font-weight: bold;
+    color: black;
+    width: fit-content;
+    height: fit-content;
+    padding: 10px;
+    padding-left: 40px;
+    padding-right: 40px;
+  }
 
-.Game-TopBar .GoBack {
-  align-items: center;
-  border-radius: 100px;
-  margin-left: 20px;
-  text-align: center;
-  background-color: white;
-  border: solid black 2px;
-  text-transform: capitalize;
-  flex: 1;
-  font-weight: bold;
-  cursor: pointer;
-  width: fit-content;
-  height: fit-content;
-  padding: 10px;
-  padding-left: 40px;
-  padding-right: 40px;
+  .Game-TopBar .GoBack {
+    align-items: center;
+    border-radius: 100px;
+    margin-left: 20px;
+    text-align: center;
+    background-color: white;
+    border: solid black 2px;
+    color: black;
+    text-transform: capitalize;
+    flex: 1;
+    font-weight: bold;
+    width: fit-content;
+    height: fit-content;
+    padding: 10px;
+    padding-left: 40px;
+    padding-right: 40px;
+  }
 }
-
 .Game-Playground {
   display: flex;
   flex: 1;
+  margin-top: 3px;
 }
