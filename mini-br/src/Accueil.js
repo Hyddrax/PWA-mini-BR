@@ -73,7 +73,7 @@ function Accueil() {
                 userVisibleOnly: true,
                 applicationServerKey: urlBase64ToUint8Array(publicVapidKey)
             });
-            await fetch("http://localhost:8000/subscribe", {
+            await fetch("https://pwa-mini-br-backend.vercel.app/subscribe", {
                 method: "POST",
                 body: JSON.stringify({ "subscription": subscription, "gameId": gameId, "playerId": playerId }),
                 headers: {

@@ -99,7 +99,7 @@ export default function TransitionsModal() {
             });
             console.log(subscription);
 
-            await fetch("http://localhost:8000/subscribe", {
+            await fetch("https://pwa-mini-br-backend.vercel.app/subscribe", {
                 method: "POST",
                 body: JSON.stringify({ "subscription": subscription, "gameId": gameId, "playerId": playerId }),
                 headers: {
@@ -118,7 +118,7 @@ export default function TransitionsModal() {
         gameId = getGameId();
         let newPlayer = new DataPlayer(gameId, 1, { name: playerName, weapon: { dmg: 0 }, position: { x: 3, y: 2 } })
 
-        const response = await fetch("http://localhost:8000/players/add", {
+        const response = await fetch("https://pwa-mini-br-backend.vercel.app/players/add", {
             method: "POST",
             body: JSON.stringify(newPlayer),
             headers: {

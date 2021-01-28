@@ -126,7 +126,7 @@ export default function CreateGame() {
             });
             console.log(subscription);
 
-            await fetch("http://localhost:8000/subscribe", {
+            await fetch("https://pwa-mini-br-backend.vercel.app/subscribe", {
                 method: "POST",
                 body: JSON.stringify({ "subscription": subscription, "gameId": gameId, "playerId": playerId }),
                 headers: {
@@ -151,7 +151,7 @@ export default function CreateGame() {
         let dataGrid = new DataGrid(gameId, { players: [player1] });
         let dataGame = new DataGame(gameId, nom, { grid: dataGrid });
 
-        const response = await fetch("http://localhost:8000/games/add", {
+        const response = await fetch("https://pwa-mini-br-backend.vercel.app/games/add", {
             method: "POST",
             body: JSON.stringify(dataGame),
             headers: {
