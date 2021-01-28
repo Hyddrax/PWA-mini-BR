@@ -102,7 +102,7 @@ function Accueil() {
                     </ul>
                 </div>
                 <div className="accueil__right">
-                    <p>Liste des partie en cours :</p>
+                    <p>Liste des partie en cours</p>
                     <ul>
                         <a href='Game/'><li onClick={notifJoinGame}>Partie 1</li></a>
                         <a href='Game/'><li onClick={notifJoinGame}>Partie 2</li></a>

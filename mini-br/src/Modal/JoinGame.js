@@ -19,7 +19,9 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor: theme.palette.background.paper,
         boxShadow: theme.shadows[5],
         padding: theme.spacing(2, 4, 3),
-        width: '30%',
+        minWidth: '200px',
+        width: '50%',
+        maxWidth: '700px',
         alignItems: 'center',
         justifyContent: 'center'
     },
@@ -29,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
         justifyContent: 'space-between',
     },
     formItem: {
-        margin: '25px 10px',
+        margin: '10px 10px',
         color: 'black',
         textTransform: 'capitalize'
     }
