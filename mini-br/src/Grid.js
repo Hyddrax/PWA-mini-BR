@@ -7,25 +7,47 @@ class Grid extends React.Component {
 
     constructor(props) {
         super(props);
+
+        let nbMoveAvailable = this.props.dataGrid.data.players[this.props.turnPlayerId - 1].nbMoveAvailable
+        if (nbMoveAvailable == null) {
+            nbMoveAvailable = 9
+        } else if (nbMoveAvailable <= 1) {
+            nbMoveAvailable = 9
+        }
         this.state = {
             dataGrid: this.props.dataGrid,
             turnPlayerId: this.props.turnPlayerId,
             turnPlayer: this.props.dataGrid.data.players[this.props.turnPlayerId - 1],
-            nbMoveAvailable: 9,
+            nbMoveAvailable: nbMoveAvailable,
         }
+        console.log();
+
+    }
+
+    componentDidMount() {
+        this.getLootsInfo();
     }
 
     componentDidUpdate(oldProps) {
         if (this.props != oldProps) {
+            let tmpDataGrid = Object.assign({}, this.props.dataGrid);
+            let oldTurnPlayer = Object.assign({}, this.props.dataGrid.data.players[oldProps.turnPlayerId - 1]);
+            tmpDataGrid.data.cells[oldTurnPlayer.position.y][oldTurnPlayer.position.x].isActifPlayer = false;
+            //reset Old player walkable cells
+            this.resetCellsAround(oldTurnPlayer.position.x, oldTurnPlayer.position.y, 9);
+
             this.setState({
-                dataGrid: this.props.dataGrid,
+                dataGrid: tmpDataGrid,
                 turnPlayerId: this.props.turnPlayerId,
                 turnPlayer: this.props.dataGrid.data.players[this.props.turnPlayerId - 1],
-                nbMoveAvailable: 9,
-                test: this.props.test
+                nbMoveAvailable: 9
             });
+            this.getLootsInfo();
         }
     }
+
+
+    // Utils Functions ------------------------------------------------------
 
     accessibleCellsAround(x, y, distance, existingSet) {
         if (distance == 0) {
@@ -67,9 +89,6 @@ class Grid extends React.Component {
         });
     }
 
-
-
-
     calcTravelDistance(x1, y1, x2, y2) {
         let distanceX = 0;
         let distanceY = 0;
@@ -100,109 +119,256 @@ class Grid extends React.Component {
         return Math.floor(Math.random() * (+max - +min)) + +min;
     }
 
-    lootWeapon() {
-        let tmpDataGrid = Object.assign({}, this.state.dataGrid);
-        let player = tmpDataGrid.data.players[this.state.turnPlayerId - 1];
 
-        var lootedWeapon = { dmg: this.randomRange(15, 100) };
-        console.log("Looted Weapon : ", lootedWeapon);
-        if (player.weapon.dmg < lootedWeapon.dmg) {
-            player.weapon = lootedWeapon;
-        }
 
-        this.setState({
-            dataGrid: tmpDataGrid
-        }, () => {
-            console.log(this.state.dataGrid);
-            this.nextPlayer();
-        });
-    }
+    async updatePlayerEquipement(player) {
 
-    lootArmor() {
-        let tmpDataGrid = Object.assign({}, this.state.dataGrid);
-        let player = tmpDataGrid.data.players[this.state.turnPlayerId - 1];
+        let gameId = player.gameId;
+        let playerId = player.playerId;
+        let data = { weapon: player.weapon, armor: player.armor };
 
-        var lootedArmor = { dmgAbsorption: this.randomRange(10, 75) };
-        console.log("Looted Armor : ", lootedArmor);
-        if (player.armor.dmgAbsorption < lootedArmor.dmgAbsorption) {
-            player.armor = lootedArmor;
-        }
-
-        this.setState({
-            dataGrid: tmpDataGrid
-        }, () => {
-            console.log(this.state.dataGrid);
-            this.nextPlayer();
-        });
-    }
-
-    attackPlayer(x, y) {
-        let tmpDataGrid = Object.assign({}, this.state.dataGrid);
-        let tmpPlayer = Object.assign({}, this.state.turnPlayer);
-        let distance = this.calcTravelDistance(tmpPlayer.position.x, tmpPlayer.position.y, x, y);
-        if (distance == 1) {
-            let attackedPlayerIndex = this.findPlayerIndexByPosition(x, y);
-            console.log("Attack Player", attackedPlayerIndex + 1);
-            let attackedPlayer = tmpDataGrid.data.players[attackedPlayerIndex];
-
-            if (tmpPlayer.weapon != null && tmpPlayer.weapon.dmg != 0) {
-                let dealedDmg = 0;
-                dealedDmg = (tmpPlayer.weapon.dmg - attackedPlayer.armor.dmgAbsorption);
-                if (dealedDmg > 0) {
-                    console.log(`${tmpPlayer.name} deal ${dealedDmg} dmg to ${attackedPlayer.name}`);
-                    attackedPlayer.health -= tmpPlayer.weapon.dmg;
-                } else {
-                    console.log(`${attackedPlayer.name} has too many armor and take no dommage from ${tmpPlayer.name}`);
-                }
-            } else {
-                console.log(`You don't have Weapon, you can't attack ${this.state.dataGrid.data.players[attackedPlayerIndex].name}`);
+        await fetch(`http://localhost:8000/players/updateEquipment/${gameId}/${playerId}`, {
+            method: "PUT",
+            body: JSON.stringify(data),
+            headers: {
+                'content-type': "application/json"
             }
+        });
+
+        await fetch(`http://localhost:8000/loots/add`, {
+            method: "POST",
+            body: JSON.stringify({ gameId: gameId, lootedCell: { x: player.position.x, y: player.position.y, isLooted: true } }),
+            headers: {
+                'content-type': "application/json"
+            }
+        });
+
+
+    }
+
+    async getLootsInfo() {
+        const response = await fetch("http://localhost:8000/loots/" + this.state.turnPlayer.gameId);
+        const data = await response.json();
+        if (data.lootedCells) {
+            let tmpDataGrid = Object.assign({}, this.state.dataGrid);
+
+            data.lootedCells.forEach(lootedCell => {
+                tmpDataGrid.data.cells[lootedCell.y][lootedCell.x].isLooted = true;
+            });
+
+            this.setState({
+                dataGrid: tmpDataGrid
+            })
+
+        }
+    }
+
+    getSubscription = async () => {
+
+        const publicVapidKey = 'BOgjL4TQxxngezXpmDytqwDc01U-JdI6JikShCWQSW6X92S5Pe5Hq_wGidEK-SsPpIi4dhsB2S-0i7N8fSBcfGE'
+
+        const urlBase64ToUint8Array = (base64String) => {
+            const padding = '='.repeat((4 - base64String.length % 4) % 4);
+            const base64 = (base64String + padding)
+                .replace(/\-/g, '+')
+                .replace(/_/g, '/');
+
+            const rawData = window.atob(base64);
+            const outputArray = new Uint8Array(rawData.length);
+
+            for (let i = 0; i < rawData.length; ++i) {
+                outputArray[i] = rawData.charCodeAt(i);
+            }
+            return outputArray;
+        };
+
+        const register = await navigator.serviceWorker.ready;
+        try {
+            const subscription = await register.pushManager.subscribe({
+                userVisibleOnly: true,
+                applicationServerKey: urlBase64ToUint8Array(publicVapidKey)
+            });
+            console.log(subscription);
+
+            return subscription
+        }
+        catch (e) {
+            console.log("Subscribe rejected");
+        }
+    }
+
+
+    async checkIfIcanPlay() {
+        if (navigator.serviceWorker.controller != null) {
+            const subscription = await this.getSubscription();
+            let tmpDataGrid = Object.assign({}, this.state.dataGrid);
+            let player = tmpDataGrid.data.players[this.state.turnPlayerId - 1];
+            if (player.subscription == null) {
+                const response = await fetch(`http://localhost:8000/subscriber/${player.gameId}/${player.playerId}`);
+                const data = await response.json();
+                player.subscription = data.subscription;
+            }
+
+            if (JSON.stringify(player.subscription) == JSON.stringify(subscription)) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    // --------------------------------------------------------------------------
+
+    async lootWeapon() {
+        if (await this.checkIfIcanPlay()) {
+
+            let tmpDataGrid = Object.assign({}, this.state.dataGrid);
+            let player = tmpDataGrid.data.players[this.state.turnPlayerId - 1];
+
+            var lootedWeapon = { dmg: this.randomRange(15, 100) };
+            console.log("Looted Weapon : ", lootedWeapon);
+            if (player.weapon.dmg < lootedWeapon.dmg) {
+                player.weapon = lootedWeapon;
+            }
+
+            this.updatePlayerEquipement(player);
+
+            this.setState({
+                dataGrid: tmpDataGrid
+            }, () => {
+                console.log(this.state.dataGrid);
+                this.nextPlayer();
+            });
+        } else {
+            console.log("Is not your turn to play !");
+        }
+    }
+
+    async lootArmor() {
+        if (await this.checkIfIcanPlay()) {
+
+            let tmpDataGrid = Object.assign({}, this.state.dataGrid);
+            let player = tmpDataGrid.data.players[this.state.turnPlayerId - 1];
+
+            var lootedArmor = { dmgAbsorption: this.randomRange(10, 75) };
+            console.log("Looted Armor : ", lootedArmor);
+            if (player.armor.dmgAbsorption < lootedArmor.dmgAbsorption) {
+                player.armor = lootedArmor;
+            }
+
+            this.updatePlayerEquipement(player);
+
+            this.setState({
+                dataGrid: tmpDataGrid
+            }, () => {
+                console.log(this.state.dataGrid);
+                this.nextPlayer();
+            });
+        } else {
+            console.log("Is not your turn to play !");
+        }
+    }
+    async attackPlayer(x, y) {
+        if (await this.checkIfIcanPlay()) {
+
+            let tmpDataGrid = Object.assign({}, this.state.dataGrid);
+            let tmpPlayer = Object.assign({}, this.state.turnPlayer);
+            let distance = this.calcTravelDistance(tmpPlayer.position.x, tmpPlayer.position.y, x, y);
+            if (distance == 1) {
+                let attackedPlayerIndex = this.findPlayerIndexByPosition(x, y);
+                let attackedPlayer = tmpDataGrid.data.players[attackedPlayerIndex];
+                if (!attackedPlayer.isDead) {
+                    console.log("Attack Player", attackedPlayerIndex + 1);
+                    if (tmpPlayer.weapon != null && tmpPlayer.weapon.dmg != 0) {
+                        let dealedDmg = 0;
+                        dealedDmg = (tmpPlayer.weapon.dmg - attackedPlayer.armor.dmgAbsorption);
+                        if (dealedDmg > 0) {
+                            console.log(`${tmpPlayer.name} deal ${dealedDmg} dmg to ${attackedPlayer.name}`);
+                            attackedPlayer.health -= tmpPlayer.weapon.dmg;
+                            if (attackedPlayer.health <= 0) {
+                                console.log(`${tmpPlayer.name} kill ${attackedPlayer.name}`);
+                                attackedPlayer.isDead = true;
+                            }
+
+                            await fetch(`http://localhost:8000/players/updateHealth/${attackedPlayer.gameId}/${attackedPlayer.playerId}`, {
+                                method: "PUT",
+                                body: JSON.stringify({ health: attackedPlayer.health }),
+                                headers: {
+                                    'content-type': "application/json"
+                                }
+                            });
+
+
+                        } else {
+                            console.log(`${attackedPlayer.name} has too many armor and take no dommage from ${tmpPlayer.name}`);
+                        }
+
+                    } else {
+                        console.log(`You don't have Weapon, you can't attack ${this.state.dataGrid.data.players[attackedPlayerIndex].name}`);
+                    }
+
+
+
+                    this.setState({
+                        dataGrid: tmpDataGrid,
+                        turnPlayer: tmpPlayer
+                    }, () => {
+                        this.nextPlayer();
+                    });
+                }
+
+
+            } else if (distance != 0) {
+                console.log("The player is out of range !");
+            }
+        } else {
+            console.log("Is not your turn to play !");
+        }
+    }
+
+    async movePlayer(newX, newY) {
+        if (await this.checkIfIcanPlay()) {
+            let tmpDataGrid = Object.assign({}, this.state.dataGrid);
+            let tmpPlayer = Object.assign({}, this.state.turnPlayer);
+
+            const cell = tmpDataGrid.data.cells[this.state.turnPlayer.position.y][this.state.turnPlayer.position.x];
+            cell.isPlayer = false;
+            cell.playerId = null;
+            cell.isActifPlayer = false;
+
+            this.resetCellsAround(this.state.turnPlayer.position.x, this.state.turnPlayer.position.y, this.state.nbMoveAvailable);
+            let newNbMoveAvailable = this.state.nbMoveAvailable - this.calcTravelDistance(tmpPlayer.position.x, tmpPlayer.position.y, newX, newY);
+
+            tmpPlayer.position.x = newX;
+            tmpPlayer.position.y = newY;
+            tmpDataGrid.data.cells[this.state.turnPlayer.position.y][this.state.turnPlayer.position.x].isActifPlayer = true;
+
+            await fetch(`http://localhost:8000/players/updatePosition/${tmpPlayer.gameId}/${tmpPlayer.playerId}`, {
+                method: "PUT",
+                body: JSON.stringify({ position: tmpPlayer.position, nbMoveAvailable: newNbMoveAvailable }),
+                headers: {
+                    'content-type': "application/json"
+                }
+            });
 
             this.setState({
                 dataGrid: tmpDataGrid,
-                turnPlayer: tmpPlayer
-            }, () => {
-                this.nextPlayer();
+                turnPlayer: tmpPlayer,
+                nbMoveAvailable: newNbMoveAvailable
             });
-
-        } else if (distance != 0) {
-            console.log("The player is out of range !");
+            if (newNbMoveAvailable == 1) {
+                this.nextPlayer();
+            }
+        } else {
+            console.log("Is not your turn to play !");
         }
-    }
 
-    movePlayer(newX, newY) {
-        let tmpDataGrid = Object.assign({}, this.state.dataGrid);
-        let tmpPlayer = Object.assign({}, this.state.turnPlayer);
-
-        const cell = tmpDataGrid.data.cells[this.state.turnPlayer.position.y][this.state.turnPlayer.position.x];
-        cell.isPlayer = false;
-        cell.playerId = null;
-        cell.isActifPlayer = false;
-
-        this.resetCellsAround(this.state.turnPlayer.position.x, this.state.turnPlayer.position.y, this.state.nbMoveAvailable);
-        let newNbMoveAvailable = this.state.nbMoveAvailable - this.calcTravelDistance(tmpPlayer.position.x, tmpPlayer.position.y, newX, newY);
-
-        tmpPlayer.position.x = newX;
-        tmpPlayer.position.y = newY;
-        tmpDataGrid.data.cells[this.state.turnPlayer.position.y][this.state.turnPlayer.position.x].isActifPlayer = true;
-
-        this.setState({
-            dataGrid: tmpDataGrid,
-            turnPlayer: tmpPlayer,
-            nbMoveAvailable: newNbMoveAvailable
-        });
-        if (newNbMoveAvailable == 1) {
-            this.nextPlayer();
-        }
     }
 
     nextPlayer() {
         this.resetCellsAround(this.state.turnPlayer.position.x, this.state.turnPlayer.position.y, this.state.nbMoveAvailable);
-        let tmpDataGrid = Object.assign({}, this.state.dataGrid);
-        tmpDataGrid.data.cells[this.state.turnPlayer.position.y][this.state.turnPlayer.position.x].isActifPlayer = false;
-
         this.setState({
-            dataGrid: tmpDataGrid,
             nbMoveAvailable: 1
         }, () => {
             this.props.nextPlayer();
@@ -210,16 +376,20 @@ class Grid extends React.Component {
     }
 
     render() {
-        console.log("render");
         const copyObject = Object.assign({}, this.state.dataGrid);
         copyObject.data.players.forEach((player, index) => {
+            copyObject.data.cells[player.position.y][player.position.x].isDead = player.isDead;
             copyObject.data.cells[player.position.y][player.position.x].isPlayer = true;
             copyObject.data.cells[player.position.y][player.position.x].playerId = index + 1;
             copyObject.data.cells[player.position.y][player.position.x].data = { player: player };
             if (player == this.state.turnPlayer && this.state.nbMoveAvailable != 1) {
                 copyObject.data.cells[this.state.turnPlayer.position.y][this.state.turnPlayer.position.x].isActifPlayer = true;
             }
+            copyObject.data.cells[player.position.y][player.position.x].isPlayer = true;
+            copyObject.data.cells[player.position.y][player.position.x].playerId = index + 1;
+            copyObject.data.cells[player.position.y][player.position.x].data = { player: player };
         });
+
 
         this.accessibleCellsAround(this.state.turnPlayer.position.x, this.state.turnPlayer.position.y, this.state.nbMoveAvailable);
         const Grid = () => copyObject.data.cells.map((row, rowIndex) => {
@@ -233,6 +403,8 @@ class Grid extends React.Component {
                         attackPlayer={this.attackPlayer.bind(this)}
                         lootWeapon={this.lootWeapon.bind(this)}
                         lootArmor={this.lootArmor.bind(this)} />
+
+
                     )}
             </div>
         });

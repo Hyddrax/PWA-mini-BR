@@ -97,14 +97,61 @@ export default function CreateGame() {
         console.log('Create New Game ...');
     }
 
+
+
+    const subscribePushNotification = async (gameId, playerId) => {
+
+        const publicVapidKey = 'BOgjL4TQxxngezXpmDytqwDc01U-JdI6JikShCWQSW6X92S5Pe5Hq_wGidEK-SsPpIi4dhsB2S-0i7N8fSBcfGE'
+
+        const urlBase64ToUint8Array = (base64String) => {
+            const padding = '='.repeat((4 - base64String.length % 4) % 4);
+            const base64 = (base64String + padding)
+                .replace(/\-/g, '+')
+                .replace(/_/g, '/');
+
+            const rawData = window.atob(base64);
+            const outputArray = new Uint8Array(rawData.length);
+
+            for (let i = 0; i < rawData.length; ++i) {
+                outputArray[i] = rawData.charCodeAt(i);
+            }
+            return outputArray;
+        };
+
+        const register = await navigator.serviceWorker.ready;
+        try {
+            const subscription = await register.pushManager.subscribe({
+                userVisibleOnly: true,
+                applicationServerKey: urlBase64ToUint8Array(publicVapidKey)
+            });
+            console.log(subscription);
+
+            await fetch("http://localhost:8000/subscribe", {
+                method: "POST",
+                body: JSON.stringify({ "subscription": subscription, "gameId": gameId, "playerId": playerId }),
+                headers: {
+                    'content-type': "application/json"
+                }
+            });
+
+
+        }
+        catch (e) {
+            console.log("Subscribe rejected");
+        }
+    }
+
+
+
     const createNewGame = async () => {
-        gameId = getGameId();
+        let gameId = getGameId();
         let player1 = new DataPlayer(gameId, 1, { name: playerName, weapon: { dmg: 0 }, position: { x: 3, y: 2 } })
+
         // Save une BDD call backend
         let dataGrid = new DataGrid(gameId, { players: [player1] });
         let dataGame = new DataGame(gameId, nom, { grid: dataGrid });
 
-        await fetch("http://localhost:8000/games/add", {
+        const response = await fetch("http://localhost:8000/games/add", {
             method: "POST",
             body: JSON.stringify(dataGame),
             headers: {
@@ -112,7 +159,9 @@ export default function CreateGame() {
             }
         });
 
-
+        const data = await response.json();
+        console.log(data);
+        subscribePushNotification(data.dataPlayer[0].gameId, data.dataPlayer[0].playerId);
         notifNewGame();
     }
 

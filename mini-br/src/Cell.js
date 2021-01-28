@@ -24,18 +24,19 @@ class Cell extends React.Component {
             classes.push("obstacle");
         }
 
-        if (dataCell.isLoot) {
-            classes.push("loot");
-        }
+        if (!dataCell.isLooted) {
+            if (dataCell.isLoot) {
+                classes.push("loot");
+            }
 
-        if (dataCell.isLootWeapon) {
-            classes.push("lootWeapon");
-        }
+            if (dataCell.isLootWeapon) {
+                classes.push("lootWeapon");
+            }
 
-        if (dataCell.isLootArmor) {
-            classes.push("lootArmor");
+            if (dataCell.isLootArmor) {
+                classes.push("lootArmor");
+            }
         }
-
         if (dataCell.isPlayer) {
             let playerClass = "player"
             if (dataCell.playerId != null && dataCell.playerId > 0 && dataCell.playerId <= 5) {
@@ -44,9 +45,14 @@ class Cell extends React.Component {
             classes.push(playerClass);
         }
 
+        if (dataCell.isDead) {
+            classes.push("deadPlayer");
+        }
         if (dataCell.isActifPlayer) {
             classes.push("actifPlayer");
         }
+
+
 
         return classes;
     }
@@ -62,10 +68,11 @@ class Cell extends React.Component {
 
     clickHandler(e) {
         e.preventDefault();
-        if (this.state.dataCell.isWalkable) {
-            if (!this.state.dataCell.isPlayer) {
+
+        if (!this.state.dataCell.isPlayer) {
+            if (this.state.dataCell.isWalkable) {
                 this.props.movePlayer(this.props.cellPosition.x, this.props.cellPosition.y);
-                if (this.state.dataCell.isLoot || this.state.dataCell.isLootWeapon || this.state.dataCell.isLootArmor) {
+                if ((this.state.dataCell.isLoot || this.state.dataCell.isLootWeapon || this.state.dataCell.isLootArmor) && !this.state.dataCell.isLooted) {
                     if (this.state.dataCell.isLootWeapon) {
                         this.props.lootWeapon();
                     } else if (this.state.dataCell.isLootArmor) {
@@ -82,10 +89,11 @@ class Cell extends React.Component {
                     }
                 }
 
-            } else {
-                this.props.attackPlayer(this.props.cellPosition.x, this.props.cellPosition.y);
             }
+        } else {
+            this.props.attackPlayer(this.props.cellPosition.x, this.props.cellPosition.y);
         }
+
         console.log("you click on cell number x: " + this.props.cellPosition.x + " y: " + this.props.cellPosition.y);
     }
 

@@ -34,7 +34,6 @@ class Game extends React.Component {
 
     constructor(props) {
         super(props);
-        console.log("Constructor");
         let tmpGameId = props.match.params.gameId;
         this.state = {
             fetchingData: true,
@@ -54,14 +53,11 @@ class Game extends React.Component {
 
     async fetchGameData(gameId) {
         //getGame
-        console.log("FETCH DATA");
         this.state.fetchingData = true;
         const response = await fetch("http://localhost:8000/games/" + gameId);
         const data = await response.json();
-        console.log(data.dataGame);
         if ((data != null && data != undefined) && (data.dataGame != null && data.dataGame != undefined)) {
             let dataGame = data.dataGame;
-            console.log(dataGame);
             dataGame.data.grid.data.cells = this.CELLS;
             this.setState({
                 gameName: dataGame.gameName,
@@ -70,7 +66,14 @@ class Game extends React.Component {
                 dataGame: dataGame,
                 fetchingData: false
             })
-            console.log(this.state);
+            return {
+                gameName: dataGame.gameName,
+                gameId: dataGame.gameId,
+                dataGrid: dataGame.data.grid,
+                dataGame: dataGame,
+                fetchingData: false
+            };
+
         } else {
             alert("La partie que vous essayer de rejoindre n'existe pas !")
             // Reroute on "/"
@@ -121,15 +124,41 @@ class Game extends React.Component {
     //     }
     // }
 
-    nextPlayer() {
-        console.log("NextPlayer");
-        let tmpDataGame = Object.assign({}, this.state.dataGame);
-        if (tmpDataGame.turnPlayerId == this.state.dataGrid.data.players.length) {
-            tmpDataGame.turnPlayerId = 1;
-        } else {
-            tmpDataGame.turnPlayerId++;
+    async nextPlayer() {
+        const unStateState = await this.fetchGameData(this.state.gameId);
+        console.log(unStateState);
+        let tmpDataGame = unStateState.dataGame;
+        let tmpDataGrid = unStateState.dataGrid;
+        let playerIsDead = true
+        let nextPlayer = null;
+        while (playerIsDead) {
+            if (tmpDataGame.turnPlayerId == unStateState.dataGrid.data.players.length) {
+                tmpDataGame.turnPlayerId = 1;
+            } else {
+                tmpDataGame.turnPlayerId++;
+            }
+            nextPlayer = tmpDataGrid.data.players[tmpDataGame.turnPlayerId - 1];
+            if (nextPlayer != null && nextPlayer.health > 0) {
+                playerIsDead = false;
+            }
         }
 
+        await fetch("http://localhost:8000/games/updateTurnPlayerId/" + tmpDataGame.gameId, {
+            method: "PUT",
+            body: JSON.stringify({ turnPlayerId: tmpDataGame.turnPlayerId }),
+            headers: {
+                'content-type': "application/json"
+            }
+        });
+
+        await fetch("http://localhost:8000/sendNotificationTo", {
+            method: "POST",
+            body: JSON.stringify({ gameId: nextPlayer.gameId, playerId: nextPlayer.playerId, payload: { title: "It's Your Turn !", body: "You can play your turn whenever you want.", icon: "" } }),
+            headers: {
+                'content-type': "application/json"
+            }
+        });
+        console.log("NextPlayer");
         this.setState({
             dataGame: tmpDataGame
         });
