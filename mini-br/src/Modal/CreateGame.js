@@ -28,14 +28,6 @@ const useStyles = makeStyles((theme) => ({
         border: '2px solid #000',
         boxShadow: theme.shadows[5],
         padding: theme.spacing(2, 4, 3),
-        minWidth: '200px',
-        maxWidth: '650px',
-        alignItems: 'center',
-        justifyContent: 'center'
-    },
-    formControl: {
-        margin: theme.spacing(1),
-        minWidth: 200,
     },
     form: {
         display: 'flex',
@@ -44,6 +36,7 @@ const useStyles = makeStyles((theme) => ({
     },
     formItem: {
         margin: '25px 10px',
+        textAlign: 'center',
         color: 'black',
         textTransform: 'capitalize'
     }
@@ -172,7 +165,7 @@ export default function CreateGame() {
     return (
         <div>
 
-            <div className="btn1" onClick={handleOpen}>
+            <div onClick={handleOpen}>
 
                 Créer une partie
             </div>
@@ -194,21 +187,7 @@ export default function CreateGame() {
                             <input className="Input" type="text" onChange={(e) => { setNom(e.target.value) }} placeholder="Nom de la partie" value={nom} />
                             <input className="Input" type="text" onChange={(e) => { setPassword(e.target.value) }} placeholder="Password de la partie" value={password} />
                             <input className="Input" type="text" onChange={(e) => setPlayerName(e.target.value)} placeholder="Pseudo" value={playerName} />
-                            <div className={classes.formItem}>
-                                <FormControl className={classes.formControl}>
-                                    <InputLabel htmlFor="grouped-native-select">Temps par tour:</InputLabel>
-                                    <Select native defaultValue=""
-                                        id="grouped-native-select"
-                                        value={nbt}
-                                        onChange={handleChangeNbt}
-                                    >
-                                        <option value={1}>1h</option>
-                                        <option value={6}>6h</option>
-                                        <option value={12}>12h</option>
-                                        <option value={24}>24h</option>
-                                    </Select>
-                                </FormControl>
-                            </div>
+
                         </form>
                         <div className={classes.formItem}>
                             <Link to={{ pathname: `/Game/${getGameId()}` }} style={{ textDecoration: 'none', color: 'black' }}>

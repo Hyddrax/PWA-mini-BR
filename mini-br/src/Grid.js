@@ -424,9 +424,9 @@ class Grid extends React.Component {
                                 <button onClick={resetTransform}>x</button>
                             </div>
                             <Grid />
-                            <Button onClick={this.nextPlayer.bind(this)}>Next Player</Button>
 
                         </div> </TransformComponent>
+                    <Button className="Btn_NextPlayer" onClick={this.nextPlayer.bind(this)}>Next Player</Button>
                 </React.Fragment>
             )}
         </TransformWrapper>

@@ -13,17 +13,12 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        color: 'black',
     },
     paper: {
         backgroundColor: theme.palette.background.paper,
+        border: '2px solid #000',
         boxShadow: theme.shadows[5],
         padding: theme.spacing(2, 4, 3),
-        minWidth: '200px',
-        width: '50%',
-        maxWidth: '700px',
-        alignItems: 'center',
-        justifyContent: 'center'
     },
     form: {
         display: 'flex',
@@ -31,8 +26,9 @@ const useStyles = makeStyles((theme) => ({
         justifyContent: 'space-between',
     },
     formItem: {
-        margin: '10px 10px',
+        margin: '25px 10px',
         color: 'black',
+        textAlign: 'center',
         textTransform: 'capitalize'
     }
 }));
@@ -140,7 +136,7 @@ export default function TransitionsModal() {
 
     return (
         <div>
-            <div className="btn1" onClick={handleOpen}>
+            <div onClick={handleOpen}>
                 Joindre une partie
             </div>
             <Modal
@@ -161,9 +157,11 @@ export default function TransitionsModal() {
                             <input className="Input" type="text" onChange={(e) => setNom(e.target.value)} placeholder="Nom de la partie" />
                             <input className="Input" type="text" onChange={(e) => setPassword(e.target.value)} placeholder="Password de la partie" />
                             <input className="Input" type="text" onChange={(e) => setPlayerName(e.target.value)} placeholder="Pseudo" value={playerName} />
-                            <Link to={{ pathname: `/Game/${getGameId()}` }} style={{ textDecoration: 'none', color: 'black' }}>
-                                <div className="btn" variant="outlined" onClick={JoinGame}>Rejoindre la partie</div>
-                            </Link>
+                            <div className={classes.formItem}>
+                                <Link to={{ pathname: `/Game/${getGameId()}` }} style={{ textDecoration: 'none', color: 'black' }}>
+                                    <div className="btn" variant="outlined" onClick={JoinGame}>Rejoindre la partie</div>
+                                </Link>
+                            </div>
                         </form>
                     </div>
                 </Fade>

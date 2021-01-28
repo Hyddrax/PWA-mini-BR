@@ -1,0 +1,12 @@
+html,
+body,
+#root {
+  height: 100%;
+}
+
+.app {
+  display: flex;
+  background-color: #95bdff;
+  height: 100%;
+  flex-direction: column;
+}

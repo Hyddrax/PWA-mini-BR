@@ -89,28 +89,26 @@ function Accueil() {
 
     return (
         <div className='accueil'>
-            <h1 className="accueil__title">My Mini BR</h1>
+            <div className="accueil__title">My Mini BR</div>
             <div className="accueil__body">
                 <div className="accueil__left">
-                    <ul>
-                        <CreateGame />
-                        <JoinGame />
-                        <li onClick={() => subscribePushNotification('game1', '1')}>🔔 S'abonner aux notifications</li>
-                        <li onClick={install}>📦 Installer PWA Mini BR</li>
-                        {/* <a href='Game/'><li><CreateGame /></li></a> */}
-                        {/* <a href='Game/'><li><JoinGame /></li></a> */}
-                    </ul>
+                    <CreateGame />
+                    <JoinGame />
+                    <div className="accueil__left_div" onClick={() => subscribePushNotification('game1', '1')}>🔔 S'abonner aux notifications</div>
+                    <div className="accueil__left_div" onClick={install}>📦 Installer PWA Mini BR</div>
+                    {/* <a href='Game/'><li><CreateGame /></li></a> */}
+                    {/* <a href='Game/'><li><JoinGame /></li></a> */}
                 </div>
                 <div className="accueil__right">
                     <p>Liste des partie en cours</p>
-                    <ul>
-                        <a href='Game/'><li onClick={notifJoinGame}>Partie 1</li></a>
-                        <a href='Game/'><li onClick={notifJoinGame}>Partie 2</li></a>
-                        <a href='Game/'><li onClick={notifJoinGame}>Partie 3</li></a>
-                        <a href='Game/'><li onClick={notifJoinGame}>Partie 4</li></a>
-                        <a href='Game/'><li onClick={notifJoinGame}>Partie 5</li></a>
-                        <a href='Game/'><li onClick={notifJoinGame}>Partie 6</li></a>
-                    </ul>
+                    <div className="parties_list">
+                        <a href='Game/'><div onClick={notifJoinGame}>Partie 1</div></a>
+                        <a href='Game/'><div onClick={notifJoinGame}>Partie 2</div></a>
+                        <a href='Game/'><div onClick={notifJoinGame}>Partie 3</div></a>
+                        <a href='Game/'><div onClick={notifJoinGame}>Partie 4</div></a>
+                        <a href='Game/'><div onClick={notifJoinGame}>Partie 5</div></a>
+                        <a href='Game/'><div onClick={notifJoinGame}>Partie 6</div></a>
+                    </div>
                 </div>
             </div>
         </div >

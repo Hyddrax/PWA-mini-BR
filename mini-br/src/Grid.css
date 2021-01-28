@@ -4,7 +4,6 @@
   flex-wrap: wrap;
   background-image: url("./map.png");
   background-repeat: no-repeat;
-  background-size: 99.9%;
   width: max-content;
   padding-left: 0px;
   margin-left: -3px;
@@ -20,26 +19,13 @@
   padding-left: 2px;
   padding-top: 2px;
   width: 30px;
-}
-
-.tools {
   display: flex;
   flex-direction: column;
 }
 
-/* .Grid .row:first-child {
-  border-top: solid;
-}
-
-.Grid .row:last-child {
-  border-bottom: solid;
-} */
-
 .Grid .row {
   display: flex;
   flex-direction: row;
-  /* border-left: solid;
-  border-right: solid; */
 }
 
 .Grid #cell {
@@ -49,6 +35,17 @@
   align-items: center;
   text-align: center;
   border: 2px dotted #a0a0a0;
+}
+
+.Game-Playground .Btn_NextPlayer {
+  position: absolute;
+  bottom: calc(0% - 0px);
+  border-radius: 100px;
+  background-color: white;
+  border: solid black 2px;
+  font-weight: bold;
+  padding-left: 3%;
+  padding-right: 3%;
 }
 
 .obstacle {
