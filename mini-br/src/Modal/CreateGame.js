@@ -9,6 +9,7 @@ import DataGame from '../DataObject/DataGame'
 import DataGrid from '../DataObject/DataGrid'
 import { Button } from '@material-ui/core';
 import './modal.css';
+import Constantes from "../Constantes"
 
 
 
@@ -101,7 +102,7 @@ export default function CreateGame() {
                 applicationServerKey: urlBase64ToUint8Array(publicVapidKey)
             });
 
-            await fetch("http://localhost:8000/subscribe", {
+            await fetch(Constantes.backend_URL + "/subscribe", {
                 method: "POST",
                 body: JSON.stringify({ "subscription": subscription, "gameId": gameId, "playerId": playerId }),
                 headers: {
@@ -126,7 +127,7 @@ export default function CreateGame() {
         let dataGrid = new DataGrid(gameId, { players: [player1] });
         let dataGame = new DataGame(gameId, nom, { grid: dataGrid });
 
-        const response = await fetch("http://localhost:8000/games/add", {
+        const response = await fetch(Constantes.backend_URL + "/games/add", {
             method: "POST",
             body: JSON.stringify(dataGame),
             headers: {

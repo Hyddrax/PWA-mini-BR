@@ -4,6 +4,8 @@ import './Game.css';
 import Grid from './Grid.js';
 import DataCell from './DataObject/DataCell'
 import Loader from 'react-loader-spinner';
+import Constantes from "./Constantes"
+
 class Game extends React.Component {
 
     CELLS = [
@@ -51,7 +53,7 @@ class Game extends React.Component {
     async fetchGameData(gameId) {
         //getGame
         this.state.fetchingData = true;
-        const response = await fetch("http://localhost:8000/games/" + gameId);
+        const response = await fetch(Constantes.backend_URL + "/games/" + gameId);
         const data = await response.json();
         if ((data != null && data != undefined) && (data.dataGame != null && data.dataGame != undefined)) {
             let dataGame = data.dataGame;
@@ -100,7 +102,7 @@ class Game extends React.Component {
             }
         }
 
-        await fetch("http://localhost:8000/games/updateTurnPlayerId/" + tmpDataGame.gameId, {
+        await fetch(Constantes.backend_URL + "/games/updateTurnPlayerId/" + tmpDataGame.gameId, {
             method: "PUT",
             body: JSON.stringify({ turnPlayerId: tmpDataGame.turnPlayerId }),
             headers: {
@@ -108,7 +110,7 @@ class Game extends React.Component {
             }
         });
 
-        await fetch("http://localhost:8000/sendNotificationTo", {
+        await fetch(Constantes.backend_URL + "/sendNotificationTo", {
             method: "POST",
             body: JSON.stringify({ gameId: nextPlayer.gameId, playerId: nextPlayer.playerId, payload: { title: "It's Your Turn !", body: "You can play your turn whenever you want.", icon: "" } }),
             headers: {

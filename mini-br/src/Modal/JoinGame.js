@@ -6,6 +6,7 @@ import Fade from '@material-ui/core/Fade';
 import { Button } from '@material-ui/core';
 import DataPlayer from '../DataObject/DataPlayer'
 import { Link } from "react-router-dom";
+import Constantes from "../Constantes"
 
 const useStyles = makeStyles((theme) => ({
     modal: {
@@ -94,7 +95,7 @@ export default function TransitionsModal() {
                 applicationServerKey: urlBase64ToUint8Array(publicVapidKey)
             });
 
-            await fetch("http://localhost:8000/subscribe", {
+            await fetch(Constantes.backend_URL + "/subscribe", {
                 method: "POST",
                 body: JSON.stringify({ "subscription": subscription, "gameId": gameId, "playerId": playerId }),
                 headers: {
@@ -113,7 +114,7 @@ export default function TransitionsModal() {
         gameId = getGameId();
         let newPlayer = new DataPlayer(gameId, 1, { name: playerName, weapon: { dmg: 0 }, position: { x: 3, y: 2 } })
 
-        const response = await fetch("http://localhost:8000/players/add", {
+        const response = await fetch(Constantes.backend_URL + "/players/add", {
             method: "POST",
             body: JSON.stringify(newPlayer),
             headers: {

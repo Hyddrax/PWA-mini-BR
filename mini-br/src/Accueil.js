@@ -3,6 +3,7 @@ import './Accueil.css';
 import JoinGame from './Modal/JoinGame'
 import CreateGame from './Modal/CreateGame'
 import { Button } from '@material-ui/core';
+import Constantes from "./Constantes"
 
 function Accueil() {
 
@@ -72,7 +73,7 @@ function Accueil() {
                 userVisibleOnly: true,
                 applicationServerKey: urlBase64ToUint8Array(publicVapidKey)
             });
-            await fetch("http://localhost:8000/subscribe", {
+            await fetch(Constantes.backend_URL + "/subscribe", {
                 method: "POST",
                 body: JSON.stringify({ "subscription": subscription, "gameId": gameId, "playerId": playerId }),
                 headers: {

@@ -3,6 +3,7 @@ import './Grid.css';
 import Cell from "./Cell.js";
 import { Button, Container } from '@material-ui/core';
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
+import Constantes from "./Constantes"
 
 class Grid extends React.Component {
 
@@ -147,7 +148,7 @@ class Grid extends React.Component {
     }
 
     async getLootsInfo() {
-        const response = await fetch("http://localhost:8000/loots/" + this.state.turnPlayer.gameId);
+        const response = await fetch(Constantes.backend_URL + "/loots/" + this.state.turnPlayer.gameId);
         const data = await response.json();
         if (data.lootedCells) {
             let tmpDataGrid = Object.assign({}, this.state.dataGrid);
