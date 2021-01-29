@@ -471,7 +471,10 @@ app.get('/subscriber/:game/:id', async (req, res) => {
 
   let query = { gameId: game, playerId: id };
 
+  console.log(game, id);
+
   playersCollection.findOne(query).then(result => {
+    console.log(result);
     res.json(result.subscription)
 
   }).catch(error => console.error(error))
