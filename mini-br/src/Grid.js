@@ -392,7 +392,7 @@ class Grid extends React.Component {
             tmpPlayer.position.y = newY;
             tmpDataGrid.data.cells[this.state.turnPlayer.position.y][this.state.turnPlayer.position.x].isActifPlayer = true;
 
-            await fetch(`http://localhost:8000/players/updatePosition/${tmpPlayer.gameId}/${tmpPlayer.playerId}`, {
+            await fetch(Constantes.backend_URL + `/players/updatePosition/${tmpPlayer.gameId}/${tmpPlayer.playerId}`, {
                 method: "PUT",
                 body: JSON.stringify({ position: tmpPlayer.position, nbMoveAvailable: newNbMoveAvailable }),
                 headers: {

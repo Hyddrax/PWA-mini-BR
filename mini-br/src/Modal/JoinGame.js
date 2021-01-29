@@ -70,7 +70,7 @@ export default function TransitionsModal() {
     }
 
     const subscribePushNotification = async (gameId, playerId) => {
-
+        console.log("subscribePushNotification", gameId, playerId);
         const publicVapidKey = 'BOgjL4TQxxngezXpmDytqwDc01U-JdI6JikShCWQSW6X92S5Pe5Hq_wGidEK-SsPpIi4dhsB2S-0i7N8fSBcfGE'
 
         const urlBase64ToUint8Array = (base64String) => {
@@ -123,6 +123,7 @@ export default function TransitionsModal() {
         });
         const data = await response.json();
 
+        console.log("subscribePushNotification", data.newPlayer.gameId, data.newPlayer.playerId);
         subscribePushNotification(data.newPlayer.gameId, data.newPlayer.playerId);
 
         notifJoinGame();

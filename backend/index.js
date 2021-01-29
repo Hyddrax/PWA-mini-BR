@@ -198,10 +198,10 @@ app.post('/players/add', async (req, res) => {
   const newPlayer = req.body;
   let query = { gameId: newPlayer.gameId };
 
-  console.log(query);
+  console.log("query: ", query);
 
   playersCollection.find(query).toArray().then(gamePlayers => {
-    console.log(gamePlayers);
+    console.log("gamePlayers : ", gamePlayers);
     if (gamePlayers.length == 5) {
       res.json({
         message: "The game is already full"
@@ -227,7 +227,10 @@ app.post('/players/add', async (req, res) => {
 
         newPlayer.position = positionList[newPlayer.playerId - 1];
 
+        console.log("newPlayer : ", newPlayer);
+
         playersCollection.insertOne(newPlayer).then(result => {
+          res.json({ newPlayer: newPlayer })
         }).catch(error => console.error(error));
       }
     }
@@ -239,17 +242,8 @@ const updatePlayer = async (gameId, playerId, newValues, res) => {
   let query = { gameId: gameId, playerId: parseInt(playerId) };
   console.log(query, newValues);
   playersCollection.updateOne(query, newValues).then(result => {
-    console.log("result : ", result);
-    if (result.health <= 0) {
-      playersCollection.updateOne(query, { $set: { isDead: true } }).then(result => {
-        res.json({
-          data: result
-        })
-      }).catch(error => console.error(error));
-    }
-
     res.json({
-      data: result
+      message: "Player updated"
     })
   }).catch(error => console.error(error));
 }
@@ -259,7 +253,12 @@ app.put('/players/updateHealth/:game/:id', async (req, res) => {
   const game = req.params.game
   const id = parseInt(req.params.id)
   const data = req.body;
+
   var newValues = { $set: { health: data.health } };
+
+  if (data.health <= 0) {
+    newValues = { $set: { health: data.health, isDead: true } };
+  }
   await updatePlayer(game, id, newValues, res);
 })
 
@@ -353,7 +352,7 @@ app.post('/subscribe', async (req, res) => {
 
   let query = { gameId: gameId, playerId: playerId };
   var newValues = { $set: { subscription: subscription } };
-  console.log(query, newValues);
+  console.log("subscribe", query, newValues);
   playersCollection.updateOne(query, newValues).then(result => {
     res.status(201).json({})
     console.log(result);
