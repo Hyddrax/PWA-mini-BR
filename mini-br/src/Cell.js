@@ -1,7 +1,7 @@
 import React from 'react';
+import PlayerInfo from './Modal/PlayerInfo.js'
 
 import './Cell.css';
-
 
 class Cell extends React.Component {
 
@@ -9,7 +9,7 @@ class Cell extends React.Component {
         super(props);
         this.state = {
             dataCell: props.dataCell,
-            cellClasses: this.initClasses(props.dataCell)
+            cellClasses: this.initClasses(props.dataCell),
         };
     }
 
@@ -111,7 +111,6 @@ class Cell extends React.Component {
             console.log("Armor :             ", player.armor);
             console.log("Weapon :            ", player.weapon);
             console.log("============================================================");
-
         }
     }
 

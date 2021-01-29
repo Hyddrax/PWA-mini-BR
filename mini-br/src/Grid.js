@@ -457,7 +457,14 @@ class Grid extends React.Component {
                         cellPosition={{ "x": cellIndex, "y": rowIndex }}
                         dataCell={cell}
                         movePlayer={this.movePlayer.bind(this)}
+<<<<<<< Updated upstream
                         attackPlayer={this.attackPlayer.bind(this)} />
+=======
+                        attackPlayer={this.attackPlayer.bind(this)}
+                        lootWeapon={this.lootWeapon.bind(this)}
+                        lootArmor={this.lootArmor.bind(this)} 
+                        />
+>>>>>>> Stashed changes
 
 
                     )}

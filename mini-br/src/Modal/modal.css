@@ -37,6 +37,18 @@
   max-width: 250px;
 }
 
+.jouer {
+  justify-content: center;
+  align-items: center;
+  border-radius: 100px;
+  background-color: white;
+  border: solid black 2px;
+  font-weight: bold;
+  padding: 30%;
+  width: max-content;
+  cursor: pointer;
+}
+
 .btn:hover{
     transition: transform 0.2s ease-in-out;
     transform: scale(1.1) !important;

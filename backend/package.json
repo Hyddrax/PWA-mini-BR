@@ -15,8 +15,12 @@
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
     "express": "^4.17.1",
+<<<<<<< Updated upstream
     "mongodb": "^3.6.3",
     "mongodb-client-encryption": "^1.1.0",
+=======
+    "package.json": "^2.0.1",
+>>>>>>> Stashed changes
     "web-push": "^3.4.4"
   },
   "devDependencies": {

@@ -5,6 +5,7 @@ import Grid from './Grid.js';
 import DataCell from './DataObject/DataCell'
 import Loader from 'react-loader-spinner';
 import Constantes from "./Constantes"
+import PlayerInfo from './Modal/PlayerInfo.js'
 
 class Game extends React.Component {
 
@@ -42,14 +43,18 @@ class Game extends React.Component {
             dataPlayers: [],
             dataGrid: {},
             dataGame: {},
+            CurrentPlayer: null,
         }
         // dataGrid: new DataGrid(tmpGameId, { cells: this.CELLS, players: [props.location.player] }),
         //     dataGame: new DataGame(tmpGameId, tmpGameName, { grid: this.dataGrid }),
         // this.subscribePushNotification(this.state.gameId, this.state.dataGrid);
+        this.PlayerInfos()
+
     }
 
     componentDidMount() {
         this.fetchGameData(this.state.gameId);
+        this.PlayerInfos();
     }
 
     async fetchGameData(gameId) {
@@ -109,6 +114,16 @@ class Game extends React.Component {
         }
 
     }
+    async PlayerInfos(){
+        // const theStateState = await this.fetchGameData(this.state.);
+
+        const unStateState = await this.fetchGameData(this.state.gameId);
+        let tmpDataGame = unStateState.dataGame;
+        let tmpDataGrid = unStateState.dataGrid;
+        let CurrentPlayerT = tmpDataGrid.data.players[tmpDataGame.turnPlayerId-1];
+        this.setState({CurrentPlayer:  Object.assign({}, CurrentPlayerT)});
+       // console.log(this.state.CurrentPlayer);
+    }
 
 
     async nextPlayer() {
@@ -150,6 +165,7 @@ class Game extends React.Component {
     }
 
     render() {
+
         return (
             <div className="Game">
                 <div className="Game-TopBar">
@@ -157,7 +173,8 @@ class Game extends React.Component {
                         <div className="Name">{this.state.gameName != null ? this.state.gameName : "Nom de la partie"}</div>
                     </div>
                     <div className="RightPanel">
-                        <Button className="ShowPlayers">Joueurs</Button>
+                        {/* <Button className="ShowPlayers">Joueurs</Button> */}
+                        {this.state.CurrentPlayer !== null && <PlayerInfo player={this.state.CurrentPlayer}/> }
                         <Button href="/" className="GoBack">Retour</Button>
                     </div>
                 </div>

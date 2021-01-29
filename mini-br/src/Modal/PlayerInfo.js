@@ -9,6 +9,7 @@ import { Link } from "react-router-dom";
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Slider from '@material-ui/core/Slider';
+import './modal.css';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -38,11 +39,10 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-export default function PlayerInfo() {
+export default function PlayerInfo({player}) {
+
     const classes = useStyles();
     const [open, setOpen] = React.useState(false);
-    const [nom, setNom] = React.useState('');
-    const [password, setPassword] = React.useState('');
 
     const handleOpen = () => {
         setOpen(true);
@@ -52,56 +52,51 @@ export default function PlayerInfo() {
         setOpen(false);
     };
 
+    // const player = (params) =>  {
+    //     params.preventDefault();
+    //     if (this.state.dataCell.isPlayer) {
+    //         console.clear();
+    //         let player = this.state.dataCell.data.player;
+    //         console.log("============================================================");
+    //         console.log("Name :              ", player.name);
+    //         console.log("Health :            ", player.health);
+    //         console.log("Position :          ", player.position);
+    //         console.log("Mouvement restant : ", player.nbMoveAvailable);
+    //         console.log("Armor :             ", player.armor);
+    //         console.log("Weapon :            ", player.weapon);
+    //         console.log("============================================================");
+
+    //     }
+    // }
+
+    // console.log(player)
 
     return (
         <div >
-            <div onClick={handleOpen}>
-                <span style={{ cursor: 'pointer' }} type="button" >
-                    Joindre une partie
-            </span>
-                <Modal
-                    aria-labelledby="transition-modal-title"
-                    aria-describedby="transition-modal-description"
-                    className={classes.modal}
-                    open={open}
-                    onClose={handleClose}
-                    closeAfterTransition
-                    BackdropComponent={Backdrop}
-                    BackdropProps={{
-                        timeout: 500,
-                    }}
-                >
-                    <Fade in={open}>
-                        <div className={classes.paper}>
-                            <Typography id="disabled-slider" gutterBottom>
-                                nom du joueur
-                            </Typography>
-                            <Grid container spacing={2}>
-                                <Grid item>
-                                    <spam>live</spam>
-                                </Grid>
-                                <Grid item xs>
-                                    <Slider disabled defaultValue={100} aria-labelledby="disabled-slider" />
-                                </Grid>
-                                <Grid item>
-                                    <spam>100</spam>
-                                </Grid>
-                            </Grid>
-                            <Grid container spacing={2}>
-                                <Grid item>
-                                    <spam>weapon</spam>
-                                </Grid>
-                                <Grid item xs>
-                                    <Slider disabled defaultValue={15} aria-labelledby="disabled-slider" />
-                                </Grid>
-                                <Grid item>
-                                    <spam>10</spam>
-                                </Grid>
-                            </Grid>
-                        </div>
-                    </Fade>
-                </Modal>
+              <div className="jouer" onClick={handleOpen}>
+                {player.data.name}
             </div>
+           <Modal
+                aria-labelledby="transition-modal-title"
+                aria-describedby="transition-modal-description"
+                className={classes.modal}
+                open={open}
+                onClose={handleClose}
+                closeAfterTransition
+                BackdropComponent={Backdrop}
+                BackdropProps={{
+                    timeout: 500,
+                }}
+            >
+                <Fade in={open}>
+                    <div className={classes.paper}>
+                              <h2>Player Info</h2>
+                              <p><b>Name:</b> {player.data.name}</p>           
+                              <p><b>Health:</b> {player.data.health}</p>        
+                              <p><b>Weapn:</b> {player.data.weapon.dmg}</p>
+                    </div>
+                </Fade>
+            </Modal>
         </div>
     );
 }
