@@ -91,6 +91,7 @@ MongoClient.connect(connectionString, { useUnifiedTopology: true }, (err, client
 
   // findOne game
   app.get('/games/:id', (req, res) => {
+    console.log("find game by ID");
     const gameId = req.params.id
 
     let query = { gameId: gameId };
@@ -106,17 +107,15 @@ MongoClient.connect(connectionString, { useUnifiedTopology: true }, (err, client
 
   // Create New partie
   app.post('/games/add', (req, res) => {
-    const dataGame = req.body;
-    const dataPlayer = dataGame.data.grid.data.players;
+    const dataGame = req.body.dataGame;
+    const dataPlayer = req.body.player1;
 
     gamesCollection.insertOne(dataGame).then(result => {
       let newGame = result.ops[0];
-      console.log("insertOne game", newGame);
-      playersCollection.insertMany(dataPlayer).then(result => {
-        console.log("insert game players", newGame);
+      playersCollection.insertOne(dataPlayer).then(result => {
         res.json({
           dataGame: newGame,
-          dataPlayer: result.ops
+          dataPlayer: result.ops[0]
         })
       }).catch(error => console.error(error));
     }).catch(error => console.error(error));
@@ -151,7 +150,20 @@ MongoClient.connect(connectionString, { useUnifiedTopology: true }, (err, client
     }).catch(error => console.error(error))
   })
 
-  // findOne player
+  // findAll game players
+  app.get('/players/:gameId', (req, res) => {
+    console.log("find players by gameId");
+    const gameId = req.params.gameId
+    let query = { gameId: gameId };
+    playersCollection.find(query).toArray().then(results => {
+      console.log(chalk.bgBlue.black('findAll players'))
+      res.json({
+        data: results
+      })
+    }).catch(error => console.error(error))
+  })
+
+  // findOne players
   app.get('/players/:game/:id', (req, res) => {
     const game = req.params.game
     const id = parseInt(req.params.id)
@@ -252,15 +264,18 @@ MongoClient.connect(connectionString, { useUnifiedTopology: true }, (err, client
     const playerId = parseInt(req.params.playerId)
     const data = req.body
 
-    let newEquipment = {};
-    if (data.armor) {
-      newEquipment.armor = data.armor;
+    var newValues = null;
+    if (data.armor && data.weapon) {
+      newValues = { $set: { armor: data.armor, weapon: data.weapon } };
+    } else if (data.weapon) {
+      newValues = { $set: { weapon: data.weapon } };
+    } else if (data.armor) {
+      newValues = { $set: { armor: data.armor } };
     }
-    if (data.weapon) {
-      newEquipment.weapon = data.weapon;
+
+    if (newValues != null) {
+      updatePlayer(gameId, playerId, newValues, res);
     }
-    var newValues = { $set: { newEquipment } };
-    updatePlayer(gameId, playerId, newValues, res);
   })
 
   // update player Position

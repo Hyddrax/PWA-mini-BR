@@ -124,19 +124,18 @@ export default function CreateGame() {
         let player1 = new DataPlayer(gameId, 1, { name: playerName, weapon: { dmg: 0 }, position: { x: 3, y: 2 } })
 
         // Save une BDD call backend
-        let dataGrid = new DataGrid(gameId, { players: [player1] });
-        let dataGame = new DataGame(gameId, nom, { grid: dataGrid });
+        let dataGame = new DataGame(gameId, nom);
 
         const response = await fetch(Constantes.backend_URL + "/games/add", {
             method: "POST",
-            body: JSON.stringify(dataGame),
+            body: JSON.stringify({ dataGame, player1 }),
             headers: {
                 'content-type': "application/json"
             }
         });
 
         const data = await response.json();
-        subscribePushNotification(data.dataPlayer[0].gameId, data.dataPlayer[0].playerId);
+        subscribePushNotification(data.dataPlayer.gameId, data.dataPlayer.playerId);
         notifNewGame();
     }
 

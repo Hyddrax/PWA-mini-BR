@@ -38,6 +38,8 @@ class Game extends React.Component {
             fetchingData: true,
             gameName: "Partie Name",
             gameId: tmpGameId,
+            turnPlayerId: 1,
+            dataPlayers: [],
             dataGrid: {},
             dataGame: {},
         }
@@ -53,16 +55,42 @@ class Game extends React.Component {
     async fetchGameData(gameId) {
         //getGame
         this.state.fetchingData = true;
-        const response = await fetch(Constantes.backend_URL + "/games/" + gameId);
-        const data = await response.json();
+        let gameResponse = null;
+        let data = null;
+        let playerResponse = null;
+        let players = null;
+        let dataIsFetched = false
+        let timeOut = false
+        var startingTime = performance.now()
+        while (!dataIsFetched && !timeOut) {
+            console.log("fetchingData");
+            gameResponse = await fetch(Constantes.backend_URL + "/games/" + gameId);
+            data = await gameResponse.json();
+            playerResponse = await fetch(Constantes.backend_URL + "/players/" + gameId);
+            players = await playerResponse.json();
+
+            if ((data != null && data != undefined)
+                && (data.dataGame != null || data.dataGame != undefined)
+                && (players != null || players != undefined)) {
+                dataIsFetched = true;
+            }
+            var time = performance.now()
+
+            if ((time - startingTime) > 3000) {
+                timeOut = true;
+            }
+        }
+
         if ((data != null && data != undefined) && (data.dataGame != null && data.dataGame != undefined)) {
             let dataGame = data.dataGame;
-            dataGame.data.grid.data.cells = this.CELLS;
+            dataGame.data = { grid: { data: { cells: this.CELLS } } }
             this.setState({
                 gameName: dataGame.gameName,
                 gameId: dataGame.gameId,
                 dataGrid: dataGame.data.grid,
                 dataGame: dataGame,
+                turnPlayerId: dataGame.turnPlayerId,
+                dataPlayers: players.data,
                 fetchingData: false
             })
             return {
@@ -70,6 +98,8 @@ class Game extends React.Component {
                 gameId: dataGame.gameId,
                 dataGrid: dataGame.data.grid,
                 dataGame: dataGame,
+                turnPlayerId: dataGame.turnPlayerId,
+                dataPlayers: players.data,
                 fetchingData: false
             };
 
@@ -79,24 +109,21 @@ class Game extends React.Component {
             this.props.history.push('/');
         }
 
-
-
     }
 
 
     async nextPlayer() {
         const unStateState = await this.fetchGameData(this.state.gameId);
         let tmpDataGame = unStateState.dataGame;
-        let tmpDataGrid = unStateState.dataGrid;
         let playerIsDead = true
         let nextPlayer = null;
         while (playerIsDead) {
-            if (tmpDataGame.turnPlayerId == unStateState.dataGrid.data.players.length) {
+            if (tmpDataGame.turnPlayerId == unStateState.dataPlayers.length) {
                 tmpDataGame.turnPlayerId = 1;
             } else {
                 tmpDataGame.turnPlayerId++;
             }
-            nextPlayer = tmpDataGrid.data.players[tmpDataGame.turnPlayerId - 1];
+            nextPlayer = unStateState.dataPlayers[tmpDataGame.turnPlayerId - 1];
             if (nextPlayer != null && nextPlayer.health > 0) {
                 playerIsDead = false;
             }
@@ -117,6 +144,7 @@ class Game extends React.Component {
                 'content-type': "application/json"
             }
         });
+
         this.setState({
             dataGame: tmpDataGame
         });
@@ -146,7 +174,7 @@ class Game extends React.Component {
                     >
                         <Loader type="ThreeDots" color="#FFFFFF" height="100" width="100" />
                     </div> :
-                        <Grid dataGrid={this.state.dataGrid} turnPlayerId={this.state.dataGame.turnPlayerId} nextPlayer={this.nextPlayer.bind(this)}></Grid>}
+                        <Grid dataGrid={this.state.dataGrid} dataPlayers={this.state.dataPlayers} turnPlayerId={this.state.dataGame.turnPlayerId} nextPlayer={this.nextPlayer.bind(this)}></Grid>}
                 </div>
             </div >
         );

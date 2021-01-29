@@ -9,17 +9,19 @@ class Grid extends React.Component {
 
     constructor(props) {
         super(props);
-
-        let nbMoveAvailable = this.props.dataGrid.data.players[this.props.turnPlayerId - 1].nbMoveAvailable
+        console.log(this.props);
+        let nbMoveAvailable = this.props.dataPlayers[this.props.turnPlayerId - 1].nbMoveAvailable
         if (nbMoveAvailable == null) {
             nbMoveAvailable = 9
         } else if (nbMoveAvailable <= 1) {
             nbMoveAvailable = 9
         }
+
         this.state = {
             dataGrid: this.props.dataGrid,
+            dataPlayers: this.props.dataPlayers,
             turnPlayerId: this.props.turnPlayerId,
-            turnPlayer: this.props.dataGrid.data.players[this.props.turnPlayerId - 1],
+            turnPlayer: this.props.dataPlayers[this.props.turnPlayerId - 1],
             nbMoveAvailable: nbMoveAvailable,
         }
 
@@ -32,7 +34,7 @@ class Grid extends React.Component {
     componentDidUpdate(oldProps) {
         if (this.props != oldProps) {
             let tmpDataGrid = Object.assign({}, this.props.dataGrid);
-            let oldTurnPlayer = Object.assign({}, this.props.dataGrid.data.players[oldProps.turnPlayerId - 1]);
+            let oldTurnPlayer = Object.assign({}, this.props.dataPlayers[oldProps.turnPlayerId - 1]);
             tmpDataGrid.data.cells[oldTurnPlayer.position.y][oldTurnPlayer.position.x].isActifPlayer = false;
             //reset Old player walkable cells
             this.resetCellsAround(oldTurnPlayer.position.x, oldTurnPlayer.position.y, 9);
@@ -40,7 +42,7 @@ class Grid extends React.Component {
             this.setState({
                 dataGrid: tmpDataGrid,
                 turnPlayerId: this.props.turnPlayerId,
-                turnPlayer: this.props.dataGrid.data.players[this.props.turnPlayerId - 1],
+                turnPlayer: this.props.dataPlayers[this.props.turnPlayerId - 1],
                 nbMoveAvailable: 9
             });
             this.getLootsInfo();
@@ -49,7 +51,7 @@ class Grid extends React.Component {
 
 
     // Utils Functions ------------------------------------------------------
-
+    //todo ne pas recalculer la distance lorsuq'on pass le tours uniquement au debut d'un tous ou après une action
     accessibleCellsAround(x, y, distance, existingSet) {
         if (distance == 0) {
             return existingSet;
@@ -108,7 +110,7 @@ class Grid extends React.Component {
 
     findPlayerIndexByPosition(x, y) {
         let attackedPlayerIndex = null;
-        this.state.dataGrid.data.players.forEach((player, index) => {
+        this.state.dataPlayers.forEach((player, index) => {
             if (player.position.x == x && player.position.y == y) {
                 attackedPlayerIndex = index;
             }
@@ -202,7 +204,8 @@ class Grid extends React.Component {
         if (navigator.serviceWorker.controller != null) {
             const subscription = await this.getSubscription();
             let tmpDataGrid = Object.assign({}, this.state.dataGrid);
-            let player = tmpDataGrid.data.players[this.state.turnPlayerId - 1];
+            let tmpDataPlayers = Object.assign([], this.state.dataPlayers);
+            let player = tmpDataPlayers[this.state.turnPlayerId - 1];
             if (player.subscription == null) {
                 const response = await fetch(`http://localhost:8000/subscriber/${player.gameId}/${player.playerId}`);
                 const data = await response.json();
@@ -223,14 +226,16 @@ class Grid extends React.Component {
     async lootWeapon() {
         if (await this.checkIfIcanPlay()) {
 
-            let tmpDataGrid = Object.assign({}, this.state.dataGrid);
-            let player = tmpDataGrid.data.players[this.state.turnPlayerId - 1];
+            let tmpDataPlayers = Object.assign({}, this.state.dataPlayers);
+            let player = tmpDataPlayers[this.state.turnPlayerId - 1];
 
             var lootedWeapon = { dmg: this.randomRange(15, 100) };
             console.clear();
             console.log("============================================================");
             console.log("Looted Weapon : ", lootedWeapon);
             console.log("============================================================");
+
+            console.log(player);
 
             if (player.weapon.dmg < lootedWeapon.dmg) {
                 player.weapon = lootedWeapon;
@@ -239,7 +244,7 @@ class Grid extends React.Component {
             this.updatePlayerEquipement(player);
 
             this.setState({
-                dataGrid: tmpDataGrid
+                dataPlayers: tmpDataPlayers
             }, () => {
                 this.nextPlayer();
             });
@@ -252,7 +257,8 @@ class Grid extends React.Component {
         if (await this.checkIfIcanPlay()) {
 
             let tmpDataGrid = Object.assign({}, this.state.dataGrid);
-            let player = tmpDataGrid.data.players[this.state.turnPlayerId - 1];
+            let tmpDataPlayers = Object.assign([], this.state.dataPlayers);
+            let player = tmpDataPlayers[this.state.turnPlayerId - 1];
 
             var lootedArmor = { dmgAbsorption: this.randomRange(10, 75) };
             console.clear();
@@ -266,7 +272,8 @@ class Grid extends React.Component {
             this.updatePlayerEquipement(player);
 
             this.setState({
-                dataGrid: tmpDataGrid
+                dataGrid: tmpDataGrid,
+                dataPlayers: tmpDataPlayers
             }, () => {
                 this.nextPlayer();
             });
@@ -355,7 +362,7 @@ class Grid extends React.Component {
         }
     }
 
-    async movePlayer(newX, newY) {
+    async movePlayer(newX, newY, lootWeapon, lootArmor) {
         if (await this.checkIfIcanPlay()) {
             let tmpDataGrid = Object.assign({}, this.state.dataGrid);
             let tmpPlayer = Object.assign({}, this.state.turnPlayer);
@@ -379,11 +386,21 @@ class Grid extends React.Component {
                     'content-type': "application/json"
                 }
             });
+            let tmpDataPlayers = Object.assign([], this.state.dataPlayers);
+            tmpDataPlayers[this.state.turnPlayerId - 1] = tmpPlayer;
 
             this.setState({
                 dataGrid: tmpDataGrid,
+                dataPlayers: tmpDataPlayers,
                 turnPlayer: tmpPlayer,
                 nbMoveAvailable: newNbMoveAvailable
+            }, () => {
+                if (lootArmor) {
+                    this.lootArmor();
+                }
+                if (lootWeapon) {
+                    this.lootWeapon();
+                }
             });
             if (newNbMoveAvailable == 1) {
                 this.nextPlayer();
@@ -407,23 +424,21 @@ class Grid extends React.Component {
     }
 
     render() {
-        const copyObject = Object.assign({}, this.state.dataGrid);
-        copyObject.data.players.forEach((player, index) => {
-            copyObject.data.cells[player.position.y][player.position.x].isDead = player.isDead;
-            copyObject.data.cells[player.position.y][player.position.x].isPlayer = true;
-            copyObject.data.cells[player.position.y][player.position.x].playerId = index + 1;
-            copyObject.data.cells[player.position.y][player.position.x].data = { player: player };
-            if (player == this.state.turnPlayer && this.state.nbMoveAvailable != 1) {
-                copyObject.data.cells[this.state.turnPlayer.position.y][this.state.turnPlayer.position.x].isActifPlayer = true;
+        const copyDataGrid = Object.assign({}, this.state.dataGrid);
+        const copyDataPlayer = Object.assign([], this.state.dataPlayers);
+        copyDataPlayer.forEach((player, index) => {
+            copyDataGrid.data.cells[player.position.y][player.position.x].isDead = player.isDead;
+            copyDataGrid.data.cells[player.position.y][player.position.x].isPlayer = true;
+            copyDataGrid.data.cells[player.position.y][player.position.x].playerId = index + 1;
+            copyDataGrid.data.cells[player.position.y][player.position.x].data = { player: player };
+            if (player.gameId == this.state.turnPlayer.gameId && player.playerId == this.state.turnPlayer.playerId && this.state.nbMoveAvailable != 1) {
+                copyDataGrid.data.cells[this.state.turnPlayer.position.y][this.state.turnPlayer.position.x].isActifPlayer = true;
             }
-            copyObject.data.cells[player.position.y][player.position.x].isPlayer = true;
-            copyObject.data.cells[player.position.y][player.position.x].playerId = index + 1;
-            copyObject.data.cells[player.position.y][player.position.x].data = { player: player };
         });
 
 
         this.accessibleCellsAround(this.state.turnPlayer.position.x, this.state.turnPlayer.position.y, this.state.nbMoveAvailable);
-        const Grid = () => copyObject.data.cells.map((row, rowIndex) => {
+        const Grid = () => copyDataGrid.data.cells.map((row, rowIndex) => {
             return <div key={rowIndex} className={`row`}>
                 {
                     row.map((cell, cellIndex) => <Cell
@@ -431,9 +446,7 @@ class Grid extends React.Component {
                         cellPosition={{ "x": cellIndex, "y": rowIndex }}
                         dataCell={cell}
                         movePlayer={this.movePlayer.bind(this)}
-                        attackPlayer={this.attackPlayer.bind(this)}
-                        lootWeapon={this.lootWeapon.bind(this)}
-                        lootArmor={this.lootArmor.bind(this)} />
+                        attackPlayer={this.attackPlayer.bind(this)} />
 
 
                     )}

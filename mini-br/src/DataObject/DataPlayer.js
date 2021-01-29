@@ -15,7 +15,6 @@ class DataPlayer {
   constructor(gameId, playerId, data) {
     this.gameId = gameId;
     this.playerId = playerId;
-    this.data = data;
 
     this.name = data.name != null ? data.name : "Joueur" + this.playerId;
     this.armor = data.armor != null ? data.armor : { dmgAbsorption: 0 };
@@ -24,12 +23,8 @@ class DataPlayer {
     this.position = data.position;
     this.nbMoveAvailable = data.nbMoveAvailable != null ? data.nbMoveAvailable : 9;
     this.subscription = data.subscription;
-    this.initData();
   }
 
-  initData() {
-    this.data = { name: this.name, armor: this.armor, weapon: this.weapon, health: this.health, position: this.position };
-  }
 
 
 }

@@ -71,24 +71,25 @@ class Cell extends React.Component {
 
         if (!this.state.dataCell.isPlayer) {
             if (this.state.dataCell.isWalkable) {
-                this.props.movePlayer(this.props.cellPosition.x, this.props.cellPosition.y);
+                let lootWeapon = false;
+                let lootArmor = false;
                 if ((this.state.dataCell.isLoot || this.state.dataCell.isLootWeapon || this.state.dataCell.isLootArmor) && !this.state.dataCell.isLooted) {
                     if (this.state.dataCell.isLootWeapon) {
-                        this.props.lootWeapon();
+                        lootWeapon = true
                     } else if (this.state.dataCell.isLootArmor) {
-                        this.props.lootArmor();
+                        lootArmor = true
                     } else if (this.state.dataCell.isLoot) {
                         var min = 0;
                         var max = 100;
                         var random = Math.floor(Math.random() * (+max - +min)) + +min;
                         if (random < 50) {
-                            this.props.lootWeapon();
+                            lootWeapon = true
                         } else {
-                            this.props.lootArmor();
+                            lootArmor = true
                         }
                     }
                 }
-
+                this.props.movePlayer(this.props.cellPosition.x, this.props.cellPosition.y, lootWeapon, lootArmor);
             }
         } else {
             this.props.attackPlayer(this.props.cellPosition.x, this.props.cellPosition.y);
