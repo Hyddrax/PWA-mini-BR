@@ -133,9 +133,8 @@ app.post('/games/add', async (req, res) => {
 // games updateTurnPlayerId
 app.put('/games/updateTurnPlayerId/:id', async (req, res) => {
   let { gamesCollection, playersCollection, lootsCollection } = await getCollection();
-  const id = parseInt(req.params.id);
+  const id = req.params.id;
   const data = req.body;
-
   let query = { gameId: id };
   var newValues = { $set: { turnPlayerId: data.turnPlayerId } };
   gamesCollection.updateOne(query, newValues).then(result => {

@@ -207,6 +207,7 @@ class Grid extends React.Component {
         }
         catch (e) {
             console.error("Subscribe rejected");
+            alert("You may need to authorise notification.");
         }
     }
 
@@ -218,7 +219,7 @@ class Grid extends React.Component {
             let tmpDataPlayers = Object.assign([], this.state.dataPlayers);
             let player = tmpDataPlayers[this.state.turnPlayerId - 1];
             if (player.subscription == null) {
-                const response = await fetch(`${Constantes.backend_URL}/subscriber/${player.gameId}/${player.playerId}`);
+                const response = await fetch(Constantes.backend_URL + `/subscriber/${player.gameId}/${player.playerId}`);
                 const data = await response.json();
                 player.subscription = data.subscription;
             }
@@ -298,12 +299,13 @@ class Grid extends React.Component {
     async attackPlayer(x, y) {
         if (await this.checkIfIcanPlay()) {
 
+            let tmpDataPlayers = Object.assign([], this.state.dataPlayers);
             let tmpDataGrid = Object.assign({}, this.state.dataGrid);
             let tmpPlayer = Object.assign({}, this.state.turnPlayer);
             let distance = this.calcTravelDistance(tmpPlayer.position.x, tmpPlayer.position.y, x, y);
             if (distance == 1) {
                 let attackedPlayerIndex = this.findPlayerIndexByPosition(x, y);
-                let attackedPlayer = tmpDataGrid.data.players[attackedPlayerIndex];
+                let attackedPlayer = tmpDataPlayers[attackedPlayerIndex];
                 if (!attackedPlayer.isDead) {
                     if (tmpPlayer.weapon != null && tmpPlayer.weapon.dmg != 0) {
                         let dealedDmg = 0;
