@@ -39,6 +39,7 @@ const stringToHash = (string) => {
 }
 
 app.get('/', (req, res) => {
+  console.log("PWA Mini BR Backend Work !");
   res.send('🌍 PWA Mini BR Backend Work !')
 })
 
