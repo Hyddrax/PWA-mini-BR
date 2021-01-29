@@ -4,6 +4,8 @@ const cors = require('cors')
 const bodyParser = require('body-parser')
 const webpush = require('web-push')
 
+const DbConnection = require('./dba');
+
 const app = express()
 app.use(cors())
 const PORT = 8000
@@ -43,39 +45,35 @@ app.get('/', (req, res) => {
   res.send('🌍 PWA Mini BR Backend Work !')
 })
 
-let db = null;
-let gamesCollection = null
-let playersCollection = null
-let lootsCollection = null
-
-
-const MongoClient = require('mongodb').MongoClient;
-const connectionString = "mongodb+srv://admin:pwaAdmin@pwa-mini-br-cluster.32rxd.mongodb.net/miniBR?retryWrites=true&w=majority";
-MongoClient.connect(connectionString, { useUnifiedTopology: true }, (err, client) => {
-  if (err) return console.error(err)
-  console.log('Connected to Database')
-  db = client.db('miniBR')
-  gamesCollection = db.collection('games')
-  playersCollection = db.collection('players')
-  lootsCollection = db.collection('loots')
-})
+const getCollection = async () => {
+  let db = await DbConnection.Get();
+  let gamesCollection = db.collection('games')
+  let playersCollection = db.collection('players')
+  let lootsCollection = db.collection('loots')
+  return { gamesCollection, playersCollection, lootsCollection }
+}
 
 app.get('/clearData', async (req, res) => {
+  let { gamesCollection, playersCollection, lootsCollection } = await getCollection();
+  try {
 
-  gamesCollection.deleteMany({}, function (err, delOK) {
-    if (err) throw err;
-    if (delOK) console.log("Collection deleted");
-  });
+    gamesCollection.deleteMany({}, function (err, delOK) {
+      if (err) throw err;
+      if (delOK) console.log("Collection deleted");
+    });
 
-  playersCollection.deleteMany({}, function (err, delOK) {
-    if (err) throw err;
-    if (delOK) console.log("Collection deleted");
-  });
+    playersCollection.deleteMany({}, function (err, delOK) {
+      if (err) throw err;
+      if (delOK) console.log("Collection deleted");
+    });
 
-  lootsCollection.deleteMany({}, function (err, delOK) {
-    if (err) throw err;
-    if (delOK) console.log("Collection deleted");
-  });
+    lootsCollection.deleteMany({}, function (err, delOK) {
+      if (err) throw err;
+      if (delOK) console.log("Collection deleted");
+    });
+  } catch (e) {
+    return console.error(e);;
+  }
 
   res.status(200);
   res.json({
@@ -89,6 +87,7 @@ app.get('/clearData', async (req, res) => {
 
 // findAll games
 app.get('/games', async (req, res) => {
+  let { gamesCollection, playersCollection, lootsCollection } = await getCollection();
   gamesCollection.find().toArray().then(results => {
     console.log(chalk.bgBlue.black('findAll games'))
     res.json({
@@ -98,7 +97,8 @@ app.get('/games', async (req, res) => {
 })
 
 // findOne game
-app.get('/games/:id', (req, res) => {
+app.get('/games/:id', async (req, res) => {
+  let { gamesCollection, playersCollection, lootsCollection } = await getCollection();
   console.log("find game by ID");
   const gameId = req.params.id
 
@@ -114,7 +114,8 @@ app.get('/games/:id', (req, res) => {
 })
 
 // Create New partie
-app.post('/games/add', (req, res) => {
+app.post('/games/add', async (req, res) => {
+  let { gamesCollection, playersCollection, lootsCollection } = await getCollection();
   const dataGame = req.body.dataGame;
   const dataPlayer = req.body.player1;
 
@@ -130,7 +131,8 @@ app.post('/games/add', (req, res) => {
 })
 
 // games updateTurnPlayerId
-app.put('/games/updateTurnPlayerId/:id', (req, res) => {
+app.put('/games/updateTurnPlayerId/:id', async (req, res) => {
+  let { gamesCollection, playersCollection, lootsCollection } = await getCollection();
   const id = parseInt(req.params.id);
   const data = req.body;
 
@@ -149,7 +151,8 @@ app.put('/games/updateTurnPlayerId/:id', (req, res) => {
 // -------------------------------------
 
 // findAll players
-app.get('/players', (req, res) => {
+app.get('/players', async (req, res) => {
+  let { gamesCollection, playersCollection, lootsCollection } = await getCollection();
   playersCollection.find().toArray().then(results => {
     console.log(chalk.bgBlue.black('findAll players'))
     res.json({
@@ -159,7 +162,8 @@ app.get('/players', (req, res) => {
 })
 
 // findAll game players
-app.get('/players/:gameId', (req, res) => {
+app.get('/players/:gameId', async (req, res) => {
+  let { gamesCollection, playersCollection, lootsCollection } = await getCollection();
   console.log("find players by gameId");
   const gameId = req.params.gameId
   let query = { gameId: gameId };
@@ -172,7 +176,8 @@ app.get('/players/:gameId', (req, res) => {
 })
 
 // findOne players
-app.get('/players/:game/:id', (req, res) => {
+app.get('/players/:game/:id', async (req, res) => {
+  let { gamesCollection, playersCollection, lootsCollection } = await getCollection();
   const game = req.params.game
   const id = parseInt(req.params.id)
   const player = []
@@ -189,7 +194,8 @@ app.get('/players/:game/:id', (req, res) => {
 })
 
 // insertOne player
-app.post('/players/add', (req, res) => {
+app.post('/players/add', async (req, res) => {
+  let { gamesCollection, playersCollection, lootsCollection } = await getCollection();
   const newPlayer = req.body;
   let query = { gameId: newPlayer.gameId };
 
@@ -237,7 +243,8 @@ app.post('/players/add', (req, res) => {
   }).catch(error => console.error(error))
 })
 
-const updatePlayer = (gameId, playerId, newValues, res) => {
+const updatePlayer = async (gameId, playerId, newValues, res) => {
+  let { gamesCollection, playersCollection, lootsCollection } = await getCollection();
   let query = { gameId: gameId, playerId: parseInt(playerId) };
   console.log(query, newValues);
   playersCollection.updateOne(query, newValues).then(result => {
@@ -257,17 +264,17 @@ const updatePlayer = (gameId, playerId, newValues, res) => {
 }
 
 // update player Health
-app.put('/players/updateHealth/:game/:id', (req, res) => {
+app.put('/players/updateHealth/:game/:id', async (req, res) => {
   const game = req.params.game
   const id = parseInt(req.params.id)
   const data = req.body;
   var newValues = { $set: { health: data.health } };
-  updatePlayer(game, id, newValues, res);
+  await updatePlayer(game, id, newValues, res);
 })
 
 
 // Pupdate player Equipment
-app.put('/players/updateEquipment/:gameId/:playerId', (req, res) => {
+app.put('/players/updateEquipment/:gameId/:playerId', async (req, res) => {
   const gameId = req.params.gameId
   const playerId = parseInt(req.params.playerId)
   const data = req.body
@@ -282,18 +289,18 @@ app.put('/players/updateEquipment/:gameId/:playerId', (req, res) => {
   }
 
   if (newValues != null) {
-    updatePlayer(gameId, playerId, newValues, res);
+    await updatePlayer(gameId, playerId, newValues, res);
   }
 })
 
 // update player Position
-app.put('/players/updatePosition/:gameId/:playerId', (req, res) => {
+app.put('/players/updatePosition/:gameId/:playerId', async (req, res) => {
   const gameId = req.params.gameId
   const playerId = parseInt(req.params.playerId)
   const data = req.body
 
   var newValues = { $set: { position: data.position, nbMoveAvailable: data.nbMoveAvailable } };
-  updatePlayer(gameId, playerId, newValues, res);
+  await updatePlayer(gameId, playerId, newValues, res);
 })
 
 // -------------------------------------
@@ -301,7 +308,8 @@ app.put('/players/updatePosition/:gameId/:playerId', (req, res) => {
 // -------------------------------------
 
 // findOne Loots
-app.get('/loots/:game', (req, res) => {
+app.get('/loots/:game', async (req, res) => {
+  let { gamesCollection, playersCollection, lootsCollection } = await getCollection();
   const game = req.params.game
 
   let query = { gameId: game };
@@ -313,7 +321,8 @@ app.get('/loots/:game', (req, res) => {
 })
 
 // insertOne loots
-app.post('/loots/add', (req, res) => {
+app.post('/loots/add', async (req, res) => {
+  let { gamesCollection, playersCollection, lootsCollection } = await getCollection();
   const gameId = req.body.gameId;
   const lootedCell = req.body.lootedCell;
   let lootsExist = false;
@@ -343,7 +352,8 @@ app.post('/loots/add', (req, res) => {
 
 
 // Subcribe route
-app.post('/subscribe', (req, res) => {
+app.post('/subscribe', async (req, res) => {
+  let { gamesCollection, playersCollection, lootsCollection } = await getCollection();
   // Get pushSubscription Options
   const subscription = req.body.subscription
   const gameId = req.body.gameId
@@ -365,7 +375,8 @@ app.post('/subscribe', (req, res) => {
   }).catch(error => console.error(error));
 })
 
-app.post('/sendNotification', (req, res) => {
+app.post('/sendNotification', async (req, res) => {
+  let { gamesCollection, playersCollection, lootsCollection } = await getCollection();
   const subscription = req.body.subscription
   const notificationTitle = req.body.payload.title
   const notificationBody = req.body.payload.body
@@ -382,7 +393,8 @@ app.post('/sendNotification', (req, res) => {
   webpush.sendNotification(subscription, payload).catch(err => console.log(err))
 })
 
-app.post('/sendNotificationTo', (req, res) => {
+app.post('/sendNotificationTo', async (req, res) => {
+  let { gamesCollection, playersCollection, lootsCollection } = await getCollection();
   const gameId = req.body.gameId
   const playerId = parseInt(req.body.playerId)
   const notificationTitle = req.body.payload.title
@@ -411,7 +423,8 @@ app.post('/sendNotificationTo', (req, res) => {
 
 })
 
-app.post('/notifyAll', (req, res) => {
+app.post('/notifyAll', async (req, res) => {
+  let { gamesCollection, playersCollection, lootsCollection } = await getCollection();
   const notificationTitle = req.body.payload.title
   const notificationBody = req.body.payload.body
   const notificationIcon = req.body.payload.icon
@@ -452,7 +465,8 @@ app.post('/notifyAll', (req, res) => {
 })
 
 // findOne player subscription
-app.get('/subscriber/:game/:id', (req, res) => {
+app.get('/subscriber/:game/:id', async (req, res) => {
+  let { gamesCollection, playersCollection, lootsCollection } = await getCollection();
   const game = req.params.game
   const id = parseInt(req.params.id)
 
