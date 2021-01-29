@@ -11,6 +11,7 @@ class DataPlayer {
   position = null;
   nbMoveAvailable = null;
   subscription = null;
+  isDead = null;
 
   constructor(gameId, playerId, data) {
     this.gameId = gameId;
@@ -21,6 +22,8 @@ class DataPlayer {
     this.weapon = data.weapon != null ? data.weapon : { dmg: 10 };
     this.health = data.health != null ? data.health : 100;
     this.position = data.position;
+    this.isDead = data.isDead != null ? data.isDead : false;
+
     this.nbMoveAvailable = data.nbMoveAvailable != null ? data.nbMoveAvailable : 9;
     this.subscription = data.subscription;
   }

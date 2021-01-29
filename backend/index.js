@@ -247,7 +247,7 @@ const updatePlayer = async (gameId, playerId, newValues, res) => {
   let query = { gameId: gameId, playerId: parseInt(playerId) };
   console.log(query, newValues);
   playersCollection.updateOne(query, newValues).then(result => {
-    console.log(result);
+    console.log("result : ", result);
     if (result.health <= 0) {
       playersCollection.updateOne(query, { $set: { isDead: true } }).then(result => {
         res.json({
