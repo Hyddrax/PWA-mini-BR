@@ -198,8 +198,10 @@ app.post('/players/add', async (req, res) => {
   const newPlayer = req.body;
   let query = { gameId: newPlayer.gameId };
 
-  playersCollection.find(query).toArray().then(gamePlayers => {
+  console.log(query);
 
+  playersCollection.find(query).toArray().then(gamePlayers => {
+    console.log(gamePlayers);
     if (gamePlayers.length == 5) {
       res.json({
         message: "The game is already full"

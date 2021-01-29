@@ -122,8 +122,8 @@ class Game extends React.Component {
             } else {
                 tmpDataGame.turnPlayerId++;
             }
-            console.log(nextPlayer);
             nextPlayer = unStateState.dataPlayers[tmpDataGame.turnPlayerId - 1];
+            console.log(nextPlayer);
             if (nextPlayer != null && !nextPlayer.isDead) {
                 playerIsDead = false;
             }
