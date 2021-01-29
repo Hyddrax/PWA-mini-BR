@@ -2,7 +2,6 @@ class DataPlayer {
 
   playerId = null;
   gameId = null;
-  data = null;
 
   name = null;
   armor = null;
@@ -25,7 +24,7 @@ class DataPlayer {
     this.isDead = data.isDead != null ? data.isDead : false;
 
     this.nbMoveAvailable = data.nbMoveAvailable != null ? data.nbMoveAvailable : 9;
-    this.subscription = data.subscription;
+    this.subscription = data.subscription != null ? data.subscription : {};
   }
 
 
