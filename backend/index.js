@@ -362,7 +362,7 @@ app.post('/subscribe', async (req, res) => {
   let query = { gameId: gameId, playerId: playerId };
   var newValues = { $set: { subscription: subscription } };
   console.log(query, newValues);
-  gamesCollection.updateOne(query, newValues).then(result => {
+  playersCollection.updateOne(query, newValues).then(result => {
     res.status(201).json({})
     console.log(result);
     const payload = JSON.stringify({
