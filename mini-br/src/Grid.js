@@ -218,7 +218,7 @@ class Grid extends React.Component {
             let tmpDataPlayers = Object.assign([], this.state.dataPlayers);
             let player = tmpDataPlayers[this.state.turnPlayerId - 1];
             if (player.subscription == null) {
-                const response = await fetch(`http://localhost:8000/subscriber/${player.gameId}/${player.playerId}`);
+                const response = await fetch(`${Constantes.backend_URL}/subscriber/${player.gameId}/${player.playerId}`);
                 const data = await response.json();
                 player.subscription = data.subscription;
             }
