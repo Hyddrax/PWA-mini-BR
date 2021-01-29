@@ -56,28 +56,35 @@ const getCollection = async () => {
 app.get('/clearData', async (req, res) => {
   let { gamesCollection, playersCollection, lootsCollection } = await getCollection();
   try {
-
+    console.log("Clear DATA");
     gamesCollection.deleteMany({}, function (err, delOK) {
       if (err) throw err;
-      if (delOK) console.log("Collection deleted");
+      if (delOK) {
+        console.log("gamesCollection deleted")
+      }
     });
 
     playersCollection.deleteMany({}, function (err, delOK) {
       if (err) throw err;
-      if (delOK) console.log("Collection deleted");
+      if (delOK) {
+        console.log("playersCollection deleted")
+      }
     });
 
     lootsCollection.deleteMany({}, function (err, delOK) {
       if (err) throw err;
-      if (delOK) console.log("Collection deleted");
+      if (delOK) {
+        console.log("lootsCollection deleted");
+      }
     });
+    console.log("Clear DONE");
   } catch (e) {
     return console.error(e);;
   }
 
   res.status(200);
   res.json({
-    message: "All collection cleared"
+    message: "Clear Data"
   })
 });
 
@@ -271,11 +278,11 @@ app.put('/players/updateEquipment/:gameId/:playerId', async (req, res) => {
 
   var newValues = null;
   if (data.armor && data.weapon) {
-    newValues = { $set: { armor: data.armor, weapon: data.weapon } };
+    newValues = { $set: { armor: data.armor, weapon: data.weapon, nbMoveAvailable: 9 } };
   } else if (data.weapon) {
-    newValues = { $set: { weapon: data.weapon } };
+    newValues = { $set: { weapon: data.weapon, nbMoveAvailable: 9 } };
   } else if (data.armor) {
-    newValues = { $set: { armor: data.armor } };
+    newValues = { $set: { armor: data.armor, nbMoveAvailable: 9 } };
   }
 
   if (newValues != null) {

@@ -141,7 +141,7 @@ class Grid extends React.Component {
         let playerId = player.playerId;
         let data = { weapon: player.weapon, armor: player.armor };
 
-        await fetch(`http://localhost:8000/players/updateEquipment/${gameId}/${playerId}`, {
+        await fetch(Constantes.backend_URL + `/updateEquipment/${gameId}/${playerId}`, {
             method: "PUT",
             body: JSON.stringify(data),
             headers: {
@@ -149,7 +149,7 @@ class Grid extends React.Component {
             }
         });
 
-        await fetch(`http://localhost:8000/loots/add`, {
+        await fetch(Constantes.backend_URL + `/loots/add`, {
             method: "POST",
             body: JSON.stringify({ gameId: gameId, lootedCell: { x: player.position.x, y: player.position.y, isLooted: true } }),
             headers: {
@@ -324,8 +324,7 @@ class Grid extends React.Component {
 
                                 attackedPlayer.isDead = true;
                             }
-
-                            await fetch(`http://localhost:8000/players/updateHealth/${attackedPlayer.gameId}/${attackedPlayer.playerId}`, {
+                            await fetch(Constantes.backend_URL + `/players/updateHealth/${attackedPlayer.gameId}/${attackedPlayer.playerId}`, {
                                 method: "PUT",
                                 body: JSON.stringify({ health: attackedPlayer.health }),
                                 headers: {
