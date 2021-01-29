@@ -9,7 +9,6 @@ class Grid extends React.Component {
 
     constructor(props) {
         super(props);
-        console.log(this.props);
         let nbMoveAvailable = this.props.dataPlayers[this.props.turnPlayerId - 1].nbMoveAvailable
         if (nbMoveAvailable == null) {
             nbMoveAvailable = 9
@@ -51,10 +50,12 @@ class Grid extends React.Component {
 
 
     // Utils Functions ------------------------------------------------------
-    //todo ne pas recalculer la distance lorsuq'on pass le tours uniquement au debut d'un tous ou après une action
-    accessibleCellsAround(x, y, distance, existingSet) {
+    accessibleCellsAround(x, y, distance, existingSet, step) {
         if (distance == 0) {
             return existingSet;
+        }
+        if (step === undefined) {
+            step = 1;
         }
         let directions = [{ x: 0, y: 1 }, { x: 0, y: -1 }, { x: 1, y: 0 }, { x: -1, y: 0 }];
         if (!existingSet) {
@@ -62,12 +63,9 @@ class Grid extends React.Component {
         }
         for (const dir of directions) {
             const target = { x: x + dir.x, y: y + dir.y };
-            if (this.cellIsWalkable(target.x, target.y)) {
-                if (!this.state.dataGrid.data.cells[y][x].isWalkable) {
-                    this.state.dataGrid.data.cells[y][x].isWalkable = true;
-                }
-                existingSet.add(this.state.dataGrid.data.cells[y][x]);
-                this.accessibleCellsAround(target.x, target.y, distance - 1, existingSet);
+            if (this.cellIsWalkable(target.x, target.y) && (this.state.dataGrid.data.cells[target.y][target.x].distance == undefined || this.state.dataGrid.data.cells[target.y][target.x].distance > step)) {
+                existingSet.add(this.state.dataGrid.data.cells[target.y][target.x]);
+                this.accessibleCellsAround(target.x, target.y, distance - 1, existingSet, step + 1);
             }
         }
         return existingSet;
@@ -85,11 +83,22 @@ class Grid extends React.Component {
         }
     }
 
+    setAccesibleCellsWalkable(x, y, distance) {
+        let walkableCells = this.accessibleCellsAround(x, y, distance)
+        if (walkableCells) {
+            walkableCells.forEach(cell => {
+                cell.isWalkable = true;
+            });
+        }
+    }
+
     resetCellsAround(x, y, distance) {
         let walkableCells = this.accessibleCellsAround(x, y, distance)
-        walkableCells.forEach(cell => {
-            cell.isWalkable = false;
-        });
+        if (walkableCells) {
+            walkableCells.forEach(cell => {
+                cell.isWalkable = false;
+            });
+        }
     }
 
     calcTravelDistance(x1, y1, x2, y2) {
@@ -105,7 +114,9 @@ class Grid extends React.Component {
         } else {
             distanceY = y2 - y1;
         }
-        return distanceX + distanceY;
+        let distance = distanceX + distanceY
+
+        return distance;
     }
 
     findPlayerIndexByPosition(x, y) {
@@ -402,7 +413,7 @@ class Grid extends React.Component {
                     this.lootWeapon();
                 }
             });
-            if (newNbMoveAvailable == 1) {
+            if (newNbMoveAvailable == 0) {
                 this.nextPlayer();
             }
         } else {
@@ -417,7 +428,7 @@ class Grid extends React.Component {
     nextPlayer() {
         this.resetCellsAround(this.state.turnPlayer.position.x, this.state.turnPlayer.position.y, this.state.nbMoveAvailable);
         this.setState({
-            nbMoveAvailable: 1
+            nbMoveAvailable: 0
         }, () => {
             this.props.nextPlayer();
         });
@@ -437,7 +448,7 @@ class Grid extends React.Component {
         });
 
 
-        this.accessibleCellsAround(this.state.turnPlayer.position.x, this.state.turnPlayer.position.y, this.state.nbMoveAvailable);
+        this.setAccesibleCellsWalkable(this.state.turnPlayer.position.x, this.state.turnPlayer.position.y, this.state.nbMoveAvailable);
         const Grid = () => copyDataGrid.data.cells.map((row, rowIndex) => {
             return <div key={rowIndex} className={`row`}>
                 {

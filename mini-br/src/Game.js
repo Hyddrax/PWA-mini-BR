@@ -63,7 +63,6 @@ class Game extends React.Component {
         let timeOut = false
         var startingTime = performance.now()
         while (!dataIsFetched && !timeOut) {
-            console.log("fetchingData");
             gameResponse = await fetch(Constantes.backend_URL + "/games/" + gameId);
             data = await gameResponse.json();
             playerResponse = await fetch(Constantes.backend_URL + "/players/" + gameId);
