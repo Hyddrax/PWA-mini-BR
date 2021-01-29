@@ -7,26 +7,27 @@ import Constantes from "./Constantes"
 
 function Accueil() {
 
-
-
+    const [supportPWA, setSupportPWA] = useState(false);
     const [promptInstall, setPromptInstall] = useState(null);
 
     useEffect(() => {
         const handler = e => {
-            e.preventDefault();
-            setPromptInstall(e);
+          e.preventDefault();
+          setSupportPWA(true);
+          setPromptInstall(e);
         };
+    
         window.addEventListener("beforeinstallprompt", handler);
-
+    
         return () => window.removeEventListener("transitionend", handler);
-    }, []);
+      }, []);
 
     const install = (event) => {
         event.preventDefault();
         if (!promptInstall) {
             return;
         }
-        promptInstall.prompt();
+        promptInstall.prompt()
     }
 
     const showNotification = () => {
@@ -67,12 +68,14 @@ function Accueil() {
             return outputArray;
         };
 
+        
         const register = await navigator.serviceWorker.ready;
         try {
             const subscription = await register.pushManager.subscribe({
                 userVisibleOnly: true,
                 applicationServerKey: urlBase64ToUint8Array(publicVapidKey)
             });
+            
             await fetch(Constantes.backend_URL + "/subscribe", {
                 method: "POST",
                 body: JSON.stringify({ "subscription": subscription, "gameId": gameId, "playerId": playerId }),
@@ -84,6 +87,9 @@ function Accueil() {
         catch (e) {
             console.error("Subscribe rejected");
         }
+
+        await window.location.reload(true);
+
     }
 
     return (
@@ -93,8 +99,16 @@ function Accueil() {
                 <div className="accueil__left">
                     <CreateGame />
                     <JoinGame />
-                    <Button className="accueil__left_div" onClick={() => subscribePushNotification('game1', '1')}>🔔 S'abonner aux notifications</Button>
-                    <Button className="accueil__left_div" onClick={install}>📦 Installer PWA Mini BR</Button>
+                    {Notification.permission === 'default' ?
+                        <Button className="accueil__left_div" onClick={() => subscribePushNotification('game1', '1')}>🔔 S'abonner aux notifications</Button>
+                        :
+                        <Button style={{display: 'none'}} className="accueil__left_div"></Button>
+                    }
+                    {supportPWA ? 
+                        <Button className="accueil__left_div" onClick={install}>📦 Installer PWA Mini BR</Button>
+                        : 
+                        <Button style={{display: 'none'}} className="accueil__left_div"></Button>
+                    }
                     {/* <a href='Game/'><li><CreateGame /></li></a> */}
                     {/* <a href='Game/'><li><JoinGame /></li></a> */}
                 </div>
