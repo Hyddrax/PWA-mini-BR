@@ -150,7 +150,7 @@ class Grid extends React.Component {
     async getLootsInfo() {
         const response = await fetch(Constantes.backend_URL + "/loots/" + this.state.turnPlayer.gameId);
         const data = await response.json();
-        if (data.lootedCells) {
+        if (data && data.lootedCells) {
             let tmpDataGrid = Object.assign({}, this.state.dataGrid);
 
             data.lootedCells.forEach(lootedCell => {
