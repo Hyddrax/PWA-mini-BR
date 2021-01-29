@@ -226,16 +226,6 @@ app.post('/players/add', async (req, res) => {
         newPlayer.position = positionList[newPlayer.playerId - 1];
 
         playersCollection.insertOne(newPlayer).then(result => {
-          let query = { gameId: newPlayer.gameId };
-
-          gamesCollection.findOne(query).then(result => {
-            let gameWithNewPlayer = result.data.grid.data.players = [...result.data.grid.data.players, newPlayer];
-            gamesCollection.updateOne(query, gameWithNewPlayer).then(result => {
-              res.json({
-                newPlayer: newPlayer
-              })
-            }).catch(error => console.error(error));
-          }).catch(error => console.error(error))
         }).catch(error => console.error(error));
       }
     }
