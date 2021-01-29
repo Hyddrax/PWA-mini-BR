@@ -141,7 +141,7 @@ class Grid extends React.Component {
         let playerId = player.playerId;
         let data = { weapon: player.weapon, armor: player.armor };
 
-        await fetch(Constantes.backend_URL + `/updateEquipment/${gameId}/${playerId}`, {
+        await fetch(Constantes.backend_URL + `/players/updateEquipment/${gameId}/${playerId}`, {
             method: "PUT",
             body: JSON.stringify(data),
             headers: {
